@@ -23,6 +23,7 @@
 		3F6757971F5359F2004CA76C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F6757961F5359F2004CA76C /* CoreLocation.framework */; };
 		3F67579B1F536D82004CA76C /* beer.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F67579A1F536D82004CA76C /* beer.png */; };
 		3F71BCAB1F50ED120002E77F /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F71BCAA1F50ED120002E77F /* TableCell.swift */; };
+		80DF63A11FDACCA900ADFC29 /* DetailStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -65,6 +66,7 @@
 		3F6757961F5359F2004CA76C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3F67579A1F536D82004CA76C /* beer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beer.png; sourceTree = "<group>"; };
 		3F71BCAA1F50ED120002E77F /* TableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
+		80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailStoryboard.storyboard; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,19 +120,19 @@
 		3F417E7E1F4FAD7200B59526 /* BeerApp */ = {
 			isa = PBXGroup;
 			children = (
+				80DF639F1FDAC82800ADFC29 /* Components */,
+				80DF639E1FDAC81F00ADFC29 /* Models */,
+				80DF639D1FDAC81500ADFC29 /* Supporting files */,
 				3F67579A1F536D82004CA76C /* beer.png */,
 				3F417E7F1F4FAD7200B59526 /* AppDelegate.swift */,
-				3F417E811F4FAD7200B59526 /* ViewController.swift */,
-				3F417E831F4FAD7200B59526 /* Main.storyboard */,
-				3F417E891F4FAD7200B59526 /* Assets.xcassets */,
-				3F417E8B1F4FAD7200B59526 /* LaunchScreen.storyboard */,
-				3F417E8E1F4FAD7200B59526 /* Info.plist */,
-				3F417E861F4FAD7200B59526 /* BeerApp.xcdatamodeld */,
-				3F417EB01F4FAE5C00B59526 /* BeerTableViewController.swift */,
-				3F417EB21F4FB12C00B59526 /* Beer.swift */,
-				3F417EB61F4FB31700B59526 /* Brewery.swift */,
-				3F71BCAA1F50ED120002E77F /* TableCell.swift */,
 				3F6757941F53181E004CA76C /* MyAnnotation.swift */,
+				3F417E831F4FAD7200B59526 /* Main.storyboard */,
+				3F417EB01F4FAE5C00B59526 /* BeerTableViewController.swift */,
+				3F417E811F4FAD7200B59526 /* ViewController.swift */,
+				3F417E8B1F4FAD7200B59526 /* LaunchScreen.storyboard */,
+				3F71BCAA1F50ED120002E77F /* TableCell.swift */,
+				80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */,
+				3F417E8E1F4FAD7200B59526 /* Info.plist */,
 			);
 			path = BeerApp;
 			sourceTree = "<group>";
@@ -160,6 +162,31 @@
 				3F6757921F530D5E004CA76C /* MapKit.framework */,
 			);
 			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		80DF639D1FDAC81500ADFC29 /* Supporting files */ = {
+			isa = PBXGroup;
+			children = (
+				3F417E861F4FAD7200B59526 /* BeerApp.xcdatamodeld */,
+				3F417E891F4FAD7200B59526 /* Assets.xcassets */,
+			);
+			path = "Supporting files";
+			sourceTree = "<group>";
+		};
+		80DF639E1FDAC81F00ADFC29 /* Models */ = {
+			isa = PBXGroup;
+			children = (
+				3F417EB61F4FB31700B59526 /* Brewery.swift */,
+				3F417EB21F4FB12C00B59526 /* Beer.swift */,
+			);
+			path = Models;
+			sourceTree = "<group>";
+		};
+		80DF639F1FDAC82800ADFC29 /* Components */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = Components;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -273,6 +300,7 @@
 				3F417E8D1F4FAD7200B59526 /* LaunchScreen.storyboard in Resources */,
 				3F67579B1F536D82004CA76C /* beer.png in Resources */,
 				3F417E8A1F4FAD7200B59526 /* Assets.xcassets in Resources */,
+				80DF63A11FDACCA900ADFC29 /* DetailStoryboard.storyboard in Resources */,
 				3F417E851F4FAD7200B59526 /* Main.storyboard in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
