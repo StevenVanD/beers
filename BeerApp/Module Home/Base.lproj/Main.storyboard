@@ -32,7 +32,7 @@
         <!--Home-->
         <scene sceneID="Mhq-vB-QgN">
             <objects>
-                <tableViewController title="Home" id="LGc-1h-Lew" customClass="BeerTableViewController" customModule="BeerApp" customModuleProvider="target" sceneMemberID="viewController">
+                <tableViewController title="Home" id="LGc-1h-Lew" customClass="HomeViewController" customModule="BeerApp" customModuleProvider="target" sceneMemberID="viewController">
                     <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="Oaa-3H-2aM">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

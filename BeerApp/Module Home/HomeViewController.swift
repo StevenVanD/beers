@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class BeerTableViewController: UITableViewController,CLLocationManagerDelegate {
+class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     @IBOutlet weak var brewNameLabel: UILabel!
     @IBOutlet weak var brewAddressLabel: UILabel!
@@ -245,11 +245,11 @@ class BeerTableViewController: UITableViewController,CLLocationManagerDelegate {
     
     //Sending the selected beer info to the next viewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        if let nextVC = segue.destination as? ViewController
+        if let nextVC = segue.destination as? BeerDetailViewController
         {
             let indexPath = self.tableView.indexPathForSelectedRow!
-            nextVC.beer = self.beers[indexPath.row]
-            nextVC.brewery = self.breweries[self.beers[indexPath.row].brewery]
+            nextVC.beerDetailViewModel.beer = self.beers[indexPath.row]
+            nextVC.beerDetailViewModel.brewery = self.breweries[self.beers[indexPath.row].brewery]
         }
         
     }

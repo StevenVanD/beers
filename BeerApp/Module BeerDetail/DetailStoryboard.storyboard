@@ -15,7 +15,7 @@
         <!--Detail-->
         <scene sceneID="pST-be-BjZ">
             <objects>
-                <viewController title="Detail" id="Usk-S2-zhy" customClass="ViewController" customModule="BeerApp" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController title="Detail" id="Usk-S2-zhy" customClass="BeerDetailViewController" customModule="BeerApp" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ekv-rL-pw1"/>
                         <viewControllerLayoutGuide type="bottom" id="FI2-Bg-nJf"/>
