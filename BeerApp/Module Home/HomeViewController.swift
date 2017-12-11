@@ -30,7 +30,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             update()
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
-
+update()
         getData()
 
     }
@@ -92,6 +92,94 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
          }
         self.tableView.reloadData()
     }
+    
+    
+    
+    
+
+    
+    
+    
+    /*
+     // Get beers
+     guard let beerUrl = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
+     print ("geen url kunnen aanmaken")
+     return
+     }
+     
+     var beerUrlRequest = URLRequest(url: beerUrl)
+     urlRequest.allHTTPHeaderFields = [
+     "accept": "application/json",
+     "content-type": "application/json",
+     "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
+     ]
+     
+     // make the request
+     let beerTask = session.dataTask(with: beerUrlRequest) {
+     (data, response, error) in
+     
+     // check for any errors
+     guard error == nil else {
+     print("error calling GET")
+     print(error!)
+     return
+     }
+     
+     // make sure we got data
+     guard let responseData = data else {
+     print("Error: did not receive data")
+     return
+     }
+     
+     // parse the result
+     do {
+     guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+     print("error trying to convert data to JSON")
+     return
+     }
+     guard let beerse = try greeting["beers"] as? [AnyObject] else {
+     print("fail")
+     return
+     }
+     for dictionary in beerse{
+     if let dictionary = dictionary as? [String: Any],
+     let id = dictionary["id"],
+     let brewery = dictionary["brewery"]{
+     if let brewery = brewery as? [String: Any],
+     let name = brewery["name"]{
+     print(name)
+     }
+     print(id)
+     
+     //tracks.append(Track(name: name, artist: artist, previewURL:previewURL))
+     }else{
+     print("Problem parsing trackDictionary\n")
+     }
+     }
+     /*for (key, value) in beerse[0] {
+     if key == "brewery" {
+     print(value)
+     }
+     }*/
+     print(beerse[0])
+     }catch  {
+     print("error trying to convert data to JSON")
+     return
+     }
+     }
+     beerTask.resume()
+     
+     */
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     /*If I found out how to get the info from a heroku-website
     //Online
  let url = URL(string: "https://icapps-beers.herokuapp.com/beers")
@@ -187,6 +275,83 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         viewModel.beers.removeAll()
         viewModel.breweries.removeAll()
  
+        
+        
+        guard let url = URL(string: "https://icapps-beers.herokuapp.com/breweries") else {
+            print ("geen url kunnen aanmaken")
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
+        ]
+        // set up the session
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+
+        // make the request
+        let task = session.dataTask(with: urlRequest) {
+            (data, response, error) in
+            
+            // check for any errors
+            guard error == nil else {
+                print("error calling GET")
+                print(error!)
+                return
+            }
+            
+            // make sure we got data
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            
+            // parse the result
+            do {
+                guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                    print("error trying to convert data to JSON")
+                    return
+                }
+                guard let breweries = try greeting["breweries"] as? [AnyObject] else {
+                    print("fail")
+                    return
+                }
+                for brewery in breweries{
+                    if let brewery = brewery as? [String: Any],
+                        let straat = brewery["address"],
+                        let stad = brewery["city"],
+                        let land = brewery["country"],
+                        let name = brewery["name"]{
+                        viewModel.breweries += [Brewery(name: "\(name)", address: "\(straat) \(stad) \(land)")]
+                        
+                        //tracks.append(Track(name: name, artist: artist, previewURL:previewURL))
+                    }else{
+                        print("Problem parsing trackDictionary\n")
+                    }
+                }
+                for b in viewModel.breweries{
+                    let brewery = Breweries(context: context)
+                    brewery.name = b.name
+                    brewery.address = b.address
+                    
+                    do{
+                        try context.save()
+                        
+                    }catch{
+                        fatalError("Failed to save context: \(error)")
+                    }
+                }
+                
+            }catch  {
+                print("error trying to convert data to JSON")
+                return
+            }
+        }
+        task.resume()
+        
+        
         //Feel free to ad some beers and breweries
  
         //Some breweries
@@ -289,7 +454,8 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         }
         
         cell.textLabel?.text = viewModel.beers[indexPath.row].name
-        cell.detailTextLabel?.text = viewModel.breweries[viewModel.beers[indexPath.row].brewery].name
+        //print(viewModel.breweries)
+        //cell.detailTextLabel?.text = viewModel.breweries[viewModel.beers[indexPath.row].brewery].name
         cell.imageView?.image = UIImage(named: viewModel.beers[indexPath.row].photo)!
         
         if(viewModel.beers[indexPath.row].score >= 0){
@@ -299,7 +465,6 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             cell.ratingLabel?.text = ""
         }
 
-        // Configure the cell...
         
         return cell
     }
