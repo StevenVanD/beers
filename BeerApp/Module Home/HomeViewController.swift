@@ -23,6 +23,8 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         //Updates if it's your first launch
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
+            update()
+
             print("Not first launch.")
         }
         else {
@@ -30,7 +32,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             update()
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
-update()
+        //update()
         getData()
 
     }
@@ -92,156 +94,177 @@ update()
          }
         self.tableView.reloadData()
     }
-    
-    
-    
-    
 
     
+    func getBreweries(){
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        guard let viewModel = homeViewModel else {
+            return
+        }
+        guard let url = URL(string: "https://icapps-beers.herokuapp.com/breweries") else {
+            print ("geen url kunnen aanmaken")
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
+        ]
+        // set up the session
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        
+        // make the request
+        let _ = session.dataTask(with: urlRequest) {
+            (data, response, error) in
+            
+            // check for any errors
+            guard error == nil else {
+                print("error calling GET")
+                print(error!)
+                return
+            }
+            
+            // make sure we got data
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            
+            // parse the result
+            do {
+                guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                    print("error trying to convert data to JSON")
+                    return
+                }
+                guard let breweries = greeting["breweries"] as? [AnyObject] else {
+                    print("fail")
+                    return
+                }
+                for brewery in breweries{
+                    if let brewery = brewery as? [String: Any],
+                        let straat = brewery["address"],
+                        let stad = brewery["city"],
+                        let land = brewery["country"],
+                        let name = brewery["name"]{
+                        viewModel.breweries += [Brewery(name: "\(name)", address: "\(straat) \(stad) \(land)")]
+                        
+                        //tracks.append(Track(name: name, artist: artist, previewURL:previewURL))
+                    }else{
+                        print("Problem parsing trackDictionary\n")
+                    }
+                }
+                for b in viewModel.breweries{
+                    let brewery = Breweries(context: context)
+                    brewery.name = b.name
+                    brewery.address = b.address
+                    
+                    do{
+                        try context.save()
+                        
+                    }catch{
+                        fatalError("Failed to save context: \(error)")
+                    }
+                }
+            }catch  {
+                print("error trying to convert data to JSON")
+                return
+            }
+        }
+        .resume()
+    }
     
-    
-    /*
-     // Get beers
-     guard let beerUrl = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
-     print ("geen url kunnen aanmaken")
-     return
-     }
-     
-     var beerUrlRequest = URLRequest(url: beerUrl)
-     urlRequest.allHTTPHeaderFields = [
-     "accept": "application/json",
-     "content-type": "application/json",
-     "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
-     ]
-     
-     // make the request
-     let beerTask = session.dataTask(with: beerUrlRequest) {
-     (data, response, error) in
-     
-     // check for any errors
-     guard error == nil else {
-     print("error calling GET")
-     print(error!)
-     return
-     }
-     
-     // make sure we got data
-     guard let responseData = data else {
-     print("Error: did not receive data")
-     return
-     }
-     
-     // parse the result
-     do {
-     guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
-     print("error trying to convert data to JSON")
-     return
-     }
-     guard let beerse = try greeting["beers"] as? [AnyObject] else {
-     print("fail")
-     return
-     }
-     for dictionary in beerse{
-     if let dictionary = dictionary as? [String: Any],
-     let id = dictionary["id"],
-     let brewery = dictionary["brewery"]{
-     if let brewery = brewery as? [String: Any],
-     let name = brewery["name"]{
-     print(name)
-     }
-     print(id)
-     
-     //tracks.append(Track(name: name, artist: artist, previewURL:previewURL))
-     }else{
-     print("Problem parsing trackDictionary\n")
-     }
-     }
-     /*for (key, value) in beerse[0] {
-     if key == "brewery" {
-     print(value)
-     }
-     }*/
-     print(beerse[0])
-     }catch  {
-     print("error trying to convert data to JSON")
-     return
-     }
-     }
-     beerTask.resume()
-     
-     */
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    
-    /*If I found out how to get the info from a heroku-website
-    //Online
- let url = URL(string: "https://icapps-beers.herokuapp.com/beers")
- 
- let urlRequest = URLRequest(url: url!)
- 
- 
- // set up the session
- let session = URLSession(configuration: URLSessionConfiguration.default)
- 
- // make the request
- let task = session.dataTask(with: urlRequest) {
- (data, response, error) in
- 
- // check for any errors
- guard error == nil else {
- print("error calling GET")
- print(error!)
- return
- }
- 
- // make sure we got data
- guard let responseData = data else {
- print("Error: did not receive data")
- return
- }
- 
- // parse the result
- 
- do {
- guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
- print("error trying to convert data to JSON")
- return
- }
- guard let record = try greeting["records"] as? [AnyObject] else {
- print("fail")
- return
- }
+    func getBeers(){
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        guard let viewModel = homeViewModel else {
+            return
+        }
+        guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
+            print ("geen url kunnen aanmaken")
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
+        ]
+        // set up the session
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        
+        // make the request
+        let _ = session.dataTask(with: urlRequest) {
+            (data, response, error) in
+            
+            // check for any errors
+            guard error == nil else {
+                print("error calling GET")
+                print(error!)
+                return
+            }
+            
+            // make sure we got data
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            
+            // parse the result
+            do {
+                guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                    print("error trying to convert data to JSON")
+                    return
+                }
+                guard let beers = greeting["beers"] as? [AnyObject] else {
+                    print("fail")
+                    return
+                }
+                print(beers.count)
 
-     //Use the data
- 
- }
- 
- }
-
- 
- for (key, value) in greeting {
- if key == "datasetid" {
- //print(value)
- }
- }
- 
- } catch  {
- print("error trying to convert data to JSON")
- return
- }
- }
- 
- task.resume()
-*/
+                for beer in beers{
+                    //vanaf hier zijn er 4 bieren, maar de count is tien, de latere 6 worden niet genomen
+                    //print(beer)
+                   if let beer = beer as? [String: Any],
+                        let name = beer["name"] as? String ,let brewery = beer["brewery"] as? [String: Any] ,let score = beer["rating"] as? Int, let breweryId = brewery["id"] as? Int{
+                        viewModel.beers += [Beer(name: name, photo: "beer.png", brewery: breweryId, score: score) ]
+                        print(viewModel.beers.count)
+                    
+                    }/*else if let beer = beer as? [String: Any],
+                    let name = beer["name"] as? String ,let brewery = beer["brewery"] as? [String: Any] {
+                        if let breweryId = brewery["id"] as? Int{
+                            viewModel.beers += [Beer(name: name, photo: "beer.png", brewery: breweryId, score: -1) ]
+                            print(viewModel.beers.count)
+                        }
+                    }else{
+                        print("Problem parsing trackDictionary\n")
+                    }*/
+                }
+                for b in viewModel.beers{
+                    let beer = Beers(context: context)
+                    beer.name = b.name
+                    beer.photoLink = b.photo as String
+                    beer.brewery = Int64(b.brewery)
+                    beer.score = Int16(b.score)
+                    do{
+                        try context.save()
+                        
+                    }catch{
+                        fatalError("Failed to save context: \(error)")
+                    }
+                }
+            }catch  {
+                print("error trying to convert data to JSON")
+                return
+            }
+            }.resume()
+    }
     //Deleting all existing beers and breweries and adding standard beers and breweries to core data
      func update() {
+        
         guard let viewModel = homeViewModel else {
             return
         }
@@ -276,91 +299,16 @@ update()
         viewModel.breweries.removeAll()
  
         
-        
-        guard let url = URL(string: "https://icapps-beers.herokuapp.com/breweries") else {
-            print ("geen url kunnen aanmaken")
-            return
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.allHTTPHeaderFields = [
-            "accept": "application/json",
-            "content-type": "application/json",
-            "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
-        ]
-        // set up the session
-        let session = URLSession(configuration: URLSessionConfiguration.default)
+        getBreweries()
+        getBeers()
 
-        // make the request
-        let task = session.dataTask(with: urlRequest) {
-            (data, response, error) in
-            
-            // check for any errors
-            guard error == nil else {
-                print("error calling GET")
-                print(error!)
-                return
-            }
-            
-            // make sure we got data
-            guard let responseData = data else {
-                print("Error: did not receive data")
-                return
-            }
-            
-            // parse the result
-            do {
-                guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
-                    print("error trying to convert data to JSON")
-                    return
-                }
-                guard let breweries = try greeting["breweries"] as? [AnyObject] else {
-                    print("fail")
-                    return
-                }
-                for brewery in breweries{
-                    if let brewery = brewery as? [String: Any],
-                        let straat = brewery["address"],
-                        let stad = brewery["city"],
-                        let land = brewery["country"],
-                        let name = brewery["name"]{
-                        viewModel.breweries += [Brewery(name: "\(name)", address: "\(straat) \(stad) \(land)")]
-                        
-                        //tracks.append(Track(name: name, artist: artist, previewURL:previewURL))
-                    }else{
-                        print("Problem parsing trackDictionary\n")
-                    }
-                }
-                for b in viewModel.breweries{
-                    let brewery = Breweries(context: context)
-                    brewery.name = b.name
-                    brewery.address = b.address
-                    
-                    do{
-                        try context.save()
-                        
-                    }catch{
-                        fatalError("Failed to save context: \(error)")
-                    }
-                }
-                
-            }catch  {
-                print("error trying to convert data to JSON")
-                return
-            }
-        }
-        task.resume()
         
         
         //Feel free to ad some beers and breweries
  
-        //Some breweries
-        viewModel.breweries += [Brewery(name: "Brewery0", address: "Linthout 1 Aalst") ]
-        viewModel.breweries += [Brewery(name: "Brewery1", address: "Nijverheidskaai Brussel") ]
-        viewModel.breweries += [Brewery(name: "Brewery2", address: "Rijnkaai 97/103 2000 Antwerpen") ]
  
         //Enough beers for testing the scroll
-        viewModel.beers += [Beer(name: "Beer0", photo: "beer.png", brewery: 0, score: -1) ]
+       /* viewModel.beers += [Beer(name: "Beer0", photo: "beer.png", brewery: 0, score: -1) ]
         viewModel.beers += [Beer(name: "Beer1", photo: "beer.png", brewery: 2, score: -1) ]
         viewModel.beers += [Beer(name: "Beer2", photo: "beer.png", brewery: 1, score: -1) ]
         viewModel.beers += [Beer(name: "Beer3", photo: "beer.png", brewery: 2, score: -1) ]
@@ -377,33 +325,9 @@ update()
         viewModel.beers += [Beer(name: "Beer14", photo: "beer.png", brewery: 1, score: -1) ]
         viewModel.beers += [Beer(name: "Beer15", photo: "beer.png", brewery: 2, score: -1) ]
         viewModel.beers += [Beer(name: "Beer16", photo: "beer.png", brewery: 0, score: -1) ]
-        viewModel.beers += [Beer(name: "Beer17", photo: "beer.png", brewery: 1, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer17", photo: "beer.png", brewery: 1, score: -1) ]*/
         
-        for b in viewModel.breweries{
-            let brewery = Breweries(context: context)
-            brewery.name = b.name
-            brewery.address = b.address
-            do{
-                try context.save()
-                
-            }catch{
-                fatalError("Failed to save context: \(error)")
-            }
-        }
         
-        for b in viewModel.beers{
-            let beer = Beers(context: context)
-            beer.name = b.name
-            beer.photoLink = b.photo as String
-            beer.brewery = Int64(b.brewery)
-            beer.score = Int16(b.score)
-            do{
-                try context.save()
-                
-            }catch{
-                fatalError("Failed to save context: \(error)")
-            }
-        }
      }
     
     //Sending the selected beer info to the next viewController
@@ -454,8 +378,7 @@ update()
         }
         
         cell.textLabel?.text = viewModel.beers[indexPath.row].name
-        //print(viewModel.breweries)
-        //cell.detailTextLabel?.text = viewModel.breweries[viewModel.beers[indexPath.row].brewery].name
+        cell.detailTextLabel?.text = viewModel.breweries[viewModel.beers[indexPath.row].brewery].name
         cell.imageView?.image = UIImage(named: viewModel.beers[indexPath.row].photo)!
         
         if(viewModel.beers[indexPath.row].score >= 0){
