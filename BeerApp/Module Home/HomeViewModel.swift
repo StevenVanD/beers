@@ -7,18 +7,43 @@
 //
 
 import UIKit
+import CoreLocation
 
 public final class HomeViewModel {
 
-    var beers: [Beer]
-    var breweries: [Brewery]
-//    public let brewNameText: String
-//    public let brewAddressText: String
-//    public let segmentState: Bool
+    var beers: [Beer] = []
+    var breweries: [Brewery] = []
+    var closestBrewery: Brewery?
+    
+    public let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
-    init(beers: [Beer], breweries: [Brewery]){
-        self.beers = beers
-        self.breweries = breweries
+    public var locatiemanager = CLLocationManager()
+    public var currentLocation = CLLocation()
+    public var closestLocation: CLLocation?
+    public var smallestDistance: CLLocationDistance?
+    
+
+    init(){
+        locatiemanager.delegate = self as? CLLocationManagerDelegate
+        locatiemanager.requestAlwaysAuthorization()
+        locatiemanager.startUpdatingLocation()
         
     }
+    
+    var breweryClosestName: String {
+        guard let closestBrewery = closestBrewery else {
+            return "No name available"
+        }
+        
+        return closestBrewery.name
+    }
+    
+    var breweryClosestAddress: String {
+        guard let closestBrewery = closestBrewery else {
+            return "No name available"
+        }
+        
+        return closestBrewery.address
+    }
+    
 }

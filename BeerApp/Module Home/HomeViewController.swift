@@ -11,26 +11,15 @@ import MapKit
 import CoreLocation
 
 class HomeViewController: UITableViewController,CLLocationManagerDelegate {
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    public var homeViewModel: HomeViewModel?
     @IBOutlet weak var brewNameLabel: UILabel!
     @IBOutlet weak var brewAddressLabel: UILabel!
     @IBOutlet weak var segment: UISegmentedControl!
-    var beers: [Beer] = []
-    var breweries: [Brewery] = []
-    var locatiemanager = CLLocationManager()
-    var currentLocation = CLLocation()
-    var closestLocation: CLLocation?
-    var smallestDistance: CLLocationDistance?
-    var closestBrewery: Brewery?
     
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        locatiemanager.delegate = self
-        locatiemanager.requestAlwaysAuthorization()
-        locatiemanager.startUpdatingLocation()
-        
+        homeViewModel = HomeViewModel()
         //Updates if it's your first launch
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
@@ -48,19 +37,22 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     
     //Checks everytime you move for the closest brewery and changes the labels
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+        guard let viewModel = homeViewModel else {
+            return
+        }
         let location = locations[0]
-        currentLocation = location
+        viewModel.currentLocation = location
         
-        for brew in breweries {
-            let distance = currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
-            if smallestDistance == nil || distance < smallestDistance! {
-                closestLocation = location
-                smallestDistance = distance
-                closestBrewery = brew
+        for brew in viewModel.breweries {
+            let distance = viewModel.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
+            if viewModel.smallestDistance == nil || distance < viewModel.smallestDistance! {
+                viewModel.closestLocation = location
+                viewModel.smallestDistance = distance
+                viewModel.closestBrewery = brew
             }
         }
-        brewNameLabel.text = (closestBrewery?.name)!
-        brewAddressLabel.text = (closestBrewery?.address)!
+        brewNameLabel.text = viewModel.closestBrewery?.name
+        brewAddressLabel.text = viewModel.closestBrewery?.address
     }
     
     //Updates the beer list when entering this viewController (when you return from the detail page)
@@ -70,14 +62,17 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     
     //Reading all beers and breweries from core data
     func getData() {
-        beers = []
-        breweries = []
+        guard let viewModel = homeViewModel else {
+            return
+        }
+        viewModel.beers = []
+        viewModel.breweries = []
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
 
          do {
             let loadedBreweries = try context.fetch(Breweries.fetchRequest()) as! [Breweries]
             for brew in loadedBreweries{
-                self.breweries += [Brewery(name: brew.name!, address: brew.address!)]
+                viewModel.breweries += [Brewery(name: brew.name!, address: brew.address!)]
             }
          } catch {
             print("Fetching Failed")
@@ -87,9 +82,9 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
          let loadedBeers = try context.fetch(Beers.fetchRequest()) as! [Beers]
          for b in loadedBeers{
             if(segment.selectedSegmentIndex == 0){
-                beers += [Beer(name: b.name!, photo: b.photoLink!, brewery: Int(b.brewery), score: Int(b.score))]
+                viewModel.beers += [Beer(name: b.name!, photo: b.photoLink!, brewery: Int(b.brewery), score: Int(b.score))]
             }else if(b.score >= 0){
-                beers += [Beer(name: b.name!, photo: b.photoLink!, brewery: Int(b.brewery), score: Int(b.score))]
+                viewModel.beers += [Beer(name: b.name!, photo: b.photoLink!, brewery: Int(b.brewery), score: Int(b.score))]
             }
          }
          } catch {
@@ -159,6 +154,9 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
 */
     //Deleting all existing beers and breweries and adding standard beers and breweries to core data
      func update() {
+        guard let viewModel = homeViewModel else {
+            return
+        }
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
  
         do {
@@ -186,37 +184,37 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         catch{
         }
  
-        beers.removeAll()
-        breweries.removeAll()
+        viewModel.beers.removeAll()
+        viewModel.breweries.removeAll()
  
         //Feel free to ad some beers and breweries
  
         //Some breweries
-        breweries += [Brewery(name: "Brewery0", address: "Linthout 1 Aalst") ]
-        breweries += [Brewery(name: "Brewery1", address: "Nijverheidskaai Brussel") ]
-        breweries += [Brewery(name: "Brewery2", address: "Rijnkaai 97/103 2000 Antwerpen") ]
+        viewModel.breweries += [Brewery(name: "Brewery0", address: "Linthout 1 Aalst") ]
+        viewModel.breweries += [Brewery(name: "Brewery1", address: "Nijverheidskaai Brussel") ]
+        viewModel.breweries += [Brewery(name: "Brewery2", address: "Rijnkaai 97/103 2000 Antwerpen") ]
  
         //Enough beers for testing the scroll
-        beers += [Beer(name: "Beer0", photo: "beer.png", brewery: 0, score: -1) ]
-        beers += [Beer(name: "Beer1", photo: "beer.png", brewery: 2, score: -1) ]
-        beers += [Beer(name: "Beer2", photo: "beer.png", brewery: 1, score: -1) ]
-        beers += [Beer(name: "Beer3", photo: "beer.png", brewery: 2, score: -1) ]
-        beers += [Beer(name: "Beer4", photo: "beer.png", brewery: 0, score: -1) ]
-        beers += [Beer(name: "Beer5", photo: "beer.png", brewery: 1, score: -1) ]
-        beers += [Beer(name: "Beer6", photo: "beer.png", brewery: 0, score: -1) ]
-        beers += [Beer(name: "Beer7", photo: "beer.png", brewery: 2, score: -1) ]
-        beers += [Beer(name: "Beer8", photo: "beer.png", brewery: 1, score: -1) ]
-        beers += [Beer(name: "Beer9", photo: "beer.png", brewery: 2, score: -1) ]
-        beers += [Beer(name: "Beer10", photo: "beer.png", brewery: 0, score: -1) ]
-        beers += [Beer(name: "Beer11", photo: "beer.png", brewery: 1, score: -1) ]
-        beers += [Beer(name: "Beer12", photo: "beer.png", brewery: 0, score: -1) ]
-        beers += [Beer(name: "Beer13", photo: "beer.png", brewery: 2, score: -1) ]
-        beers += [Beer(name: "Beer14", photo: "beer.png", brewery: 1, score: -1) ]
-        beers += [Beer(name: "Beer15", photo: "beer.png", brewery: 2, score: -1) ]
-        beers += [Beer(name: "Beer16", photo: "beer.png", brewery: 0, score: -1) ]
-        beers += [Beer(name: "Beer17", photo: "beer.png", brewery: 1, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer0", photo: "beer.png", brewery: 0, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer1", photo: "beer.png", brewery: 2, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer2", photo: "beer.png", brewery: 1, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer3", photo: "beer.png", brewery: 2, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer4", photo: "beer.png", brewery: 0, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer5", photo: "beer.png", brewery: 1, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer6", photo: "beer.png", brewery: 0, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer7", photo: "beer.png", brewery: 2, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer8", photo: "beer.png", brewery: 1, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer9", photo: "beer.png", brewery: 2, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer10", photo: "beer.png", brewery: 0, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer11", photo: "beer.png", brewery: 1, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer12", photo: "beer.png", brewery: 0, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer13", photo: "beer.png", brewery: 2, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer14", photo: "beer.png", brewery: 1, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer15", photo: "beer.png", brewery: 2, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer16", photo: "beer.png", brewery: 0, score: -1) ]
+        viewModel.beers += [Beer(name: "Beer17", photo: "beer.png", brewery: 1, score: -1) ]
         
-        for b in breweries{
+        for b in viewModel.breweries{
             let brewery = Breweries(context: context)
             brewery.name = b.name
             brewery.address = b.address
@@ -228,7 +226,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             }
         }
         
-        for b in beers{
+        for b in viewModel.beers{
             let beer = Beers(context: context)
             beer.name = b.name
             beer.photoLink = b.photo as String
@@ -245,11 +243,19 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     
     //Sending the selected beer info to the next viewController
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let viewModel = homeViewModel else {
+            return
+        }
         if let nextVC = segue.destination as? BeerDetailViewController
-        {
-            let indexPath = self.tableView.indexPathForSelectedRow!
-            nextVC.beerDetailViewModel.beer = self.beers[indexPath.row]
-            nextVC.beerDetailViewModel.brewery = self.breweries[self.beers[indexPath.row].brewery]
+        {    if let indexPath = tableView.indexPathForSelectedRow{
+
+            let newViewModel = BeerDetailViewModel(beer: viewModel.beers[indexPath.row])
+            nextVC.beerDetailViewModel = newViewModel
+            guard let detailViewModel = nextVC.beerDetailViewModel else {
+                return
+            }
+            detailViewModel.brewery = viewModel.breweries[viewModel.beers[indexPath.row].brewery]
+            }
         }
         
     }
@@ -267,21 +273,28 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
+        guard let viewModel = homeViewModel else {
+            return 0
+        }
         // #warning Incomplete implementation, return the number of rows
-        return beers.count
+        return viewModel.beers.count
     }
     
     //Changing the text of the labels in every cell into the info of the beers
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! TableCell
         
-        cell.textLabel?.text = self.beers[indexPath.row].name
-        cell.detailTextLabel?.text = breweries[self.beers[indexPath.row].brewery].name
-        cell.imageView?.image = UIImage(named: self.beers[indexPath.row].photo)!
+        guard let viewModel = homeViewModel else {
+            return cell
+        }
         
-        if(self.beers[indexPath.row].score >= 0){
+        cell.textLabel?.text = viewModel.beers[indexPath.row].name
+        cell.detailTextLabel?.text = viewModel.breweries[viewModel.beers[indexPath.row].brewery].name
+        cell.imageView?.image = UIImage(named: viewModel.beers[indexPath.row].photo)!
+        
+        if(viewModel.beers[indexPath.row].score >= 0){
             
-            cell.ratingLabel?.text = "\(self.beers[indexPath.row].score)"
+            cell.ratingLabel?.text = "\(viewModel.beers[indexPath.row].score)"
         }else{
             cell.ratingLabel?.text = ""
         }

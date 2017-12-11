@@ -12,7 +12,7 @@ import MapKit
 
 //Detail viewController
 class BeerDetailViewController: UIViewController{
-    public var beerDetailViewModel =  BeerDetailViewModel()
+    public var beerDetailViewModel: BeerDetailViewModel?
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var breweryLabel: UILabel!
@@ -34,20 +34,26 @@ class BeerDetailViewController: UIViewController{
     
     func updateUI() {
         //Changing the text in the labels
-        nameLabel.text = beerDetailViewModel.beer?.name
-        breweryLabel.text = beerDetailViewModel.brewery?.name
-        addressLabel.text = beerDetailViewModel.brewery?.address
-        if((beerDetailViewModel.beer?.score)! >= 0){
-            ratingLabel.text = "\((beerDetailViewModel.beer?.score)!)"
+        guard let viewModel = beerDetailViewModel else {
+            return
         }
-        longLabel.text = "\((beerDetailViewModel.brewery?.lon)!)"
-        latLabel.text = "\((beerDetailViewModel.brewery?.lat)!)"
+        nameLabel.text = viewModel.beerName
+        breweryLabel.text = viewModel.brewery?.name
+        addressLabel.text = viewModel.brewery?.address
+        if((viewModel.beer?.score)! >= 0){
+            ratingLabel.text = "\((viewModel.beer?.score)!)"
+        }
+        longLabel.text = "\((viewModel.brewery?.lon)!)"
+        latLabel.text = "\((viewModel.brewery?.lat)!)"
     }
     
     func updateMap(){
+        guard let viewModel = beerDetailViewModel else {
+            return
+        }
         //Setting up the map and annotations (pins)
-        let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: beerDetailViewModel.brewery!.lat, longitude: beerDetailViewModel.brewery!.lon)
-        let annotation:MyAnnotation = MyAnnotation(coordinate: coordinate, title: (beerDetailViewModel.beer!.name))
+        let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: viewModel.brewery!.lat, longitude: viewModel.brewery!.lon)
+        let annotation:MyAnnotation = MyAnnotation(coordinate: coordinate, title: (viewModel.beer!.name))
         self.map.addAnnotation(annotation)
         self.mapView(map)
     }
@@ -59,12 +65,15 @@ class BeerDetailViewController: UIViewController{
     
     //Save the rating everytime the slider gets replaced
     @IBAction func changeSlider(_ sender: UISlider) {
+        guard let viewModel = beerDetailViewModel else {
+            return
+        }
         ratingLabel.text = "\(Int(sender.value))"
         do{
             let results = try context.fetch(NSFetchRequest(entityName: "Beers"))
             for result in results as! [NSManagedObject]
             {
-                if  result.value(forKey: "name") as? String == beerDetailViewModel.beer?.name
+                if  result.value(forKey: "name") as? String == viewModel.beer?.name
                 {
                     result.setValue(Int(sender.value), forKey: "score")
                     do{
@@ -85,7 +94,10 @@ class BeerDetailViewController: UIViewController{
     
     //Set the region of the map to the place of the beer
     func mapView(_ mapView: MKMapView) {
-        let center = CLLocationCoordinate2D(latitude: (beerDetailViewModel.brewery?.lat)!, longitude: (beerDetailViewModel.brewery?.lon)!)
+        guard let viewModel = beerDetailViewModel else {
+            return
+        }
+        let center = CLLocationCoordinate2D(latitude: (viewModel.brewery?.lat)!, longitude: (viewModel.brewery?.lon)!)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         mapView.setRegion(region, animated: true)
     }

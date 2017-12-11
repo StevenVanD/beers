@@ -12,20 +12,51 @@ public final class BeerDetailViewModel {
     
     var beer: Beer?
     var brewery: Brewery?
-    public let nameText: String
-    public let breweryText: String
-    public let addressText: String
-    public let ratingText: String
-    public let longText: String
-    public let latText: String
     
-    init(){
-        self.nameText = ""
-        self.breweryText = ""
-        self.addressText = ""
-        self.ratingText = ""
-        self.longText = ""
-        self.latText = ""
+    init(beer : Beer) {
+        self.beer = beer
+    }
+    
+    
+    var beerName: String {
+        guard let beer = beer else {
+            return "No beer name available"
+        }
+        return beer.name
+    }
+    var beerRating: String {
+        guard let beer = beer else {
+            return "No rating available"
+        }
+        return "\(beer.score)"
+    }
+    
+    var breweryName: String {
+        guard let brewery = brewery else {
+            return "No brewery name available"
+        }
+        return brewery.name
+    }
+    
+    var breweryAddress: String {
+        guard let brewery = brewery else {
+            return "No address available"
+        }
+        return brewery.address
+    }
+    
+    var breweryLong: String {
+        guard let brewery = brewery else {
+            return "No longitude available"
+        }
+        return "\(brewery.lon)"
+    }
+    
+    var breweryLat: String {
+        guard let brewery = brewery else {
+            return "No latitude available"
+        }
+        return "\(brewery.lat)"
     }
     
 }
