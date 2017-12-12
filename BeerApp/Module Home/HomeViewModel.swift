@@ -49,11 +49,13 @@ public final class HomeViewModel {
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
         self.currentLocation = location
-        
+    }
+    func setClosestBrewery(){
+        print(self.breweries.count)
         for brew in self.breweries {
             let distance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
             if self.smallestDistance == nil || distance < self.smallestDistance! {
-                self.closestLocation = location
+                self.closestLocation = self.currentLocation
                 self.smallestDistance = distance
                 self.closestBrewery = brew
             }
@@ -212,7 +214,8 @@ public final class HomeViewModel {
         } catch {
             print("Fetching Failed")
         }
-        
+        setClosestBrewery()
+
         do {
             let loadedBeers = try context.fetch(Beers.fetchRequest()) as! [Beers]
             for b in loadedBeers{
