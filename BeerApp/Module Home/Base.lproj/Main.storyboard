@@ -140,7 +140,13 @@
                             <outlet property="delegate" destination="LGc-1h-Lew" id="nLz-eb-PMg"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Title" id="cl3-F9-Z9g"/>
+                    <navigationItem key="navigationItem" title="Title" id="cl3-F9-Z9g">
+                        <barButtonItem key="rightBarButtonItem" systemItem="add" id="yR1-Pm-HkV">
+                            <connections>
+                                <action selector="updateButton:" destination="LGc-1h-Lew" id="ACr-jO-fEr"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
                     <connections>
                         <outlet property="brewAddressLabel" destination="i6U-sl-9mn" id="6BR-ov-tiu"/>
                         <outlet property="brewNameLabel" destination="n7h-5F-mDQ" id="Xqz-EV-QBE"/>

@@ -46,4 +46,140 @@ public final class HomeViewModel {
         return closestBrewery.address
     }
     
+    func update() {
+        
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        
+        do {
+            let loadedBeers = try context.fetch(Beers.fetchRequest()) as! [Beers]
+            for b in loadedBeers{
+                context.delete(b)
+                
+            }
+        } catch {
+            print("Fetching Failed")
+        }
+        
+        do {
+            let loadedBreweries = try context.fetch(Breweries.fetchRequest()) as! [Breweries]
+            for brew in loadedBreweries{
+                context.delete(brew)
+            }
+        } catch {
+            print("Fetching Failed")
+        }
+        
+        do{
+            try context.save()
+        }
+        catch{
+        }
+        
+        beers.removeAll()
+        breweries.removeAll()
+        
+        getBeers()
+    }
+    
+    func getBeers(){
+        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
+            print ("geen url kunnen aanmaken")
+            return
+        }
+        
+        var urlRequest = URLRequest(url: url)
+        urlRequest.allHTTPHeaderFields = [
+            "accept": "application/json",
+            "content-type": "application/json",
+            "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
+        ]
+        let session = URLSession(configuration: URLSessionConfiguration.default)
+        
+        let _ = session.dataTask(with: urlRequest) {
+            (data, response, error) in
+            
+            guard error == nil else {
+                print("error calling GET")
+                print(error!)
+                return
+            }
+            
+            guard let responseData = data else {
+                print("Error: did not receive data")
+                return
+            }
+            
+            do {
+                guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
+                    print("error trying to convert data to JSON")
+                    return
+                }
+                guard let beerList = greeting["beers"] as? [AnyObject] else {
+                    print("fail")
+                    return
+                }
+                
+                for beer in beerList{
+                    if let beer = beer as? [String: Any],
+                        let name = beer["name"],
+                        let brewery = beer["brewery"] as? [String: Any],
+                        let id = brewery["id"] as? Int,
+                        let straat = brewery["address"],
+                        let stad = brewery["city"],
+                        let land = brewery["country"],
+                        let brewName = brewery["name"]{
+                        
+                        var breweryExists = false
+                        for brewery in self.breweries{
+                            if brewery.id == id {
+                                breweryExists = true
+                            }
+                        }
+                        if breweryExists == false{
+                            self.breweries += [Brewery(name: "\(brewName)", address: "\(straat) \(stad) \(land)", id: id)]
+                        }
+                        if let score = beer["rating"] as? Int{
+                            self.beers += [Beer(name: "\(name)", photo: "beer.png", brewery: id, score: score) ]
+                        }else{
+                            self.beers += [Beer(name: "\(name)", photo: "beer.png", brewery: id, score: -1) ]
+                        }
+                    }
+                    else{
+                        print("Problem parsing trackDictionary\n")
+                    }
+                }
+                for b in self.breweries{
+                    let brewery = Breweries(context: context)
+                    brewery.name = b.name
+                    brewery.address = b.address
+                    brewery.id = Int16(b.id)
+                    do{
+                        try context.save()
+                    }catch{
+                        fatalError("Failed to save context: \(error)")
+                    }
+                }
+                for b in self.beers{
+                    let beer = Beers(context: context)
+                    beer.name = b.name
+                    beer.photoLink = b.photo as String
+                    beer.brewery = 1
+                    beer.score = Int16(b.score)
+                    do{
+                        try context.save()
+                        
+                    }catch{
+                        fatalError("Failed to save context: \(error)")
+                    }
+                }
+                
+            }catch  {
+                print("error trying to convert data to JSON")
+                return
+            }
+            }.resume()
+    }
+
+    
 }

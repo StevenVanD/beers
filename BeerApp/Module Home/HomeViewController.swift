@@ -23,12 +23,12 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
 
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
-            update()
+            homeViewModel?.update()
             print("Not first launch.")
         }
         else {
             print("First launch, setting UserDefault.")
-            update()
+            homeViewModel?.update()
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
         getData()
@@ -93,163 +93,8 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         self.tableView.reloadData()
     }
     
-    func getBeers(){
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
-            print ("geen url kunnen aanmaken")
-            return
-        }
-        
-        var urlRequest = URLRequest(url: url)
-        urlRequest.allHTTPHeaderFields = [
-            "accept": "application/json",
-            "content-type": "application/json",
-            "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
-        ]
-        let session = URLSession(configuration: URLSessionConfiguration.default)
-        
-        let _ = session.dataTask(with: urlRequest) {
-            (data, response, error) in
-            
-            guard error == nil else {
-                print("error calling GET")
-                print(error!)
-                return
-            }
-            
-            guard let responseData = data else {
-                print("Error: did not receive data")
-                return
-            }
-            
-            do {
-                guard let greeting = try JSONSerialization.jsonObject(with: responseData, options: []) as? [String: AnyObject] else {
-                    print("error trying to convert data to JSON")
-                    return
-                }
-                guard let beers = greeting["beers"] as? [AnyObject] else {
-                    print("fail")
-                    return
-                }
-                
-                for beer in beers{
-                    print(beers.count)
-                    if let beer = beer as? [String: Any],
-                        let name = beer["name"],
-                        let brewery = beer["brewery"] as? [String: Any],
-                        let id = brewery["id"] as? Int,
-                        let straat = brewery["address"],
-                        let stad = brewery["city"],
-                        let land = brewery["country"],
-                        let brewName = brewery["name"]{
-                        
-                        var breweryExists = false
-                        for brewery in viewModel.breweries{
-                            if brewery.id == id {
-                                breweryExists = true
-                            }
-                        }
-                        if breweryExists == false{
-                            viewModel.breweries += [Brewery(name: "\(brewName)", address: "\(straat) \(stad) \(land)", id: id)]
-                        }
-                        if let score = beer["rating"] as? Int{
-                            viewModel.beers += [Beer(name: "\(name)", photo: "beer.png", brewery: id, score: score) ]
-                        }else{
-                            viewModel.beers += [Beer(name: "\(name)", photo: "beer.png", brewery: id, score: -1) ]
-                        }
-                    }
-                    else{
-                        print("Problem parsing trackDictionary\n")
-                    }
-                }
-                for b in viewModel.breweries{
-                    let brewery = Breweries(context: context)
-                    brewery.name = b.name
-                    brewery.address = b.address
-                    brewery.id = Int16(b.id)
-                    do{
-                        try context.save()
-                    }catch{
-                        fatalError("Failed to save context: \(error)")
-                    }
-                }
-                for b in viewModel.beers{
-                    let beer = Beers(context: context)
-                    beer.name = b.name
-                    beer.photoLink = b.photo as String
-                    beer.brewery = 1
-                    beer.score = Int16(b.score)
-                    do{
-                        try context.save()
-                        
-                    }catch{
-                        fatalError("Failed to save context: \(error)")
-                    }
-                }
-                
-            }catch  {
-                print("error trying to convert data to JSON")
-                return
-            }
-        }.resume()
-    }
-
-    func update() {
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        do {
-            let loadedBeers = try context.fetch(Beers.fetchRequest()) as! [Beers]
-            for b in loadedBeers{
-                context.delete(b)
-                
-            }
-        } catch {
-            print("Fetching Failed")
-        }
-        
-        do {
-            let loadedBreweries = try context.fetch(Breweries.fetchRequest()) as! [Breweries]
-            for brew in loadedBreweries{
-                context.delete(brew)
-            }
-        } catch {
-            print("Fetching Failed")
-        }
-        
-        do{
-            try context.save()
-        }
-        catch{
-        }
-        
-        viewModel.beers.removeAll()
-        viewModel.breweries.removeAll()
-        
-        getBeers()
-    }
     
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        if let nextVC = segue.destination as? BeerDetailViewController
-        {    if let indexPath = tableView.indexPathForSelectedRow{
-            
-            let newViewModel = BeerDetailViewModel(beer: viewModel.beers[indexPath.row])
-            nextVC.beerDetailViewModel = newViewModel
-            guard let detailViewModel = nextVC.beerDetailViewModel else {
-                return
-            }
-            detailViewModel.brewery = viewModel.breweries[viewModel.beers[indexPath.row].brewery]
-            }
-        }
-    }
+    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -270,7 +115,22 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             return 0
         }
     }
-    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let viewModel = homeViewModel else {
+            return
+        }
+        if let nextVC = segue.destination as? BeerDetailViewController
+        {    if let indexPath = tableView.indexPathForSelectedRow{
+            
+            let newViewModel = BeerDetailViewModel(beer: viewModel.beers[indexPath.row])
+            nextVC.beerDetailViewModel = newViewModel
+            guard let detailViewModel = nextVC.beerDetailViewModel else {
+                return
+            }
+            detailViewModel.brewery = viewModel.breweries[viewModel.beers[indexPath.row].brewery]
+            }
+        }
+    }
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! TableCell
         
@@ -295,6 +155,9 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         return cell
     }
     
+    @IBAction func updateButton(_ sender: Any) {
+        homeViewModel?.update()
+    }
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
         getData()
     }
