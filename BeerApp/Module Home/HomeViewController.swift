@@ -19,7 +19,9 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         homeViewModel = HomeViewModel(homeViewController: self)
-
+        guard let viewModel = homeViewModel else {
+            return
+        }
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
             homeViewModel?.update()
@@ -30,12 +32,15 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             homeViewModel?.update()
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
-        homeViewModel?.getData()
+        viewModel.getData()
         
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        homeViewModel?.getData()
+        guard let viewModel = homeViewModel else {
+            return
+        }
+        viewModel.getData()
     }
     
     override func didReceiveMemoryWarning() {
@@ -119,9 +124,15 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     }
     
     @IBAction func updateButton(_ sender: Any) {
-        homeViewModel?.update()
+        guard let viewModel = homeViewModel else {
+            return
+        }
+        viewModel.update()
     }
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
-        homeViewModel?.getData()
+        guard let viewModel = homeViewModel else {
+            return
+        }
+        viewModel.getData()
     }
 }

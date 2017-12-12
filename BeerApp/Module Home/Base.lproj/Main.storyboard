@@ -55,7 +55,7 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Closest Brewery:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggZ-P9-Adh">
                                     <rect key="frame" x="20" y="8" width="159" height="28"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="159" id="gdT-tj-7fz"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="159" id="gdT-tj-7fz"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="boldSystem" pointSize="17"/>
                                     <nil key="textColor"/>
@@ -64,13 +64,13 @@
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brewery name" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="n7h-5F-mDQ">
                                     <rect key="frame" x="20" y="37" width="141" height="27"/>
                                     <constraints>
-                                        <constraint firstAttribute="width" constant="141" id="Sji-9V-Otb"/>
+                                        <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="141" id="Sji-9V-Otb"/>
                                     </constraints>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
                                     <nil key="highlightedColor"/>
                                 </label>
-                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Brewery address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6U-sl-9mn">
+                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" verticalHuggingPriority="251" text="Brewery address" textAlignment="natural" lineBreakMode="tailTruncation" numberOfLines="2" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="i6U-sl-9mn">
                                     <rect key="frame" x="208" y="37" width="198" height="27"/>
                                     <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                     <nil key="textColor"/>
@@ -81,6 +81,7 @@
                             <constraints>
                                 <constraint firstItem="i6U-sl-9mn" firstAttribute="top" secondItem="xmu-Yv-Vxy" secondAttribute="top" constant="37" id="B9v-rl-00z"/>
                                 <constraint firstItem="ggZ-P9-Adh" firstAttribute="top" secondItem="xmu-Yv-Vxy" secondAttribute="topMargin" id="BnB-fl-Um3"/>
+                                <constraint firstAttribute="trailing" relation="greaterThanOrEqual" secondItem="ggZ-P9-Adh" secondAttribute="trailing" constant="20" symbolic="YES" id="NfY-qB-IlL"/>
                                 <constraint firstAttribute="bottom" secondItem="i6U-sl-9mn" secondAttribute="bottom" constant="9" id="PdK-Kc-Fxg"/>
                                 <constraint firstItem="n7h-5F-mDQ" firstAttribute="baseline" secondItem="i6U-sl-9mn" secondAttribute="baseline" id="TH7-la-IOW"/>
                                 <constraint firstItem="i6U-sl-9mn" firstAttribute="leading" secondItem="n7h-5F-mDQ" secondAttribute="trailing" constant="47" id="TOk-Tz-e1a"/>
@@ -116,7 +117,7 @@
                                         <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="" textAlignment="right" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="bHg-B2-myB">
                                             <rect key="frame" x="329" y="17" width="65" height="15"/>
                                             <constraints>
-                                                <constraint firstAttribute="width" constant="65" id="RNz-PD-QSt"/>
+                                                <constraint firstAttribute="width" relation="greaterThanOrEqual" constant="65" id="RNz-PD-QSt"/>
                                             </constraints>
                                             <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                             <nil key="textColor"/>
@@ -124,6 +125,7 @@
                                         </label>
                                     </subviews>
                                     <constraints>
+                                        <constraint firstItem="bHg-B2-myB" firstAttribute="leading" relation="greaterThanOrEqual" secondItem="4AT-TU-xQu" secondAttribute="leadingMargin" id="4YS-XD-gYX"/>
                                         <constraint firstItem="bHg-B2-myB" firstAttribute="trailing" secondItem="4AT-TU-xQu" secondAttribute="trailingMargin" id="8bR-OD-A4b"/>
                                         <constraint firstItem="bHg-B2-myB" firstAttribute="top" secondItem="4AT-TU-xQu" secondAttribute="topMargin" constant="6" id="FGV-bZ-0sX"/>
                                         <constraint firstItem="bHg-B2-myB" firstAttribute="centerY" secondItem="4AT-TU-xQu" secondAttribute="centerY" id="mcq-PY-1AQ"/>

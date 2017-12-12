@@ -8,6 +8,7 @@
 
 import UIKit
 import CoreLocation
+import CoreData
 
 public final class HomeViewModel {
 
@@ -15,7 +16,8 @@ public final class HomeViewModel {
     var breweries: [Brewery] = []
     var closestBrewery: Brewery?
     
-    public let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    public let context: NSManagedObjectContext
 
     public var locatiemanager = CLLocationManager()
     public var currentLocation = CLLocation()
@@ -25,6 +27,7 @@ public final class HomeViewModel {
 
 
     init(homeViewController:HomeViewController){
+        context = appDelegate.persistentContainer.viewContext
         locatiemanager.delegate = self as? CLLocationManagerDelegate
         locatiemanager.requestAlwaysAuthorization()
         locatiemanager.startUpdatingLocation()
@@ -51,21 +54,28 @@ public final class HomeViewModel {
         self.currentLocation = location
     }
     func setClosestBrewery(){
+        guard let viewController = homeViewController else {
+            return
+        }
         for brew in self.breweries {
             let distance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
-            if self.smallestDistance == nil || distance < self.smallestDistance! {
+
+            guard let afstand = self.smallestDistance else{
+                self.closestLocation = self.currentLocation
+                self.smallestDistance = distance
+                self.closestBrewery = brew
+                return
+            }
+            if  distance < afstand {
                 self.closestLocation = self.currentLocation
                 self.smallestDistance = distance
                 self.closestBrewery = brew
             }
         }
-        homeViewController?.brewNameLabel.text = self.closestBrewery?.name
-        homeViewController?.brewAddressLabel.text = self.closestBrewery?.address
+        viewController.brewNameLabel.text = self.closestBrewery?.name
+        viewController.brewAddressLabel.text = self.closestBrewery?.address
     }
     func update() {
-        
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
         do {
             let loadedBeers = try context.fetch(Beers.fetchRequest()) as! [Beers]
             for b in loadedBeers{
@@ -98,7 +108,6 @@ public final class HomeViewModel {
     }
     
     func getBeers(){
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
             print ("geen url kunnen aanmaken")
             return
@@ -118,7 +127,6 @@ public final class HomeViewModel {
             
             guard error == nil else {
                 print("error calling GET")
-                print(error!)
                 return
             }
             
@@ -169,49 +177,50 @@ public final class HomeViewModel {
                     }
                 }
                 for b in self.breweries{
-                    let brewery = Breweries(context: context)
+                    let brewery = Breweries(context: self.context)
                     brewery.name = b.name
                     brewery.address = b.address
                     brewery.id = Int16(b.id)
                     do{
-                        try context.save()
+                        try self.context.save()
                     }catch{
                         fatalError("Failed to save context: \(error)")
                     }
                 }
                 for b in self.beers{
-                    let beer = Beers(context: context)
+                    let beer = Beers(context: self.context)
                     beer.name = b.name
                     beer.photoLink = b.photo as String
                     beer.brewery = Int64(b.brewery)
                     beer.score = Int16(b.score)
                     do{
-                        try context.save()
+                        try self.context.save()
                         
                     }catch{
                         fatalError("Failed to save context: \(error)")
                     }
                 }
-                
             }catch  {
                 print("error trying to convert data to JSON")
                 return
             }
-            }.resume()
+        }.resume()
     }
+    
     func getData() {
-        
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        
+        guard let viewController = homeViewController else {
+            return
+        }
         self.beers = []
         self.breweries = []
-        
         
         do {
             let loadedBreweries = try context.fetch(Breweries.fetchRequest()) as! [Breweries]
             for brew in loadedBreweries{
-                self.breweries += [Brewery(name: brew.name!, address: brew.address!, id: Int(brew.id))]
+                guard let brewName = brew.name, let brewAdress = brew.address else{
+                    return
+                }
+                self.breweries += [Brewery(name: brewName, address: brewAdress, id: Int(brew.id))]
             }
         } catch {
             print("Fetching Failed")
@@ -221,16 +230,18 @@ public final class HomeViewModel {
         do {
             let loadedBeers = try context.fetch(Beers.fetchRequest()) as! [Beers]
             for b in loadedBeers{
+                guard let beerName = b.name, let beerPhotoLink = b.photoLink else{
+                    return
+                }
                 if(homeViewController?.segment.selectedSegmentIndex == 0){
-                    self.beers += [Beer(name: b.name!, photo: b.photoLink!, brewery: Int(b.brewery), score: Int(b.score))]
+                    self.beers += [Beer(name: beerName, photo: beerPhotoLink, brewery: Int(b.brewery), score: Int(b.score))]
                 }else if(b.score >= 0){
-                    self.beers += [Beer(name: b.name!, photo: b.photoLink!, brewery: Int(b.brewery), score: Int(b.score))]
+                    self.beers += [Beer(name: beerName, photo: beerPhotoLink, brewery: Int(b.brewery), score: Int(b.score))]
                 }
             }
         } catch {
             print("Fetching Failed")
         }
-        homeViewController?.tableView.reloadData()
+        viewController.tableView.reloadData()
     }
-    
 }
