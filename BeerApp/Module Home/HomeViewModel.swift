@@ -51,7 +51,6 @@ public final class HomeViewModel {
         self.currentLocation = location
     }
     func setClosestBrewery(){
-        print(self.breweries.count)
         for brew in self.breweries {
             let distance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
             if self.smallestDistance == nil || distance < self.smallestDistance! {
@@ -111,6 +110,7 @@ public final class HomeViewModel {
             "content-type": "application/json",
             "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
         ]
+        
         let session = URLSession(configuration: URLSessionConfiguration.default)
         
         let _ = session.dataTask(with: urlRequest) {
@@ -138,8 +138,10 @@ public final class HomeViewModel {
                 }
                 
                 for beer in beerList{
+                    print(beer)
                     if let beer = beer as? [String: Any],
                         let name = beer["name"],
+                        let imageString = beer["image_url"],
                         let brewery = beer["brewery"] as? [String: Any],
                         let id = brewery["id"] as? Int,
                         let straat = brewery["address"],
@@ -157,9 +159,9 @@ public final class HomeViewModel {
                             self.breweries += [Brewery(name: "\(brewName)", address: "\(straat) \(stad) \(land)", id: id)]
                         }
                         if let score = beer["rating"] as? Int{
-                            self.beers += [Beer(name: "\(name)", photo: "beer.png", brewery: id, score: score) ]
+                            self.beers += [Beer(name: "\(name)", photo: imageString as! String, brewery: id, score: score) ]
                         }else{
-                            self.beers += [Beer(name: "\(name)", photo: "beer.png", brewery: id, score: -1) ]
+                            self.beers += [Beer(name: "\(name)", photo: imageString as! String, brewery: id, score: -1) ]
                         }
                     }
                     else{

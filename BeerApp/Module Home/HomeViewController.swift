@@ -73,6 +73,12 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             }
         }
     }
+    func getDataFromUrl(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+        URLSession.shared.dataTask(with: url) { data, response, error in
+            completion(data, response, error)
+            }.resume()
+    }
+    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! TableCell
         
@@ -86,7 +92,22 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
                 cell.detailTextLabel?.text = brewery.name
             }
         }
-        cell.imageView?.image = UIImage(named: viewModel.beers[indexPath.row].photo)!
+        if let url = URL(string: viewModel.beers[indexPath.row].photo) {
+            func downloadImage(url: URL) {
+                print("Download Started")
+                getDataFromUrl(url: url) { data, response, error in
+                    guard let data = data, error == nil else {
+                        return
+                    }
+                    print("Download Finished")
+                    DispatchQueue.main.async() {
+                        cell.imageView?.image  = UIImage(data: data)
+                    }
+                }
+            }
+        downloadImage(url: url)
+
+        }
         
         if(viewModel.beers[indexPath.row].score >= 0){
             
