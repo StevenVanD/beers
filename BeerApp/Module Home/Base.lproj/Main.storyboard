@@ -140,7 +140,7 @@
                             <outlet property="delegate" destination="LGc-1h-Lew" id="nLz-eb-PMg"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="Home" id="CdZ-gW-grR"/>
+                    <navigationItem key="navigationItem" title="Title" id="cl3-F9-Z9g"/>
                     <connections>
                         <outlet property="brewAddressLabel" destination="i6U-sl-9mn" id="6BR-ov-tiu"/>
                         <outlet property="brewNameLabel" destination="n7h-5F-mDQ" id="Xqz-EV-QBE"/>
