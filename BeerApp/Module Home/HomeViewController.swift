@@ -16,10 +16,9 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     @IBOutlet weak var brewAddressLabel: UILabel!
     @IBOutlet weak var segment: UISegmentedControl!
     
-    
     override func viewDidLoad() {
         super.viewDidLoad()
-        homeViewModel = HomeViewModel()
+        homeViewModel = HomeViewModel(homeViewController: self)
 
         let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
         if launchedBefore  {
@@ -31,70 +30,13 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             homeViewModel?.update()
             UserDefaults.standard.set(true, forKey: "launchedBefore")
         }
-        getData()
+        homeViewModel?.getData()
         
-    }
-    
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        let location = locations[0]
-        viewModel.currentLocation = location
-        
-        for brew in viewModel.breweries {
-            let distance = viewModel.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
-            if viewModel.smallestDistance == nil || distance < viewModel.smallestDistance! {
-                viewModel.closestLocation = location
-                viewModel.smallestDistance = distance
-                viewModel.closestBrewery = brew
-            }
-        }
-        brewNameLabel.text = viewModel.closestBrewery?.name
-        brewAddressLabel.text = viewModel.closestBrewery?.address
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        getData()
+        homeViewModel?.getData()
     }
-    
-    func getData() {
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-        
-        
-        viewModel.beers = []
-        viewModel.breweries = []
-        
-        
-        do {
-            let loadedBreweries = try context.fetch(Breweries.fetchRequest()) as! [Breweries]
-            for brew in loadedBreweries{
-                viewModel.breweries += [Brewery(name: brew.name!, address: brew.address!, id: Int(brew.id))]
-            }
-        } catch {
-            print("Fetching Failed")
-        }
-        
-        do {
-            let loadedBeers = try context.fetch(Beers.fetchRequest()) as! [Beers]
-            for b in loadedBeers{
-                if(segment.selectedSegmentIndex == 0){
-                    viewModel.beers += [Beer(name: b.name!, photo: b.photoLink!, brewery: Int(b.brewery), score: Int(b.score))]
-                }else if(b.score >= 0){
-                    viewModel.beers += [Beer(name: b.name!, photo: b.photoLink!, brewery: Int(b.brewery), score: Int(b.score))]
-                }
-            }
-        } catch {
-            print("Fetching Failed")
-        }
-        self.tableView.reloadData()
-    }
-    
-    
-    
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
@@ -159,6 +101,6 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         homeViewModel?.update()
     }
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
-        getData()
+        homeViewModel?.getData()
     }
 }
