@@ -68,20 +68,8 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             return
         }
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-
-        for b in viewModel.beers{
-            let beer = Beers(context: context)
-            beer.name = b.name
-            beer.photoLink = b.photo as String
-            beer.brewery = Int64(b.brewery)
-            beer.score = Int16(b.score)
-            do{
-                try context.save()
-                
-            }catch{
-                fatalError("Failed to save context: \(error)")
-            }
-        }
+        
+        
         viewModel.beers = []
         viewModel.breweries = []
         
@@ -110,7 +98,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         self.tableView.reloadData()
     }
 
-    
+  /*
     func getBreweries(){
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
         guard let viewModel = homeViewModel else {
@@ -147,6 +135,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
                     print("fail")
                     return
                 }
+                
                 for brewery in breweries{
                     if let brewery = brewery as? [String: Any],
                         let straat = brewery["address"],
@@ -176,10 +165,14 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             }
         }
         .resume()
-    }
+
+    }*/
     
-    func getBeers(viewModel: HomeViewModel){
+    func getBeers(){
         let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+        guard let viewModel = homeViewModel else {
+            return
+        }
         guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
             print ("geen url kunnen aanmaken")
             return
@@ -224,10 +217,24 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
                // print(beers.count)
 
                 for beer in beers{
+                    print(beers.count)
                    if let beer = beer as? [String: Any],
                     let name = beer["name"],
                     let brewery = beer["brewery"] as? [String: Any],
-                    let id = brewery["id"] as? Int{
+                    let id = brewery["id"] as? Int,
+                    let straat = brewery["address"],
+                    let stad = brewery["city"],
+                    let land = brewery["country"],
+                    let brewName = brewery["name"]{
+                    var breweryExists = false
+                    for brewery in viewModel.breweries{
+                        if brewery.id == id {
+                            breweryExists = true
+                        }
+                    }
+                    if breweryExists == false{
+                        viewModel.breweries += [Brewery(name: "\(brewName)", address: "\(straat) \(stad) \(land)", id: id)]
+                    }
                     if let score = beer["rating"] as? Int{
                         viewModel.beers += [Beer(name: "\(name)", photo: "beer.png", brewery: id, score: score) ]
                     }else{
@@ -238,6 +245,33 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
                         print("Problem parsing trackDictionary\n")
                     }
                 }
+                print (viewModel.breweries.count)
+                print (viewModel.beers.count)
+                for b in viewModel.breweries{
+                    let brewery = Breweries(context: context)
+                    brewery.name = b.name
+                    brewery.address = b.address
+                    brewery.id = Int16(b.id)
+                    do{
+                        try context.save()
+                    }catch{
+                        fatalError("Failed to save context: \(error)")
+                    }
+                }
+                for b in viewModel.beers{
+                    let beer = Beers(context: context)
+                    beer.name = b.name
+                    beer.photoLink = b.photo as String
+                    beer.brewery = 1
+                    beer.score = Int16(b.score)
+                    do{
+                        try context.save()
+                        
+                    }catch{
+                        fatalError("Failed to save context: \(error)")
+                    }
+                }
+                
             }catch  {
                 print("error trying to convert data to JSON")
                 return
@@ -282,21 +316,10 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         viewModel.breweries.removeAll()
  
         
-        getBreweries()
-        getBeers(viewModel: viewModel)
-        for b in viewModel.beers{
-            let beer = Beers(context: context)
-            beer.name = b.name
-            beer.photoLink = b.photo as String
-            beer.brewery = Int64(b.brewery)
-            beer.score = Int16(b.score)
-            do{
-                try context.save()
-                
-            }catch{
-                fatalError("Failed to save context: \(error)")
-            }
-        }
+       // getBreweries()
+        getBeers()
+        
+        
      }
     
     //Sending the selected beer info to the next viewController
@@ -352,7 +375,11 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         }
         
         cell.textLabel?.text = viewModel.beers[indexPath.row].name
-        cell.detailTextLabel?.text = viewModel.breweries[viewModel.beers[indexPath.row].brewery].name
+        for brewery in viewModel.breweries{
+            if brewery.id == viewModel.beers[indexPath.row].brewery{
+                cell.detailTextLabel?.text = brewery.name
+            }
+        }
         cell.imageView?.image = UIImage(named: viewModel.beers[indexPath.row].photo)!
         
         if(viewModel.beers[indexPath.row].score >= 0){
