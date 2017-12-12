@@ -40,8 +40,8 @@ class BeerDetailViewController: UIViewController{
         nameLabel.text = viewModel.beerName
         breweryLabel.text = viewModel.brewery?.name
         addressLabel.text = viewModel.brewery?.address
-        if((viewModel.beer?.score)! >= 0){
-            ratingLabel.text = "\((viewModel.beer?.score)!)"
+        if((viewModel.beer?.rating)! >= 0){
+            ratingLabel.text = "\((viewModel.beer?.rating)!)"
         }
         longLabel.text = "\((viewModel.brewery?.lon)!)"
         latLabel.text = "\((viewModel.brewery?.lat)!)"

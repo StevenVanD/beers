@@ -13,13 +13,13 @@ class Beer{
     var name: String
     var photo: String
     var brewery: Int
-    var score: Int
+    var rating: Int
 
-    init(name: String, photo: String, brewery: Int, score: Int){
+    init(name: String, photo: String, brewery: Int, rating: Int){
         self.name = name
         self.photo = photo
         self.brewery = brewery
-        self.score = score
+        self.rating = rating
         
     }
 }

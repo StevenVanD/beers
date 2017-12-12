@@ -24,7 +24,6 @@ class Brewery{
         self.lon = 0
         self.id = id
         
-        //Using the geoCoder to get the longitude and latitude from the address of the brewery
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(self.address) {
             placemarks, error in

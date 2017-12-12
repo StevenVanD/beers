@@ -19,20 +19,6 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         homeViewModel = HomeViewModel(homeViewController: self)
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        let launchedBefore = UserDefaults.standard.bool(forKey: "launchedBefore")
-        if launchedBefore  {
-            homeViewModel?.update()
-            print("Not first launch.")
-        }
-        else {
-            print("First launch, setting UserDefault.")
-            homeViewModel?.update()
-            UserDefaults.standard.set(true, forKey: "launchedBefore")
-        }
-        viewModel.getData()
         
     }
     
@@ -40,7 +26,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         guard let viewModel = homeViewModel else {
             return
         }
-        viewModel.getData()
+        viewModel.getBeers()
     }
     
     override func didReceiveMemoryWarning() {
@@ -74,7 +60,13 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             guard let detailViewModel = nextVC.beerDetailViewModel else {
                 return
             }
-            detailViewModel.brewery = viewModel.breweries[viewModel.beers[indexPath.row].brewery]
+            
+            for brewery in viewModel.breweries{
+                if brewery.id == viewModel.beers[indexPath.row].brewery{
+                    detailViewModel.brewery = brewery
+                }
+            }
+            
             }
         }
     }
@@ -99,24 +91,20 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         }
         if let url = URL(string: viewModel.beers[indexPath.row].photo) {
             func downloadImage(url: URL) {
-                print("Download Started")
                 getDataFromUrl(url: url) { data, response, error in
                     guard let data = data, error == nil else {
                         return
                     }
-                    print("Download Finished")
                     DispatchQueue.main.async() {
                         cell.imageView?.image  = UIImage(data: data)
                     }
                 }
             }
-        downloadImage(url: url)
-
+            downloadImage(url: url)
         }
         
-        if(viewModel.beers[indexPath.row].score >= 0){
-            
-            cell.ratingLabel?.text = "\(viewModel.beers[indexPath.row].score)"
+        if(viewModel.beers[indexPath.row].rating >= 0){
+            cell.ratingLabel?.text = "\(viewModel.beers[indexPath.row].rating)"
         }else{
             cell.ratingLabel?.text = ""
         }
@@ -127,7 +115,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         guard let viewModel = homeViewModel else {
             return
         }
-        viewModel.update()
+        viewModel.getData()
     }
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
         guard let viewModel = homeViewModel else {

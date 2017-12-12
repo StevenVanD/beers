@@ -28,7 +28,7 @@ public final class BeerDetailViewModel {
         guard let beer = beer else {
             return "No rating available"
         }
-        return "\(beer.score)"
+        return "\(beer.rating)"
     }
     
     var breweryName: String {
