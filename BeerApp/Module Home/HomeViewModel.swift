@@ -54,9 +54,10 @@ public final class HomeViewModel {
         guard let viewController = homeViewController else {
             return
         }
+        let closestBrewName = self.closestBrewery?.name
+        let closestBrewAddress = self.closestBrewery?.address
         for brew in self.breweries {
             let distance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
-
             guard let afstand = self.smallestDistance else{
                 self.closestLocation = self.currentLocation
                 self.smallestDistance = distance
@@ -69,8 +70,8 @@ public final class HomeViewModel {
                 self.closestBrewery = brew
             }
         }
-        viewController.brewNameLabel.text = self.closestBrewery?.name
-        viewController.brewAddressLabel.text = self.closestBrewery?.address
+        viewController.brewNameLabel.text = closestBrewName
+        viewController.brewAddressLabel.text = closestBrewAddress
     }
 
     
@@ -158,7 +159,10 @@ public final class HomeViewModel {
         guard let viewController = homeViewController else {
             return
         }
+        guard let tableView = viewController.tableView else {
+            return
+        }
         setClosestBrewery()
-        viewController.tableView.reloadData()
+        tableView.reloadData()
     }
 }

@@ -48,28 +48,31 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             return 0
         }
     }
+    
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let viewModel = homeViewModel else {
             return
         }
         if let nextVC = segue.destination as? BeerDetailViewController
-        {    if let indexPath = tableView.indexPathForSelectedRow{
-            
-            let newViewModel = BeerDetailViewModel(beer: viewModel.beers[indexPath.row])
-            nextVC.beerDetailViewModel = newViewModel
-            guard let detailViewModel = nextVC.beerDetailViewModel else {
-                return
-            }
-            
-            for brewery in viewModel.breweries{
-                if brewery.id == viewModel.beers[indexPath.row].brewery{
-                    detailViewModel.brewery = brewery
+        {
+            if let indexPath = tableView.indexPathForSelectedRow{
+                
+                let newViewModel = BeerDetailViewModel(beer: viewModel.beers[indexPath.row])
+                nextVC.beerDetailViewModel = newViewModel
+                guard let detailViewModel = nextVC.beerDetailViewModel else {
+                    return
                 }
-            }
-            
+                
+                for brewery in viewModel.breweries{
+                    let breweryId = viewModel.beers[indexPath.row].brewery
+                    if brewery.id == breweryId{
+                        detailViewModel.brewery = brewery
+                    }
+                }
             }
         }
     }
+    
     func getDataFromUrl(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             completion(data, response, error)
@@ -86,10 +89,13 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         cell.textLabel?.text = viewModel.beers[indexPath.row].name
         for brewery in viewModel.breweries{
             if brewery.id == viewModel.beers[indexPath.row].brewery{
-                cell.detailTextLabel?.text = brewery.name
+                let breweryName = brewery.name
+                cell.detailTextLabel?.text = breweryName
             }
         }
-        if let url = URL(string: viewModel.beers[indexPath.row].photo) {
+        
+        let photoUrlString = viewModel.beers[indexPath.row].photo
+        if let url = URL(string: photoUrlString) {
             func downloadImage(url: URL) {
                 getDataFromUrl(url: url) { data, response, error in
                     guard let data = data, error == nil else {
@@ -103,8 +109,9 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             downloadImage(url: url)
         }
         
-        if(viewModel.beers[indexPath.row].rating >= 0){
-            cell.ratingLabel?.text = "\(viewModel.beers[indexPath.row].rating)"
+        let beerRating = viewModel.beers[indexPath.row].rating
+        if(beerRating >= 0){
+            cell.ratingLabel?.text = "\(beerRating)"
         }else{
             cell.ratingLabel?.text = ""
         }
