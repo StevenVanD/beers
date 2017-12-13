@@ -53,18 +53,21 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         guard let viewModel = homeViewModel else {
             return
         }
-        if let nextVC = segue.destination as? BeerDetailViewController
-        {
+        
+        if let nextVC = segue.destination as? BeerDetailViewController{
             if let indexPath = tableView.indexPathForSelectedRow{
                 
-                let newViewModel = BeerDetailViewModel(beer: viewModel.beers[indexPath.row])
+                let beerAtIndex = viewModel.beers[indexPath.row]
+                let beerAtIndexBrewId = beerAtIndex.breweryId
+                
+                let newViewModel = BeerDetailViewModel(beer: beerAtIndex)
                 nextVC.beerDetailViewModel = newViewModel
                 guard let detailViewModel = nextVC.beerDetailViewModel else {
                     return
                 }
                 
                 for brewery in viewModel.breweries{
-                    let breweryId = viewModel.beers[indexPath.row].brewery
+                    let breweryId = beerAtIndexBrewId
                     if brewery.id == breweryId{
                         detailViewModel.brewery = brewery
                     }
@@ -86,15 +89,21 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             return cell
         }
         
-        cell.textLabel?.text = viewModel.beers[indexPath.row].name
+        let beerAtIndex = viewModel.beers[indexPath.row]
+        let beerAtIndexName = beerAtIndex.name
+        let beerAtIndexBrewId = beerAtIndex.breweryId
+        let beerAtIndexPhoto = beerAtIndex.photo
+        let beerAtIndexRating = beerAtIndex.rating
+
+        cell.textLabel?.text = beerAtIndexName
         for brewery in viewModel.breweries{
-            if brewery.id == viewModel.beers[indexPath.row].brewery{
+            if brewery.id == beerAtIndexBrewId{
                 let breweryName = brewery.name
                 cell.detailTextLabel?.text = breweryName
             }
         }
         
-        let photoUrlString = viewModel.beers[indexPath.row].photo
+        let photoUrlString = beerAtIndexPhoto
         if let url = URL(string: photoUrlString) {
             func downloadImage(url: URL) {
                 getDataFromUrl(url: url) { data, response, error in
@@ -109,9 +118,8 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             downloadImage(url: url)
         }
         
-        let beerRating = viewModel.beers[indexPath.row].rating
-        if(beerRating >= 0){
-            cell.ratingLabel?.text = "\(beerRating)"
+        if(beerAtIndexRating >= 0){
+            cell.ratingLabel?.text = "\(beerAtIndexRating)"
         }else{
             cell.ratingLabel?.text = ""
         }

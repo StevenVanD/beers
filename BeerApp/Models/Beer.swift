@@ -12,13 +12,13 @@ import Foundation
 class Beer{
     var name: String
     var photo: String
-    var brewery: Int
+    var breweryId: Int
     var rating: Int
 
-    init(name: String, photo: String, brewery: Int, rating: Int){
+    init(name: String, photo: String, breweryId: Int, rating: Int){
         self.name = name
         self.photo = photo
-        self.brewery = brewery
+        self.breweryId = breweryId
         self.rating = rating
         
     }

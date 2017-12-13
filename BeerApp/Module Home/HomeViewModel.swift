@@ -137,9 +137,9 @@ public final class HomeViewModel {
                             self.breweries += [Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id)]
                         }
                         if let rating = beer["rating"] as? Int{
-                            self.beers += [Beer(name: "\(name)", photo: imageString as! String, brewery: id, rating: rating) ]
+                            self.beers += [Beer(name: "\(name)", photo: imageString as! String, breweryId: id, rating: rating) ]
                         }else{
-                            self.beers += [Beer(name: "\(name)", photo: imageString as! String, brewery: id, rating: -1) ]
+                            self.beers += [Beer(name: "\(name)", photo: imageString as! String, breweryId: id, rating: -1) ]
                         }
                     }
                     else{
