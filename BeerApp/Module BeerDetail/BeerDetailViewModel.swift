@@ -79,10 +79,15 @@ public final class BeerDetailViewModel {
         guard let viewModel = beerDetailViewController else {
             return
         }
-        //Setting up the map and annotations (pins)
         let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
         let annotation:MyAnnotation = MyAnnotation(coordinate: coordinate, title: beerName)
         viewModel.map.addAnnotation(annotation)
-        viewModel.mapView(viewModel.map)
+        mapView(viewModel.map)
+    }
+    
+    func mapView(_ mapView: MKMapView) {
+        let center = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
+        let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
+        mapView.setRegion(region, animated: true)
     }
 }
