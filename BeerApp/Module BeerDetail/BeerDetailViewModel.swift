@@ -7,16 +7,18 @@
 //
 
 import Foundation
+import MapKit
 
 public final class BeerDetailViewModel {
     
     var beer: Beer?
     var brewery: Brewery?
-    
-    init(beer : Beer) {
+    private var beerDetailViewController: BeerDetailViewController?
+
+    init(beer : Beer, beerDetailViewController: BeerDetailViewController){
         self.beer = beer
+        self.beerDetailViewController = beerDetailViewController
     }
-    
     
     var beerName: String {
         guard let beer = beer else {
@@ -45,18 +47,42 @@ public final class BeerDetailViewModel {
         return brewery.address
     }
     
-    var breweryLong: String {
+    var breweryLong: Double {
         guard let brewery = brewery else {
-            return "No longitude available"
+            return 0
         }
-        return "\(brewery.lon)"
+        return brewery.lon
     }
     
-    var breweryLat: String {
+    var breweryLat: Double {
         guard let brewery = brewery else {
-            return "No latitude available"
+            return 0
         }
-        return "\(brewery.lat)"
+        return brewery.lat
     }
     
+    func updateUI() {
+        guard let viewController = beerDetailViewController else {
+            return
+        }
+        viewController.nameLabel.text = beerName
+        viewController.breweryLabel.text = breweryName
+        viewController.addressLabel.text = breweryAddress
+        if((beer?.rating)! >= 0){
+            viewController.ratingLabel.text = beerRating
+        }
+        viewController.longLabel.text = "\(breweryLong)"
+        viewController.latLabel.text = "\(breweryLat)"
+    }
+    
+    func updateMap(){
+        guard let viewModel = beerDetailViewController else {
+            return
+        }
+        //Setting up the map and annotations (pins)
+        let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
+        let annotation:MyAnnotation = MyAnnotation(coordinate: coordinate, title: beerName)
+        viewModel.map.addAnnotation(annotation)
+        viewModel.mapView(viewModel.map)
+    }
 }

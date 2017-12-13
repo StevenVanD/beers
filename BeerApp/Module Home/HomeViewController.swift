@@ -62,7 +62,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
                 let selectedBeer = viewModel.beers[indexPath.row]
                 let selectedBeerId = selectedBeer.breweryId
                 
-                let beerViewModel = BeerDetailViewModel(beer: selectedBeer)
+                let beerViewModel = BeerDetailViewModel(beer: selectedBeer, beerDetailViewController: beerDetailViewController)
                 
                 for brewery in viewModel.breweries{
                     let breweryId = selectedBeerId

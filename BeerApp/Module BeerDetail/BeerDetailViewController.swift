@@ -7,7 +7,6 @@
 //
 
 import UIKit
-import CoreData
 import MapKit
 
 //Detail viewController
@@ -28,34 +27,11 @@ class BeerDetailViewController: UIViewController{
     
     
     override func viewDidAppear(_ animated: Bool) {
-        updateUI()
-        updateMap()
-    }
-    
-    func updateUI() {
-        //Changing the text in the labels
         guard let viewModel = beerDetailViewModel else {
             return
         }
-        nameLabel.text = viewModel.beerName
-        breweryLabel.text = viewModel.brewery?.name
-        addressLabel.text = viewModel.brewery?.address
-        if((viewModel.beer?.rating)! >= 0){
-            ratingLabel.text = "\((viewModel.beer?.rating)!)"
-        }
-        longLabel.text = "\((viewModel.brewery?.lon)!)"
-        latLabel.text = "\((viewModel.brewery?.lat)!)"
-    }
-    
-    func updateMap(){
-        guard let viewModel = beerDetailViewModel else {
-            return
-        }
-        //Setting up the map and annotations (pins)
-        let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: viewModel.brewery!.lat, longitude: viewModel.brewery!.lon)
-        let annotation:MyAnnotation = MyAnnotation(coordinate: coordinate, title: (viewModel.beer!.name))
-        self.map.addAnnotation(annotation)
-        self.mapView(map)
+        viewModel.updateUI()
+        viewModel.updateMap()
     }
     
     override func didReceiveMemoryWarning() {
@@ -65,31 +41,7 @@ class BeerDetailViewController: UIViewController{
     
     //Save the rating everytime the slider gets replaced
     @IBAction func changeSlider(_ sender: UISlider) {
-        guard let viewModel = beerDetailViewModel else {
-            return
-        }
         ratingLabel.text = "\(Int(sender.value))"
-        do{
-            let results = try context.fetch(NSFetchRequest(entityName: "Beers"))
-            for result in results as! [NSManagedObject]
-            {
-                if  result.value(forKey: "name") as? String == viewModel.beer?.name
-                {
-                    result.setValue(Int(sender.value), forKey: "score")
-                    do{
-                        
-                        try context.save()
-                    }
-                    catch{
-                        print("Failed to save")
-                    }
-                }
-            }
-        }
-        catch{
-            print("Failed to fetch")
-            
-        }
     }
     
     //Set the region of the map to the place of the beer
