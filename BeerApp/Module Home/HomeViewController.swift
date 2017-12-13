@@ -12,6 +12,7 @@ import CoreLocation
 
 class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     public var homeViewModel: HomeViewModel?
+    public var service: Service?
     @IBOutlet weak var brewNameLabel: UILabel!
     @IBOutlet weak var brewAddressLabel: UILabel!
     @IBOutlet weak var segment: UISegmentedControl!
@@ -19,14 +20,18 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         homeViewModel = HomeViewModel(homeViewController: self)
-        
-    }
-    
-    override func viewDidAppear(_ animated: Bool) {
         guard let viewModel = homeViewModel else {
             return
         }
-        viewModel.getBeers()
+        service = Service(homeViewModel: viewModel)
+
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        guard let service = service else {
+            return
+        }
+        service.getBeers()
     }
     
     override func didReceiveMemoryWarning() {
@@ -41,12 +46,9 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         guard let viewModel = homeViewModel else {
             return 0
         }
-        if(viewModel.beers.count > 0 && viewModel.breweries.count > 0){
             return viewModel.beers.count
-        }
-        else{
-            return 0
-        }
+        
+        
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
@@ -54,24 +56,21 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             return
         }
         
-        if let nextVC = segue.destination as? BeerDetailViewController{
+        if let beerDetailViewController = segue.destination as? BeerDetailViewController{
             if let indexPath = tableView.indexPathForSelectedRow{
                 
-                let beerAtIndex = viewModel.beers[indexPath.row]
-                let beerAtIndexBrewId = beerAtIndex.breweryId
+                let selectedBeer = viewModel.beers[indexPath.row]
+                let selectedBeerId = selectedBeer.breweryId
                 
-                let newViewModel = BeerDetailViewModel(beer: beerAtIndex)
-                nextVC.beerDetailViewModel = newViewModel
-                guard let detailViewModel = nextVC.beerDetailViewModel else {
-                    return
-                }
+                let beerViewModel = BeerDetailViewModel(beer: selectedBeer)
                 
                 for brewery in viewModel.breweries{
-                    let breweryId = beerAtIndexBrewId
+                    let breweryId = selectedBeerId
                     if brewery.id == breweryId{
-                        detailViewModel.brewery = brewery
+                        beerViewModel.brewery = brewery
                     }
                 }
+                beerDetailViewController.beerDetailViewModel = beerViewModel
             }
         }
     }
@@ -89,37 +88,36 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             return cell
         }
         
-        let beerAtIndex = viewModel.beers[indexPath.row]
-        let beerAtIndexName = beerAtIndex.name
-        let beerAtIndexBrewId = beerAtIndex.breweryId
-        let beerAtIndexPhoto = beerAtIndex.photo
-        let beerAtIndexRating = beerAtIndex.rating
+        let selectedBeer = viewModel.beers[indexPath.row]
+        let selectedBeerName = selectedBeer.name
+        let selectedBeerBrewId = selectedBeer.breweryId
+        let selectedBeerPhoto = selectedBeer.photoURL
+        let selectedBeerRating = selectedBeer.rating
 
-        cell.textLabel?.text = beerAtIndexName
+        cell.textLabel?.text = selectedBeerName
         for brewery in viewModel.breweries{
-            if brewery.id == beerAtIndexBrewId{
+            if brewery.id == selectedBeerBrewId{
                 let breweryName = brewery.name
                 cell.detailTextLabel?.text = breweryName
             }
         }
         
-        let photoUrlString = beerAtIndexPhoto
-        if let url = URL(string: photoUrlString) {
-            func downloadImage(url: URL) {
-                getDataFromUrl(url: url) { data, response, error in
-                    guard let data = data, error == nil else {
-                        return
-                    }
-                    DispatchQueue.main.async() {
-                        cell.imageView?.image  = UIImage(data: data)
-                    }
+        let photoUrlString = selectedBeerPhoto
+        func downloadImage(url: URL) {
+            getDataFromUrl(url: photoUrlString) { data, response, error in
+                guard let data = data, error == nil else {
+                    return
+                }
+                DispatchQueue.main.async() {
+                    cell.imageView?.image  = UIImage(data: data)
                 }
             }
-            downloadImage(url: url)
         }
+        downloadImage(url: photoUrlString)
         
-        if(beerAtIndexRating >= 0){
-            cell.ratingLabel?.text = "\(beerAtIndexRating)"
+        
+        if(selectedBeerRating >= 0){
+            cell.ratingLabel?.text = "\(selectedBeerRating)"
         }else{
             cell.ratingLabel?.text = ""
         }

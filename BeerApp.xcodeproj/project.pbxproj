@@ -23,6 +23,7 @@
 		3F6757971F5359F2004CA76C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F6757961F5359F2004CA76C /* CoreLocation.framework */; };
 		3F67579B1F536D82004CA76C /* beer.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F67579A1F536D82004CA76C /* beer.png */; };
 		3F71BCAB1F50ED120002E77F /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F71BCAA1F50ED120002E77F /* TableCell.swift */; };
+		80D0383B1FE13FB0000503F0 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D0383A1FE13FB0000503F0 /* Service.swift */; };
 		80DF63A11FDACCA900ADFC29 /* DetailStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */; };
 		80DF63A31FDACF0700ADFC29 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */; };
 		80DF63A71FDACF8900ADFC29 /* BeerDetailViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF63A61FDACF8900ADFC29 /* BeerDetailViewModel.swift */; };
@@ -68,6 +69,7 @@
 		3F6757961F5359F2004CA76C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3F67579A1F536D82004CA76C /* beer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beer.png; sourceTree = "<group>"; };
 		3F71BCAA1F50ED120002E77F /* TableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
+		80D0383A1FE13FB0000503F0 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailStoryboard.storyboard; sourceTree = "<group>"; };
 		80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
 		80DF63A61FDACF8900ADFC29 /* BeerDetailViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerDetailViewModel.swift; sourceTree = "<group>"; };
@@ -130,6 +132,7 @@
 				80DF639E1FDAC81F00ADFC29 /* Models */,
 				80DF639D1FDAC81500ADFC29 /* Supporting files */,
 				3F67579A1F536D82004CA76C /* beer.png */,
+				80D0383A1FE13FB0000503F0 /* Service.swift */,
 				3F417E7F1F4FAD7200B59526 /* AppDelegate.swift */,
 				3F6757941F53181E004CA76C /* MyAnnotation.swift */,
 				3F417E8B1F4FAD7200B59526 /* LaunchScreen.storyboard */,
@@ -359,6 +362,7 @@
 				3F417E821F4FAD7200B59526 /* BeerDetailViewController.swift in Sources */,
 				80DF63A31FDACF0700ADFC29 /* HomeViewModel.swift in Sources */,
 				3F417EB11F4FAE5C00B59526 /* HomeViewController.swift in Sources */,
+				80D0383B1FE13FB0000503F0 /* Service.swift in Sources */,
 				3F417EB31F4FB12C00B59526 /* Beer.swift in Sources */,
 				3F71BCAB1F50ED120002E77F /* TableCell.swift in Sources */,
 				3F417E801F4FAD7200B59526 /* AppDelegate.swift in Sources */,
