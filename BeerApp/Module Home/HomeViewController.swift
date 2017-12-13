@@ -20,18 +20,18 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
         homeViewModel = HomeViewModel(homeViewController: self)
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        service = Service(homeViewModel: viewModel)
-
+        service = Service()
     }
     
     override func viewDidAppear(_ animated: Bool) {
+        guard let viewModel = homeViewModel else {
+            return
+        }
         guard let service = service else {
             return
         }
-        service.getBeers()
+        viewModel.upDateBeerList(beerList: service.getBeers())
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -128,12 +128,18 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         guard let viewModel = homeViewModel else {
             return
         }
-        viewModel.getData()
+        guard let service = service else {
+            return
+        }
+        viewModel.upDateBeerList(beerList: service.getBeers())
+
     }
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
         guard let viewModel = homeViewModel else {
             return
         }
-        viewModel.getData()
-    }
+        guard let service = service else {
+            return
+        }
+        viewModel.upDateBeerList(beerList: service.getBeers())    }
 }

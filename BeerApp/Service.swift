@@ -9,19 +9,13 @@
 import Foundation
 
 class Service {
-    public var homeViewModel: HomeViewModel?
-    init(homeViewModel: HomeViewModel){
-        self.homeViewModel = homeViewModel
-    }
-    func getBeers() -> Void{
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        viewModel.beers = []
-        viewModel.breweries = []
+    var beerList: [Any] = []
+
+    func getBeers() -> [Any]{
+
         guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
             print ("geen url kunnen aanmaken")
-            return
+            return[]
         }
         
         var urlRequest = URLRequest(url: url)
@@ -55,47 +49,13 @@ class Service {
                     print("fail")
                     return
                 }
-                
-                for beer in beerList{
-                    if let beer = beer as? [String: Any],
-                        let name = beer["name"] as? String,
-                        let imageString = beer["image_url"] as? String,
-                        let brewery = beer["brewery"] as? [String: Any],
-                        let id = brewery["id"] as? Int,
-                        let street = brewery["address"],
-                        let city = brewery["city"],
-                        let country = brewery["country"],
-                        let brewName = brewery["name"]{
-                        
-                        var breweryExists = false
-                        
-                        guard let imageURL = URL(string: imageString) else {
-                            return
-                        }
-                        for brewery in viewModel.breweries{
-                            if brewery.id == id {
-                                breweryExists = true
-                            }
-                        }
-                        if breweryExists == false{
-                            viewModel.breweries += [Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id)]
-                        }
-                        if let rating = beer["rating"] as? Int{
-                            viewModel.beers += [Beer(name: name, photoURL: imageURL, breweryId: id, rating: rating) ]
-                        }else{
-                            viewModel.beers += [Beer(name: name, photoURL: imageURL, breweryId: id, rating: -1) ]
-                        }
-                    }
-                    else{
-                        print("Problem parsing trackDictionary\n")
-                    }
-                }
+                self.beerList = beerList
                 
             }catch  {
                 print("error trying to convert data to JSON")
                 return
             }
             }.resume()
-        viewModel.getData()
+        return beerList
     }
 }
