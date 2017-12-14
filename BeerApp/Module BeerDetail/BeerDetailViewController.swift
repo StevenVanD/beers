@@ -12,8 +12,8 @@ import MapKit
 //Detail viewController
 class BeerDetailViewController: UIViewController{
     public var viewModel: BeerDetailViewModel!
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var appDel: AppDelegate = (UIApplication.shared.delegate as! AppDelegate)
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // swiftlint:disable:this force_cast
+    var appDel: AppDelegate = (UIApplication.shared.delegate as! AppDelegate) // swiftlint:disable:this force_cast
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var breweryLabel: UILabel!

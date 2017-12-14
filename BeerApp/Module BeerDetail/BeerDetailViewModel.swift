@@ -79,10 +79,10 @@ public final class BeerDetailViewModel {
         return brewery.lat
     }
     var breweryLongString: String {
-        return "\(breweryLong.format(f:".2"))"
+        return "\(breweryLong.format(value:".2"))"
     }
     var breweryLatString: String {
-        return "\(breweryLat.format(f:".2"))"
+        return "\(breweryLat.format(value:".2"))"
     }
     var region : MKCoordinateRegion {
         let center = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
@@ -98,7 +98,7 @@ public final class BeerDetailViewModel {
     
 }
 extension Double {
-    func format(f: String) -> String {
-        return String(format: "%\(f)f", self)
+    func format(value: String) -> String {
+        return String(format: "%\(value)f", self)
     }
 }

@@ -89,7 +89,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     }
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! TableCell
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! TableCell // swiftlint:disable:this force_cast
         
         guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
             return cell
