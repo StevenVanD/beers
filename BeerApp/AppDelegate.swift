@@ -6,9 +6,6 @@
 //  Copyright © 2017 iCapps. All rights reserved.
 //
 
-// swiftlint:disable:next line_length
-// swiftlint:disable:next vertical_whitespace
-
 import UIKit
 import CoreData
 
