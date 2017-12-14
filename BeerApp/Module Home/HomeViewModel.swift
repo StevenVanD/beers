@@ -15,7 +15,7 @@ public final class HomeViewModel {
     var breweriesUpdateHandler:(() -> Void)?
     var closestBrewery: Brewery?
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate
+    private let appDelegate = UIApplication.shared.delegate as! AppDelegate // swiftlint:disable:this force_cast
     
     public var locatiemanager = CLLocationManager()
     public var currentLocation = CLLocation()

@@ -259,6 +259,7 @@
 				3F417E7A1F4FAD7100B59526 /* Resources */,
 				027DF42F3C38F16946688DA9 /* [CP] Embed Pods Frameworks */,
 				1A9C86E69E2F90EDECE7430D /* [CP] Copy Pods Resources */,
+				840099D51FE2C73700595E1C /* Run Swiftlint */,
 			);
 			buildRules = (
 			);
@@ -488,6 +489,20 @@
 			shellPath = /bin/sh;
 			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods-BeerAppTests/Pods-BeerAppTests-frameworks.sh\"\n";
 			showEnvVarsInLog = 0;
+		};
+		840099D51FE2C73700595E1C /* Run Swiftlint */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Run Swiftlint";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "if which swiftlint >/dev/null; then\nswiftlint\nelse\necho \"warning: SwiftLint not installed, download from https://github.com/realm/SwiftLint\"\nfi";
 		};
 		DA5827CEE29A5AC5C413A10D /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
