@@ -58,23 +58,28 @@ public final class HomeViewModel {
         }
         return closestBrewery.address
     }
+    
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
         self.currentLocation = location
     }
+    
     var closestBrewName: String {
         guard let closestBrewery = closestBrewery else {
             return "No closest brewery available"
         }
         return closestBrewery.name
     }
+    
     var closestBrewAddress: String {
         guard let closestBrewery = closestBrewery else {
             return "No closest brewery available"
         }
         return closestBrewery.address
     }
-    func setClosestBrewery(){
+    
+    func setClosestBrewery() {
+        
         guard let breweries = breweries else {
             return
         }
