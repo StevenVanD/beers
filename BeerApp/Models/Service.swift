@@ -12,12 +12,10 @@ class Service {
     var beerList: [Any] = []
 
     func getBeers() -> [Any]{
-
         guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
             print ("geen url kunnen aanmaken")
             return[]
         }
-        
         var urlRequest = URLRequest(url: url)
         urlRequest.allHTTPHeaderFields = [
             "accept": "application/json",

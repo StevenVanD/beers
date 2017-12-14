@@ -197,8 +197,8 @@
 		80DF63A41FDACF1900ADFC29 /* Module Home */ = {
 			isa = PBXGroup;
 			children = (
-				80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */,
 				3F417EB01F4FAE5C00B59526 /* HomeViewController.swift */,
+				80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */,
 				3F417E831F4FAD7200B59526 /* Main.storyboard */,
 			);
 			path = "Module Home";
@@ -207,8 +207,8 @@
 		80DF63A51FDACF4000ADFC29 /* Module BeerDetail */ = {
 			isa = PBXGroup;
 			children = (
-				80DF63A61FDACF8900ADFC29 /* BeerDetailViewModel.swift */,
 				3F417E811F4FAD7200B59526 /* BeerDetailViewController.swift */,
+				80DF63A61FDACF8900ADFC29 /* BeerDetailViewModel.swift */,
 				80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */,
 			);
 			path = "Module BeerDetail";

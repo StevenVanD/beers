@@ -11,13 +11,26 @@ import MapKit
 
 public final class BeerDetailViewModel {
     
-    var beer: Beer?
-    var brewery: Brewery?
-    private var beerDetailViewController: BeerDetailViewController?
-
-    init(beer : Beer, beerDetailViewController: BeerDetailViewController){
+    var beerUpdateHandler:(() -> Void)?
+    var breweryUpdateHandler:(() -> Void)?
+    
+    var beer: Beer? {
+        didSet {
+            DispatchQueue.main.async {
+                self.beerUpdateHandler?()
+            }
+        }
+    }
+    var brewery: Brewery? {
+        didSet {
+            DispatchQueue.main.async {
+                self.beerUpdateHandler?()
+            }
+        }
+    }
+    
+    init(beer : Beer){
         self.beer = beer
-        self.beerDetailViewController = beerDetailViewController
     }
     
     var beerName: String {
@@ -26,11 +39,16 @@ public final class BeerDetailViewModel {
         }
         return beer.name
     }
+    
     var beerRating: String {
         guard let beer = beer else {
             return "No rating available"
         }
-        return "\(beer.rating)"
+        if beer.rating >= 0 {
+            return "\(beer.rating)"
+        }else {
+            return ""
+        }
     }
     
     var breweryName: String {
@@ -60,34 +78,27 @@ public final class BeerDetailViewModel {
         }
         return brewery.lat
     }
-    
-    func updateUI() {
-        guard let viewController = beerDetailViewController else {
-            return
-        }
-        viewController.nameLabel.text = beerName
-        viewController.breweryLabel.text = breweryName
-        viewController.addressLabel.text = breweryAddress
-        if((beer?.rating)! >= 0){
-            viewController.ratingLabel.text = beerRating
-        }
-        viewController.longLabel.text = "\(breweryLong)"
-        viewController.latLabel.text = "\(breweryLat)"
+    var breweryLongString: String {
+        return "\(breweryLong.format(f:".2"))"
     }
-    
-    func updateMap(){
-        guard let viewModel = beerDetailViewController else {
-            return
-        }
-        let coordinate: CLLocationCoordinate2D = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
-        let annotation:MyAnnotation = MyAnnotation(coordinate: coordinate, title: beerName)
-        viewModel.map.addAnnotation(annotation)
-        mapView(viewModel.map)
+    var breweryLatString: String {
+        return "\(breweryLat.format(f:".2"))"
     }
-    
-    func mapView(_ mapView: MKMapView) {
+    var region : MKCoordinateRegion {
         let center = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
-        mapView.setRegion(region, animated: true)
+        return region
+    }
+    var coordinate: CLLocationCoordinate2D {
+        return CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
+    }
+    var annotation:MyAnnotation{
+        return MyAnnotation(coordinate: coordinate, title: beerName)
+    }
+    
+}
+extension Double {
+    func format(f: String) -> String {
+        return String(format: "%\(f)f", self)
     }
 }

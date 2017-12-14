@@ -11,7 +11,9 @@ import MapKit
 
 //Detail viewController
 class BeerDetailViewController: UIViewController{
-    public var beerDetailViewModel: BeerDetailViewModel?
+    public var viewModel: BeerDetailViewModel!
+    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
+    var appDel: AppDelegate = (UIApplication.shared.delegate as! AppDelegate)
     
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var breweryLabel: UILabel!
@@ -21,21 +23,41 @@ class BeerDetailViewController: UIViewController{
     @IBOutlet weak var latLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
     
-    
-    let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
-    var appDel: AppDelegate = (UIApplication.shared.delegate as! AppDelegate)
-    
-    
-    override func viewDidAppear(_ animated: Bool) {
-        guard let viewModel = beerDetailViewModel else {
-            return
+    override func viewDidLoad() {
+        super.viewDidLoad()
+        
+        viewModel.breweryUpdateHandler = { [unowned self] in
+            DispatchQueue.main.async {
+                self.reloadUI()
+            }
         }
-        viewModel.updateUI()
-        viewModel.updateMap()
+        
+        viewModel.beerUpdateHandler = { [unowned self] in
+            DispatchQueue.main.async {
+                self.reloadUI()
+            }
+        }
+        updateMap()
+        reloadUI()
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
+    }
+    
+    func reloadUI(){
+        nameLabel.text = viewModel.beerName
+        breweryLabel.text = viewModel.breweryName
+        addressLabel.text = viewModel.breweryAddress
+        ratingLabel.text = viewModel.beerRating
+        longLabel.text = viewModel.breweryLongString
+        latLabel.text = viewModel.breweryLatString
+    }
+    
+    func updateMap(){
+
+        map.addAnnotation(viewModel.annotation)
+        map.setRegion(viewModel.region, animated: true)
     }
     
     @IBAction func changeSlider(_ sender: UISlider) {

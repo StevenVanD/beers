@@ -11,66 +11,73 @@ import MapKit
 import CoreLocation
 
 class HomeViewController: UITableViewController,CLLocationManagerDelegate {
-    public var homeViewModel: HomeViewModel?
-    public var service: Service?
+    public var viewModel: HomeViewModel = HomeViewModel()
+    
+    public var service: Service = Service()
+    
     @IBOutlet weak var brewNameLabel: UILabel!
     @IBOutlet weak var brewAddressLabel: UILabel!
     @IBOutlet weak var segment: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        homeViewModel = HomeViewModel(homeViewController: self)
-        service = Service()
+
+        viewModel.breweriesUpdateHandler = { [unowned self] in
+            DispatchQueue.main.async {
+                self.reloadUI()
+            }
+        }
+        viewModel.beersUpdateHandler = { [unowned self] in
+            DispatchQueue.main.async {
+                self.reloadUI()
+            }
+        }
+        reloadUI()
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        guard let service = service else {
-            return
-        }
         viewModel.upDateBeerList(beerList: service.getBeers())
-        
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    override func numberOfSections(in tableView: UITableView) -> Int {
-        return 1
+    func reloadUI(){
+        brewNameLabel.text = viewModel.closestBrewName
+        brewAddressLabel.text = viewModel.closestBrewAddress
+        tableView.reloadData()
+
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        guard let viewModel = homeViewModel else {
+        guard let beers = viewModel.beers else {
             return 0
         }
-            return viewModel.beers.count
         
-        
+        return beers.count
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        guard let viewModel = homeViewModel else {
+        guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
             return
         }
         
         if let beerDetailViewController = segue.destination as? BeerDetailViewController{
             if let indexPath = tableView.indexPathForSelectedRow{
                 
-                let selectedBeer = viewModel.beers[indexPath.row]
+                let selectedBeer = beers[indexPath.row]
                 let selectedBeerId = selectedBeer.breweryId
                 
-                let beerViewModel = BeerDetailViewModel(beer: selectedBeer, beerDetailViewController: beerDetailViewController)
+                let beerViewModel = BeerDetailViewModel(beer: selectedBeer)
                 
-                for brewery in viewModel.breweries{
+                for brewery in breweries{
                     let breweryId = selectedBeerId
                     if brewery.id == breweryId{
                         beerViewModel.brewery = brewery
                     }
                 }
-                beerDetailViewController.beerDetailViewModel = beerViewModel
+                beerDetailViewController.viewModel = beerViewModel
             }
         }
     }
@@ -84,18 +91,18 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! TableCell
         
-        guard let viewModel = homeViewModel else {
+        guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
             return cell
         }
         
-        let selectedBeer = viewModel.beers[indexPath.row]
+        let selectedBeer = beers[indexPath.row]
         let selectedBeerName = selectedBeer.name
         let selectedBeerBrewId = selectedBeer.breweryId
         let selectedBeerPhoto = selectedBeer.photoURL
         let selectedBeerRating = selectedBeer.rating
 
         cell.textLabel?.text = selectedBeerName
-        for brewery in viewModel.breweries{
+        for brewery in breweries{
             if brewery.id == selectedBeerBrewId{
                 let breweryName = brewery.name
                 cell.detailTextLabel?.text = breweryName
@@ -125,21 +132,10 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     }
     
     @IBAction func updateButton(_ sender: Any) {
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        guard let service = service else {
-            return
-        }
         viewModel.upDateBeerList(beerList: service.getBeers())
 
     }
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
-        guard let viewModel = homeViewModel else {
-            return
-        }
-        guard let service = service else {
-            return
-        }
-        viewModel.upDateBeerList(beerList: service.getBeers())    }
+        viewModel.upDateBeerList(beerList: service.getBeers())
+    }
 }

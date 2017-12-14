@@ -11,8 +11,8 @@ import CoreLocation
 
 public final class HomeViewModel {
     
-    var beers: [Beer] = []
-    var breweries: [Brewery] = []
+    var beersUpdateHandler:(() -> Void)?
+    var breweriesUpdateHandler:(() -> Void)?
     var closestBrewery: Brewery?
     
     private let appDelegate = UIApplication.shared.delegate as! AppDelegate
@@ -23,12 +23,25 @@ public final class HomeViewModel {
     public var smallestDistance: CLLocationDistance?
     private var homeViewController: HomeViewController?
     
-    
-    init(homeViewController:HomeViewController){
+    var beers: [Beer]? {
+        didSet {
+            DispatchQueue.main.async {
+                self.beersUpdateHandler?()
+            }
+        }
+    }
+    var breweries: [Brewery]?{
+        didSet {
+            DispatchQueue.main.async {
+                self.breweriesUpdateHandler?()
+            }
+        }
+    }
+
+    init(){
         locatiemanager.delegate = self as? CLLocationManagerDelegate
         locatiemanager.requestAlwaysAuthorization()
         locatiemanager.startUpdatingLocation()
-        self.homeViewController = homeViewController
     }
     
     var breweryClosestName: String {
@@ -43,20 +56,29 @@ public final class HomeViewModel {
         guard let closestBrewery = closestBrewery else {
             return "No name available"
         }
-        
         return closestBrewery.address
     }
     func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
         self.currentLocation = location
     }
+    var closestBrewName: String {
+        guard let closestBrewery = closestBrewery else {
+            return "No closest brewery available"
+        }
+        return closestBrewery.name
+    }
+    var closestBrewAddress: String {
+        guard let closestBrewery = closestBrewery else {
+            return "No closest brewery available"
+        }
+        return closestBrewery.address
+    }
     func setClosestBrewery(){
-        guard let viewController = homeViewController else {
+        guard let breweries = breweries else {
             return
         }
-        let closestBrewName = self.closestBrewery?.name
-        let closestBrewAddress = self.closestBrewery?.address
-        for brew in self.breweries {
+        for brew in breweries {
             let distance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
             guard let afstand = self.smallestDistance else{
                 self.closestLocation = self.currentLocation
@@ -70,8 +92,6 @@ public final class HomeViewModel {
                 self.closestBrewery = brew
             }
         }
-        viewController.brewNameLabel.text = closestBrewName
-        viewController.brewAddressLabel.text = closestBrewAddress
     }
     
     func getData() {
@@ -85,12 +105,6 @@ public final class HomeViewModel {
         tableView.reloadData()
     }
     func upDateBeerList(beerList: [Any]){
-        guard let viewController = homeViewController else {
-            return
-        }
-        guard let segment = viewController.segment else {
-            return
-        }
         beers = []
         breweries = []
         for beer in beerList{
@@ -106,7 +120,7 @@ public final class HomeViewModel {
                 
                 var breweryExists = false
                 
-                guard let imageURL = URL(string: imageString) else {
+                guard let imageURL = URL(string: imageString), let breweries = self.breweries else {
                     return
                 }
                 for brewery in breweries{
@@ -115,19 +129,23 @@ public final class HomeViewModel {
                     }
                 }
                 if breweryExists == false{
-                    breweries += [Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id)]
+                    self.breweries?.append(Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id))
                 }
                 if let rating = beer["rating"] as? Int{
-                    beers += [Beer(name: name, photoURL: imageURL, breweryId: id, rating: rating) ]
+                    self.beers?.append(Beer(name: name, photoURL: imageURL, breweryId: id, rating: rating))
+
                 }else{
-                    if segment.selectedSegmentIndex == 0 {
+                    /*if segment.selectedSegmentIndex == 0 {
                         beers += [Beer(name: name, photoURL: imageURL, breweryId: id, rating: -1) ]
-                    }
+                    }*/
                 }
+
             }
+
             else{
                 print("Problem parsing trackDictionary\n")
             }
+
         }
         getData()
     }
