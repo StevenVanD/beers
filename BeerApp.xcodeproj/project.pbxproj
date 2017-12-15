@@ -24,6 +24,7 @@
 		3F6757971F5359F2004CA76C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F6757961F5359F2004CA76C /* CoreLocation.framework */; };
 		3F71BCAB1F50ED120002E77F /* BeerTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F71BCAA1F50ED120002E77F /* BeerTableCell.swift */; };
 		48E9AAD0183AF7524C26EFE3 /* Pods_BeerAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F802A17AD7C3FBDDBB6255B8 /* Pods_BeerAppTests.framework */; };
+		805570BB1FE3D8CA000FF514 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805570BA1FE3D8CA000FF514 /* Category.swift */; };
 		80D0383B1FE13FB0000503F0 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D0383A1FE13FB0000503F0 /* Service.swift */; };
 		80DF63A11FDACCA900ADFC29 /* DetailStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */; };
 		80DF63A31FDACF0700ADFC29 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */; };
@@ -73,6 +74,7 @@
 		3F6757941F53181E004CA76C /* MyAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
 		3F6757961F5359F2004CA76C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3F71BCAA1F50ED120002E77F /* BeerTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeerTableCell.swift; sourceTree = "<group>"; };
+		805570BA1FE3D8CA000FF514 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
 		80D0383A1FE13FB0000503F0 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailStoryboard.storyboard; sourceTree = "<group>"; };
 		80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -228,6 +230,7 @@
 		80DF639D1FDAC81500ADFC29 /* Supporting files */ = {
 			isa = PBXGroup;
 			children = (
+				805570BA1FE3D8CA000FF514 /* Category.swift */,
 				3F417E7F1F4FAD7200B59526 /* AppDelegate.swift */,
 				3F417E891F4FAD7200B59526 /* Assets.xcassets */,
 				3F417E861F4FAD7200B59526 /* BeerApp.xcdatamodeld */,
@@ -593,6 +596,7 @@
 				3F6757951F53181E004CA76C /* MyAnnotation.swift in Sources */,
 				3F417E881F4FAD7200B59526 /* BeerApp.xcdatamodeld in Sources */,
 				80DF63A71FDACF8900ADFC29 /* BeerDetailViewModel.swift in Sources */,
+				805570BB1FE3D8CA000FF514 /* Category.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -764,7 +768,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = YS3LVXTKF8;
-				INFOPLIST_FILE = BeerApp/Info.plist;
+				INFOPLIST_FILE = "BeerApp/Supporting files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.icapps.beerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -779,7 +783,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = YS3LVXTKF8;
-				INFOPLIST_FILE = BeerApp/Info.plist;
+				INFOPLIST_FILE = "BeerApp/Supporting files/Info.plist";
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.icapps.beerApp;
 				PRODUCT_NAME = "$(TARGET_NAME)";

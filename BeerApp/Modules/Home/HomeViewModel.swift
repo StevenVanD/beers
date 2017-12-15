@@ -37,7 +37,7 @@ public final class HomeViewModel {
             }
         }
     }
-
+    
     init() {
         locatiemanager.delegate = self as? CLLocationManagerDelegate
         locatiemanager.requestAlwaysAuthorization()
@@ -48,7 +48,6 @@ public final class HomeViewModel {
         guard let closestBrewery = closestBrewery else {
             return "No name available"
         }
-        
         return closestBrewery.name
     }
     
@@ -79,7 +78,6 @@ public final class HomeViewModel {
     }
     
     func setClosestBrewery() {
-        
         guard let breweries = breweries else {
             return
         }
@@ -97,18 +95,9 @@ public final class HomeViewModel {
                 self.closestBrewery = brew
             }
         }
+
     }
     
-    func getData() {
-        guard let viewController = homeViewController else {
-            return
-        }
-        guard let tableView = viewController.tableView else {
-            return
-        }
-        setClosestBrewery()
-        tableView.reloadData()
-    }
     func upDateBeerList(beerList: [Any], segment: UISegmentedControl) {
         beers = []
         breweries = []
@@ -124,29 +113,32 @@ public final class HomeViewModel {
                 let brewName = brewery["name"] {
                 
                 var breweryExists = false
-                
+                print("hey")
                 guard let imageURL = URL(string: imageString), let breweries = self.breweries else {
                     return
                 }
+                
                 for brewery in breweries where brewery.id == id {
                     breweryExists = true
                 }
                 if breweryExists == false {
                     self.breweries?.append(Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id))
                 }
+                
                 if let rating = beer["rating"] as? Int {
                     self.beers?.append(Beer(name: name, photoURL: imageURL, breweryId: id, rating: rating))
-
+                    
                 } else {
                     if segment.selectedSegmentIndex == 0 {
                         self.beers?.append(Beer(name: name, photoURL: imageURL, breweryId: id, rating: -1))
                     }
                 }
+
             } else {
                 print("Problem parsing trackDictionary\n")
             }
-
+            
         }
-        getData()
+        setClosestBrewery()
     }
 }

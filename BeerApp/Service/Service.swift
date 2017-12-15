@@ -16,6 +16,7 @@ class Service {
             print ("geen url kunnen aanmaken")
             return[]
         }
+        
         var urlRequest = URLRequest(url: url)
         urlRequest.allHTTPHeaderFields = [
             "accept": "application/json",
@@ -47,12 +48,11 @@ class Service {
                     return
                 }
                 self.beerList = beerList
-                
             } catch {
                 print("error trying to convert data to JSON")
                 return
             }
-            }.resume()
+        }.resume()
         return beerList
     }
 }

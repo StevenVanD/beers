@@ -21,7 +21,9 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
+  
+        self.viewModel.upDateBeerList(beerList: self.service.getBeers(), segment: self.segment)
+        
         viewModel.breweriesUpdateHandler = { [unowned self] in
             DispatchQueue.main.async {
                 self.reloadUI()
@@ -32,13 +34,9 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
                 self.reloadUI()
             }
         }
-        reloadUI()
+        self.reloadUI()
     }
-    
-    override func viewDidAppear(_ animated: Bool) {
-        viewModel.upDateBeerList(beerList: service.getBeers(), segment: segment)
-    }
-    
+
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
@@ -47,7 +45,6 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
         brewNameLabel.text = viewModel.closestBrewName
         brewAddressLabel.text = viewModel.closestBrewAddress
         tableView.reloadData()
-
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -101,9 +98,10 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     
     @IBAction func updateButton(_ sender: Any) {
         viewModel.upDateBeerList(beerList: service.getBeers(), segment: segment)
-
+        reloadUI()
     }
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
         viewModel.upDateBeerList(beerList: service.getBeers(), segment: segment)
+        reloadUI()
     }
 }

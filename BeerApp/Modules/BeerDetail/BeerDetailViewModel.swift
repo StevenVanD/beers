@@ -96,10 +96,4 @@ public final class BeerDetailViewModel {
     var annotation: MyAnnotation {
         return MyAnnotation(coordinate: coordinate, title: beerName)
     }
-    
-}
-extension Double {
-    func format(value: String) -> String {
-        return String(format: "%\(value)f", self)
-    }
 }
