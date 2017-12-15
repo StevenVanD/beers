@@ -93,7 +93,7 @@
                             </constraints>
                         </view>
                         <prototypes>
-                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myCell" textLabel="dKE-Hj-4gF" detailTextLabel="iPe-8N-eNE" rowHeight="50" style="IBUITableViewCellStyleSubtitle" id="YQ7-HE-YQ2" customClass="TableCell" customModule="BeerApp" customModuleProvider="target">
+                            <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myCell" textLabel="dKE-Hj-4gF" detailTextLabel="iPe-8N-eNE" rowHeight="50" style="IBUITableViewCellStyleSubtitle" id="YQ7-HE-YQ2" customClass="BeerTableCell" customModule="BeerApp" customModuleProvider="target">
                                 <rect key="frame" x="0.0" y="58" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YQ7-HE-YQ2" id="4AT-TU-xQu">

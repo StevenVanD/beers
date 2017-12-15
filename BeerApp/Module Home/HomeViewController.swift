@@ -69,8 +69,8 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
                 let selectedBeer = beers[indexPath.row]
                 let selectedBeerId = selectedBeer.breweryId
                 
-                let beerViewModel = BeerDetailViewModel(beer: selectedBeer)
-                
+                let beerViewModel = BeerDetailViewModel()
+                beerViewModel.beer = selectedBeer
                 for brewery in breweries {
                     let breweryId = selectedBeerId
                     if brewery.id == breweryId {
@@ -82,49 +82,20 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
         }
     }
     
-    func getDataFromUrl(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
-        URLSession.shared.dataTask(with: url) { data, response, error in
-            completion(data, response, error)
-            }.resume()
-    }
-    
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! TableCell // swiftlint:disable:this force_cast
+        let cell = tableView.dequeueReusableCell(withIdentifier: "myCell", for: indexPath) as! BeerTableCell // swiftlint:disable:this force_cast
         
         guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
             return cell
         }
         
         let selectedBeer = beers[indexPath.row]
-        let selectedBeerName = selectedBeer.name
         let selectedBeerBrewId = selectedBeer.breweryId
-        let selectedBeerPhoto = selectedBeer.photoURL
-        let selectedBeerRating = selectedBeer.rating
-
-        cell.textLabel?.text = selectedBeerName
+        
         for brewery in breweries where brewery.id == selectedBeerBrewId {
-                let breweryName = brewery.name
-                cell.detailTextLabel?.text = breweryName
+                cell.updateCell(for: selectedBeer, with: brewery)
         }
         
-        let photoUrlString = selectedBeerPhoto
-        func downloadImage(url: URL) {
-            getDataFromUrl(url: photoUrlString) { data, _, error in
-                guard let data = data, error == nil else {
-                    return
-                }
-                DispatchQueue.main.async {
-                    cell.imageView?.image  = UIImage(data: data)
-                }
-            }
-        }
-        downloadImage(url: photoUrlString)
-        
-        if selectedBeerRating >= 0 {
-            cell.ratingLabel?.text = "\(selectedBeerRating)"
-        } else {
-            cell.ratingLabel?.text = ""
-        }
         return cell
     }
     

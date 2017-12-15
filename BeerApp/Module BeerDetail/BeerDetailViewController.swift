@@ -55,7 +55,6 @@ class BeerDetailViewController: UIViewController {
     }
     
     func updateMap() {
-
         map.addAnnotation(viewModel.annotation)
         map.setRegion(viewModel.region, animated: true)
     }

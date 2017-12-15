@@ -24,13 +24,9 @@ public final class BeerDetailViewModel {
     var brewery: Brewery? {
         didSet {
             DispatchQueue.main.async {
-                self.beerUpdateHandler?()
+                self.breweryUpdateHandler?()
             }
         }
-    }
-    
-    init(beer: Beer) {
-        self.beer = beer
     }
     
     var beerName: String {
@@ -78,20 +74,25 @@ public final class BeerDetailViewModel {
         }
         return brewery.lat
     }
+    
     var breweryLongString: String {
         return "\(breweryLong.format(value: ".2"))"
     }
+    
     var breweryLatString: String {
         return "\(breweryLat.format(value: ".2"))"
     }
+    
     var region: MKCoordinateRegion {
         let center = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         return region
     }
+    
     var coordinate: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
     }
+    
     var annotation: MyAnnotation {
         return MyAnnotation(coordinate: coordinate, title: beerName)
     }
