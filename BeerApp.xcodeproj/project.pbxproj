@@ -121,9 +121,9 @@
 				3F417E7E1F4FAD7200B59526 /* BeerApp */,
 				3F417E961F4FAD7200B59526 /* BeerAppTests */,
 				3F417EA11F4FAD7200B59526 /* BeerAppUITests */,
-				3F417E7D1F4FAD7200B59526 /* Products */,
 				3F6757911F530D5D004CA76C /* Frameworks */,
 				5D6044CDBD5A894966551A98 /* Pods */,
+				3F417E7D1F4FAD7200B59526 /* Products */,
 			);
 			sourceTree = "<group>";
 		};
@@ -140,12 +140,10 @@
 		3F417E7E1F4FAD7200B59526 /* BeerApp */ = {
 			isa = PBXGroup;
 			children = (
-				805570B91FE3D79C000FF514 /* Service */,
-				805570B81FE3D771000FF514 /* SupportingFiles */,
-				80DF639F1FDAC82800ADFC29 /* Components */,
 				805570B51FE3D736000FF514 /* CustomViews */,
 				80DF639E1FDAC81F00ADFC29 /* Models */,
 				805570B71FE3D748000FF514 /* Modules */,
+				805570B91FE3D79C000FF514 /* Service */,
 				80DF639D1FDAC81500ADFC29 /* Supporting files */,
 			);
 			path = BeerApp;
@@ -213,20 +211,10 @@
 		805570B71FE3D748000FF514 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
-				80DF63A41FDACF1900ADFC29 /* Home */,
 				80DF63A51FDACF4000ADFC29 /* BeerDetail */,
+				80DF63A41FDACF1900ADFC29 /* Home */,
 			);
 			path = Modules;
-			sourceTree = "<group>";
-		};
-		805570B81FE3D771000FF514 /* SupportingFiles */ = {
-			isa = PBXGroup;
-			children = (
-				3F417E7F1F4FAD7200B59526 /* AppDelegate.swift */,
-				3F417E8B1F4FAD7200B59526 /* LaunchScreen.storyboard */,
-				3F417E8E1F4FAD7200B59526 /* Info.plist */,
-			);
-			path = SupportingFiles;
 			sourceTree = "<group>";
 		};
 		805570B91FE3D79C000FF514 /* Service */ = {
@@ -240,8 +228,11 @@
 		80DF639D1FDAC81500ADFC29 /* Supporting files */ = {
 			isa = PBXGroup;
 			children = (
-				3F417E861F4FAD7200B59526 /* BeerApp.xcdatamodeld */,
+				3F417E7F1F4FAD7200B59526 /* AppDelegate.swift */,
 				3F417E891F4FAD7200B59526 /* Assets.xcassets */,
+				3F417E861F4FAD7200B59526 /* BeerApp.xcdatamodeld */,
+				3F417E8E1F4FAD7200B59526 /* Info.plist */,
+				3F417E8B1F4FAD7200B59526 /* LaunchScreen.storyboard */,
 			);
 			path = "Supporting files";
 			sourceTree = "<group>";
@@ -249,18 +240,11 @@
 		80DF639E1FDAC81F00ADFC29 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				3F417EB61F4FB31700B59526 /* Brewery.swift */,
 				3F417EB21F4FB12C00B59526 /* Beer.swift */,
+				3F417EB61F4FB31700B59526 /* Brewery.swift */,
 				3F6757941F53181E004CA76C /* MyAnnotation.swift */,
 			);
 			path = Models;
-			sourceTree = "<group>";
-		};
-		80DF639F1FDAC82800ADFC29 /* Components */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = Components;
 			sourceTree = "<group>";
 		};
 		80DF63A41FDACF1900ADFC29 /* Home */ = {
@@ -650,6 +634,7 @@
 				3F417E841F4FAD7200B59526 /* Base */,
 			);
 			name = Main.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 		3F417E8B1F4FAD7200B59526 /* LaunchScreen.storyboard */ = {
@@ -658,6 +643,7 @@
 				3F417E8C1F4FAD7200B59526 /* Base */,
 			);
 			name = LaunchScreen.storyboard;
+			path = .;
 			sourceTree = "<group>";
 		};
 /* End PBXVariantGroup section */
