@@ -22,7 +22,6 @@
 		3F6757931F530D5E004CA76C /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F6757921F530D5E004CA76C /* MapKit.framework */; };
 		3F6757951F53181E004CA76C /* MyAnnotation.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F6757941F53181E004CA76C /* MyAnnotation.swift */; };
 		3F6757971F5359F2004CA76C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F6757961F5359F2004CA76C /* CoreLocation.framework */; };
-		3F67579B1F536D82004CA76C /* beer.png in Resources */ = {isa = PBXBuildFile; fileRef = 3F67579A1F536D82004CA76C /* beer.png */; };
 		3F71BCAB1F50ED120002E77F /* BeerTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F71BCAA1F50ED120002E77F /* BeerTableCell.swift */; };
 		48E9AAD0183AF7524C26EFE3 /* Pods_BeerAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F802A17AD7C3FBDDBB6255B8 /* Pods_BeerAppTests.framework */; };
 		80D0383B1FE13FB0000503F0 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D0383A1FE13FB0000503F0 /* Service.swift */; };
@@ -73,7 +72,6 @@
 		3F6757921F530D5E004CA76C /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
 		3F6757941F53181E004CA76C /* MyAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
 		3F6757961F5359F2004CA76C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
-		3F67579A1F536D82004CA76C /* beer.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = beer.png; sourceTree = "<group>"; };
 		3F71BCAA1F50ED120002E77F /* BeerTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeerTableCell.swift; sourceTree = "<group>"; };
 		80D0383A1FE13FB0000503F0 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailStoryboard.storyboard; sourceTree = "<group>"; };
@@ -142,17 +140,13 @@
 		3F417E7E1F4FAD7200B59526 /* BeerApp */ = {
 			isa = PBXGroup;
 			children = (
-				80DF63A51FDACF4000ADFC29 /* Module BeerDetail */,
-				80DF63A41FDACF1900ADFC29 /* Module Home */,
+				805570B91FE3D79C000FF514 /* Service */,
+				805570B81FE3D771000FF514 /* SupportingFiles */,
 				80DF639F1FDAC82800ADFC29 /* Components */,
+				805570B51FE3D736000FF514 /* CustomViews */,
 				80DF639E1FDAC81F00ADFC29 /* Models */,
+				805570B71FE3D748000FF514 /* Modules */,
 				80DF639D1FDAC81500ADFC29 /* Supporting files */,
-				3F67579A1F536D82004CA76C /* beer.png */,
-				3F417E7F1F4FAD7200B59526 /* AppDelegate.swift */,
-				3F6757941F53181E004CA76C /* MyAnnotation.swift */,
-				3F417E8B1F4FAD7200B59526 /* LaunchScreen.storyboard */,
-				3F71BCAA1F50ED120002E77F /* BeerTableCell.swift */,
-				3F417E8E1F4FAD7200B59526 /* Info.plist */,
 			);
 			path = BeerApp;
 			sourceTree = "<group>";
@@ -200,6 +194,49 @@
 			name = Pods;
 			sourceTree = "<group>";
 		};
+		805570B51FE3D736000FF514 /* CustomViews */ = {
+			isa = PBXGroup;
+			children = (
+				805570B61FE3D73F000FF514 /* Cells */,
+			);
+			path = CustomViews;
+			sourceTree = "<group>";
+		};
+		805570B61FE3D73F000FF514 /* Cells */ = {
+			isa = PBXGroup;
+			children = (
+				3F71BCAA1F50ED120002E77F /* BeerTableCell.swift */,
+			);
+			path = Cells;
+			sourceTree = "<group>";
+		};
+		805570B71FE3D748000FF514 /* Modules */ = {
+			isa = PBXGroup;
+			children = (
+				80DF63A41FDACF1900ADFC29 /* Home */,
+				80DF63A51FDACF4000ADFC29 /* BeerDetail */,
+			);
+			path = Modules;
+			sourceTree = "<group>";
+		};
+		805570B81FE3D771000FF514 /* SupportingFiles */ = {
+			isa = PBXGroup;
+			children = (
+				3F417E7F1F4FAD7200B59526 /* AppDelegate.swift */,
+				3F417E8B1F4FAD7200B59526 /* LaunchScreen.storyboard */,
+				3F417E8E1F4FAD7200B59526 /* Info.plist */,
+			);
+			path = SupportingFiles;
+			sourceTree = "<group>";
+		};
+		805570B91FE3D79C000FF514 /* Service */ = {
+			isa = PBXGroup;
+			children = (
+				80D0383A1FE13FB0000503F0 /* Service.swift */,
+			);
+			path = Service;
+			sourceTree = "<group>";
+		};
 		80DF639D1FDAC81500ADFC29 /* Supporting files */ = {
 			isa = PBXGroup;
 			children = (
@@ -212,9 +249,9 @@
 		80DF639E1FDAC81F00ADFC29 /* Models */ = {
 			isa = PBXGroup;
 			children = (
-				80D0383A1FE13FB0000503F0 /* Service.swift */,
 				3F417EB61F4FB31700B59526 /* Brewery.swift */,
 				3F417EB21F4FB12C00B59526 /* Beer.swift */,
+				3F6757941F53181E004CA76C /* MyAnnotation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -226,24 +263,24 @@
 			path = Components;
 			sourceTree = "<group>";
 		};
-		80DF63A41FDACF1900ADFC29 /* Module Home */ = {
+		80DF63A41FDACF1900ADFC29 /* Home */ = {
 			isa = PBXGroup;
 			children = (
 				3F417EB01F4FAE5C00B59526 /* HomeViewController.swift */,
 				80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */,
 				3F417E831F4FAD7200B59526 /* Main.storyboard */,
 			);
-			path = "Module Home";
+			path = Home;
 			sourceTree = "<group>";
 		};
-		80DF63A51FDACF4000ADFC29 /* Module BeerDetail */ = {
+		80DF63A51FDACF4000ADFC29 /* BeerDetail */ = {
 			isa = PBXGroup;
 			children = (
 				3F417E811F4FAD7200B59526 /* BeerDetailViewController.swift */,
 				80DF63A61FDACF8900ADFC29 /* BeerDetailViewModel.swift */,
 				80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */,
 			);
-			path = "Module BeerDetail";
+			path = BeerDetail;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -373,7 +410,6 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F417E8D1F4FAD7200B59526 /* LaunchScreen.storyboard in Resources */,
-				3F67579B1F536D82004CA76C /* beer.png in Resources */,
 				3F417E8A1F4FAD7200B59526 /* Assets.xcassets in Resources */,
 				80DF63A11FDACCA900ADFC29 /* DetailStoryboard.storyboard in Resources */,
 				3F417E851F4FAD7200B59526 /* Main.storyboard in Resources */,

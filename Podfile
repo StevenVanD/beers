@@ -6,7 +6,9 @@ target 'BeerApp' do
   use_frameworks!
 
   # Pods for BeerApp
-  pod 'SwiftLint', '~> 0.24' 
+  pod 'SwiftLint', '~> 0.24'
+  pod 'SDWebImage', '~> 4.0'
+	use_frameworks!
 
   target 'BeerAppTests' do
     inherit! :search_paths
