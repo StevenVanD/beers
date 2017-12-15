@@ -22,8 +22,8 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     override func viewDidLoad() {
         super.viewDidLoad()
   
-        self.viewModel.upDateBeerList(beerList: self.service.getBeers(), segment: self.segment)
-        
+        reloadData()
+    
         viewModel.breweriesUpdateHandler = { [unowned self] in
             DispatchQueue.main.async {
                 self.reloadUI()
@@ -42,9 +42,12 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     func reloadUI() {
-        brewNameLabel.text = viewModel.closestBrewName
-        brewAddressLabel.text = viewModel.closestBrewAddress
-        tableView.reloadData()
+       
+        DispatchQueue.main.async { [unowned self] in
+            self.brewNameLabel.text = self.viewModel.closestBrewName
+            self.brewAddressLabel.text = self.viewModel.closestBrewAddress
+            self.tableView.reloadData()
+        }
     }
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
@@ -97,11 +100,23 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     @IBAction func updateButton(_ sender: Any) {
-        viewModel.upDateBeerList(beerList: service.getBeers(), segment: segment)
-        reloadUI()
+        reloadData()
     }
+    
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
-        viewModel.upDateBeerList(beerList: service.getBeers(), segment: segment)
-        reloadUI()
+       reloadData()
+    }
+    
+    func reloadData() {
+        service.getBeers { [unowned self] (error, beers) in
+            if let error = error {
+                print("error \(error.localizedDescription)")
+            }
+            
+            if let beers = beers {
+                self.viewModel.upDateBeerList(beerList: beers, segment: self.segment)
+                self.reloadUI()
+            }
+        }
     }
 }
