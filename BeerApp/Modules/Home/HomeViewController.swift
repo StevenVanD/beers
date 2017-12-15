@@ -34,7 +34,6 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
                 self.reloadUI()
             }
         }
-        self.reloadUI()
     }
 
     override func didReceiveMemoryWarning() {
@@ -42,7 +41,6 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     }
     
     func reloadUI() {
-       
         DispatchQueue.main.async { [unowned self] in
             self.brewNameLabel.text = self.viewModel.closestBrewName
             self.brewAddressLabel.text = self.viewModel.closestBrewAddress
@@ -114,7 +112,9 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
             }
             
             if let beers = beers {
-                self.viewModel.upDateBeerList(beerList: beers, segment: self.segment)
+                DispatchQueue.main.async {
+                    self.viewModel.upDateBeerList(beerList: beers, for: self.segment.selectedSegmentIndex)
+                }
                 self.reloadUI()
             }
         }

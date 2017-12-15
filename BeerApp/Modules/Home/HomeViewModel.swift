@@ -98,7 +98,7 @@ public final class HomeViewModel {
 
     }
     
-    func upDateBeerList(beerList: [Any], segment: UISegmentedControl) {
+    func upDateBeerList(beerList: [Any], for index: Int) {
         beers = []
         breweries = []
         for beer in beerList {
@@ -113,7 +113,7 @@ public final class HomeViewModel {
                 let brewName = brewery["name"] {
                 
                 var breweryExists = false
-                print("hey")
+
                 guard let imageURL = URL(string: imageString), let breweries = self.breweries else {
                     return
                 }
@@ -129,7 +129,7 @@ public final class HomeViewModel {
                     self.beers?.append(Beer(name: name, photoURL: imageURL, breweryId: id, rating: rating))
                     
                 } else {
-                    if segment.selectedSegmentIndex == 0 {
+                    if index == 0 {
                         self.beers?.append(Beer(name: name, photoURL: imageURL, breweryId: id, rating: -1))
                     }
                 }
