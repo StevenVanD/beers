@@ -10,14 +10,14 @@ import UIKit
 import Foundation
 import CoreLocation
 
-class Brewery{
+class Brewery {
     var name: String
     var address: String
     var lat: Double
     var lon: Double
     var id: Int
     
-    init(name: String, address: String, id: Int){
+    init(name: String, address: String, id: Int) {
         self.name = name
         self.address = address
         self.lat = 0
@@ -25,13 +25,12 @@ class Brewery{
         self.id = id
         
         let geoCoder = CLGeocoder()
-        geoCoder.geocodeAddressString(self.address) {
-            placemarks, error in
+        geoCoder.geocodeAddressString(self.address) { placemarks, _ in
             let placemark = placemarks?.first
-            guard let lat = placemark?.location?.coordinate.latitude else{
+            guard let lat = placemark?.location?.coordinate.latitude else {
                 return
             }
-            guard let lon = placemark?.location?.coordinate.longitude else{
+            guard let lon = placemark?.location?.coordinate.longitude else {
                 return
             }
             self.lat = lat

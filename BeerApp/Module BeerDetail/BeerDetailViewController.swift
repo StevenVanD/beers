@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 
 //Detail viewController
-class BeerDetailViewController: UIViewController{
+class BeerDetailViewController: UIViewController {
     public var viewModel: BeerDetailViewModel!
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext // swiftlint:disable:this force_cast
     var appDel: AppDelegate = (UIApplication.shared.delegate as! AppDelegate) // swiftlint:disable:this force_cast
@@ -45,7 +45,7 @@ class BeerDetailViewController: UIViewController{
         super.didReceiveMemoryWarning()
     }
     
-    func reloadUI(){
+    func reloadUI() {
         nameLabel.text = viewModel.beerName
         breweryLabel.text = viewModel.breweryName
         addressLabel.text = viewModel.breweryAddress
@@ -54,7 +54,7 @@ class BeerDetailViewController: UIViewController{
         latLabel.text = viewModel.breweryLatString
     }
     
-    func updateMap(){
+    func updateMap() {
 
         map.addAnnotation(viewModel.annotation)
         map.setRegion(viewModel.region, animated: true)
@@ -64,4 +64,3 @@ class BeerDetailViewController: UIViewController{
         ratingLabel.text = "\(Int(sender.value))"
     }
 }
-

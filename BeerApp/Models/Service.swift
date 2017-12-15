@@ -11,7 +11,7 @@ import Foundation
 class Service {
     var beerList: [Any] = []
 
-    func getBeers() -> [Any]{
+    func getBeers() -> [Any] {
         guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
             print ("geen url kunnen aanmaken")
             return[]
@@ -25,8 +25,7 @@ class Service {
         
         let session = URLSession(configuration: URLSessionConfiguration.default)
         
-        let _ = session.dataTask(with: urlRequest) {
-            (data, response, error) in
+        _ = session.dataTask(with: urlRequest) { (data, _, error) in
             
             guard error == nil else {
                 print("error calling GET")
@@ -49,7 +48,7 @@ class Service {
                 }
                 self.beerList = beerList
                 
-            }catch  {
+            } catch {
                 print("error trying to convert data to JSON")
                 return
             }

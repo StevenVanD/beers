@@ -15,7 +15,7 @@ public final class HomeViewModel {
     var breweriesUpdateHandler:(() -> Void)?
     var closestBrewery: Brewery?
     
-    private let appDelegate = UIApplication.shared.delegate as! AppDelegate // swiftlint:disable:this force_cast
+    private weak var appDelegate = UIApplication.shared.delegate as? AppDelegate // swiftlint:disable:this force_cast
     
     public var locatiemanager = CLLocationManager()
     public var currentLocation = CLLocation()
@@ -30,7 +30,7 @@ public final class HomeViewModel {
             }
         }
     }
-    var breweries: [Brewery]?{
+    var breweries: [Brewery]? {
         didSet {
             DispatchQueue.main.async {
                 self.breweriesUpdateHandler?()
@@ -38,7 +38,7 @@ public final class HomeViewModel {
         }
     }
 
-    init(){
+    init() {
         locatiemanager.delegate = self as? CLLocationManagerDelegate
         locatiemanager.requestAlwaysAuthorization()
         locatiemanager.startUpdatingLocation()
@@ -85,7 +85,7 @@ public final class HomeViewModel {
         }
         for brew in breweries {
             let distance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
-            guard let afstand = self.smallestDistance else{
+            guard let afstand = self.smallestDistance else {
                 self.closestLocation = self.currentLocation
                 self.smallestDistance = distance
                 self.closestBrewery = brew
@@ -109,10 +109,10 @@ public final class HomeViewModel {
         setClosestBrewery()
         tableView.reloadData()
     }
-    func upDateBeerList(beerList: [Any]){
+    func upDateBeerList(beerList: [Any], segment: UISegmentedControl) {
         beers = []
         breweries = []
-        for beer in beerList{
+        for beer in beerList {
             if let beer = beer as? [String: Any],
                 let name = beer["name"] as? String,
                 let imageString = beer["image_url"] as? String,
@@ -121,33 +121,28 @@ public final class HomeViewModel {
                 let street = brewery["address"],
                 let city = brewery["city"],
                 let country = brewery["country"],
-                let brewName = brewery["name"]{
+                let brewName = brewery["name"] {
                 
                 var breweryExists = false
                 
                 guard let imageURL = URL(string: imageString), let breweries = self.breweries else {
                     return
                 }
-                for brewery in breweries{
-                    if brewery.id == id {
-                        breweryExists = true
-                    }
+                for brewery in breweries where brewery.id == id {
+                    breweryExists = true
                 }
-                if breweryExists == false{
+                if breweryExists == false {
                     self.breweries?.append(Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id))
                 }
-                if let rating = beer["rating"] as? Int{
+                if let rating = beer["rating"] as? Int {
                     self.beers?.append(Beer(name: name, photoURL: imageURL, breweryId: id, rating: rating))
 
-                }else{
-                    /*if segment.selectedSegmentIndex == 0 {
-                        beers += [Beer(name: name, photoURL: imageURL, breweryId: id, rating: -1) ]
-                    }*/
+                } else {
+                    if segment.selectedSegmentIndex == 0 {
+                        self.beers?.append(Beer(name: name, photoURL: imageURL, breweryId: id, rating: -1))
+                    }
                 }
-
-            }
-
-            else{
+            } else {
                 print("Problem parsing trackDictionary\n")
             }
 

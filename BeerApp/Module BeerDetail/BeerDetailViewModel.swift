@@ -29,7 +29,7 @@ public final class BeerDetailViewModel {
         }
     }
     
-    init(beer : Beer){
+    init(beer: Beer) {
         self.beer = beer
     }
     
@@ -46,7 +46,7 @@ public final class BeerDetailViewModel {
         }
         if beer.rating >= 0 {
             return "\(beer.rating)"
-        }else {
+        } else {
             return ""
         }
     }
@@ -79,12 +79,12 @@ public final class BeerDetailViewModel {
         return brewery.lat
     }
     var breweryLongString: String {
-        return "\(breweryLong.format(value:".2"))"
+        return "\(breweryLong.format(value: ".2"))"
     }
     var breweryLatString: String {
-        return "\(breweryLat.format(value:".2"))"
+        return "\(breweryLat.format(value: ".2"))"
     }
-    var region : MKCoordinateRegion {
+    var region: MKCoordinateRegion {
         let center = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))
         return region
@@ -92,7 +92,7 @@ public final class BeerDetailViewModel {
     var coordinate: CLLocationCoordinate2D {
         return CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
     }
-    var annotation:MyAnnotation{
+    var annotation: MyAnnotation {
         return MyAnnotation(coordinate: coordinate, title: beerName)
     }
     

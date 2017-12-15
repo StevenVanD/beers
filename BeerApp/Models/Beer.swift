@@ -9,13 +9,13 @@
 import UIKit
 import Foundation
 
-class Beer{
+class Beer {
     var name: String
     var photoURL: URL
     var breweryId: Int
     var rating: Int
 
-    init(name: String, photoURL: URL, breweryId: Int, rating: Int){
+    init(name: String, photoURL: URL, breweryId: Int, rating: Int) {
         self.name = name
         self.photoURL = photoURL
         self.breweryId = breweryId

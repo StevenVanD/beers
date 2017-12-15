@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class HomeViewController: UITableViewController,CLLocationManagerDelegate {
+class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     public var viewModel: HomeViewModel = HomeViewModel()
     
     public var service: Service = Service()
@@ -36,14 +36,14 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
     }
     
     override func viewDidAppear(_ animated: Bool) {
-        viewModel.upDateBeerList(beerList: service.getBeers())
+        viewModel.upDateBeerList(beerList: service.getBeers(), segment: segment)
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
-    func reloadUI(){
+    func reloadUI() {
         brewNameLabel.text = viewModel.closestBrewName
         brewAddressLabel.text = viewModel.closestBrewAddress
         tableView.reloadData()
@@ -63,17 +63,17 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
             return
         }
         
-        if let beerDetailViewController = segue.destination as? BeerDetailViewController{
-            if let indexPath = tableView.indexPathForSelectedRow{
+        if let beerDetailViewController = segue.destination as? BeerDetailViewController {
+            if let indexPath = tableView.indexPathForSelectedRow {
                 
                 let selectedBeer = beers[indexPath.row]
                 let selectedBeerId = selectedBeer.breweryId
                 
                 let beerViewModel = BeerDetailViewModel(beer: selectedBeer)
                 
-                for brewery in breweries{
+                for brewery in breweries {
                     let breweryId = selectedBeerId
-                    if brewery.id == breweryId{
+                    if brewery.id == breweryId {
                         beerViewModel.brewery = brewery
                     }
                 }
@@ -82,7 +82,7 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         }
     }
     
-    func getDataFromUrl(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> ()) {
+    func getDataFromUrl(url: URL, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
         URLSession.shared.dataTask(with: url) { data, response, error in
             completion(data, response, error)
             }.resume()
@@ -102,40 +102,37 @@ class HomeViewController: UITableViewController,CLLocationManagerDelegate {
         let selectedBeerRating = selectedBeer.rating
 
         cell.textLabel?.text = selectedBeerName
-        for brewery in breweries{
-            if brewery.id == selectedBeerBrewId{
+        for brewery in breweries where brewery.id == selectedBeerBrewId {
                 let breweryName = brewery.name
                 cell.detailTextLabel?.text = breweryName
-            }
         }
         
         let photoUrlString = selectedBeerPhoto
         func downloadImage(url: URL) {
-            getDataFromUrl(url: photoUrlString) { data, response, error in
+            getDataFromUrl(url: photoUrlString) { data, _, error in
                 guard let data = data, error == nil else {
                     return
                 }
-                DispatchQueue.main.async() {
+                DispatchQueue.main.async {
                     cell.imageView?.image  = UIImage(data: data)
                 }
             }
         }
         downloadImage(url: photoUrlString)
         
-        
-        if(selectedBeerRating >= 0){
+        if selectedBeerRating >= 0 {
             cell.ratingLabel?.text = "\(selectedBeerRating)"
-        }else{
+        } else {
             cell.ratingLabel?.text = ""
         }
         return cell
     }
     
     @IBAction func updateButton(_ sender: Any) {
-        viewModel.upDateBeerList(beerList: service.getBeers())
+        viewModel.upDateBeerList(beerList: service.getBeers(), segment: segment)
 
     }
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
-        viewModel.upDateBeerList(beerList: service.getBeers())
+        viewModel.upDateBeerList(beerList: service.getBeers(), segment: segment)
     }
 }
