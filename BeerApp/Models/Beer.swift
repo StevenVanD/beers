@@ -20,6 +20,5 @@ class Beer {
         self.photoURL = photoURL
         self.breweryId = breweryId
         self.rating = rating
-        
     }
 }

@@ -10,19 +10,21 @@ import Foundation
 
 class Service {
     
+    let beerURL =  URL(string: "https://icapps-beers.herokuapp.com/beers")
+    let headers = [ "accept": "application/json",
+                    "content-type": "application/json",
+                    "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
+                ]
+    
     func getBeers(completion: @escaping (_ error: Error?, _ result: [Any]?) -> Void) {
-        guard let url = URL(string: "https://icapps-beers.herokuapp.com/beers") else {
-            print ("geen url kunnen aanmaken")
-            completion(nil, nil)
+        
+        guard let url = beerURL else {
             return
         }
         
         var urlRequest = URLRequest(url: url)
-        urlRequest.allHTTPHeaderFields = [
-            "accept": "application/json",
-            "content-type": "application/json",
-            "authorization": "Token token=kVJzYfn9gRaGDFNrtMDuAexP"
-        ]
+        
+        urlRequest.allHTTPHeaderFields = headers
         
         let session = URLSession(configuration: URLSessionConfiguration.default)
         

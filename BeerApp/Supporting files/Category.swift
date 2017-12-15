@@ -7,7 +7,9 @@
 //
 
 import Foundation
+
 extension Double {
+    
     func format(value: String) -> String {
         return String(format: "%\(value)f", self)
     }
