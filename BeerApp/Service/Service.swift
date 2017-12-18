@@ -23,7 +23,6 @@ class Service {
         }
         
         var urlRequest = URLRequest(url: url)
-        
         urlRequest.allHTTPHeaderFields = headers
         
         let session = URLSession(configuration: URLSessionConfiguration.default)

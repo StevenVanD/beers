@@ -10,7 +10,7 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class HomeViewController: UITableViewController, CLLocationManagerDelegate {
+class HomeViewController: UITableViewController {
     public var viewModel: HomeViewModel = HomeViewModel()
     
     public var service: Service = Service()
@@ -47,6 +47,26 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
             self.tableView.reloadData()
         }
     }
+    
+    func reloadData() {
+        service.getBeers { [unowned self] (error, beers) in
+            if let error = error {
+                print("error \(error.localizedDescription)")
+            }
+            
+            if let beers = beers {
+                DispatchQueue.main.async {
+                    self.viewModel.upDateBeerList(beerList: beers, for: self.segment.selectedSegmentIndex)
+                }
+                self.reloadUI()
+            }
+        }
+    }
+}
+
+// MARK: TableView Functions
+
+extension HomeViewController {
     
     override func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         guard let beers = viewModel.beers else {
@@ -96,6 +116,11 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
         
         return cell
     }
+}
+
+// MARK: ButtonActions
+
+extension HomeViewController {
     
     @IBAction func updateButton(_ sender: Any) {
         reloadData()
@@ -104,19 +129,5 @@ class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     @IBAction func switchSelection(_ sender: UISegmentedControl) {
        reloadData()
     }
-    
-    func reloadData() {
-        service.getBeers { [unowned self] (error, beers) in
-            if let error = error {
-                print("error \(error.localizedDescription)")
-            }
-            
-            if let beers = beers {
-                DispatchQueue.main.async {
-                    self.viewModel.upDateBeerList(beerList: beers, for: self.segment.selectedSegmentIndex)
-                }
-                self.reloadUI()
-            }
-        }
-    }
+
 }

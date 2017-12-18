@@ -44,6 +44,12 @@ public final class HomeViewModel {
         locatiemanager.startUpdatingLocation()
     }
     
+}
+
+// MARK: UI variables
+
+extension HomeViewModel {
+    
     var breweryClosestName: String {
         guard let closestBrewery = closestBrewery else {
             return "No name available"
@@ -76,6 +82,11 @@ public final class HomeViewModel {
         }
         return closestBrewery.address
     }
+}
+
+// MARK: Functions
+
+extension HomeViewModel {
     
     func setClosestBrewery() {
         guard let breweries = breweries else {

@@ -21,6 +21,7 @@ public final class BeerDetailViewModel {
             }
         }
     }
+    
     var brewery: Brewery? {
         didSet {
             DispatchQueue.main.async {
@@ -28,6 +29,12 @@ public final class BeerDetailViewModel {
             }
         }
     }
+    
+}
+
+// MARK: UI variables
+
+extension BeerDetailViewModel {
     
     var beerName: String {
         guard let beer = beer else {
@@ -82,6 +89,11 @@ public final class BeerDetailViewModel {
     var breweryLatString: String {
         return "\(breweryLat.format(value: ".2"))"
     }
+}
+
+// MARK: Map & Annotation variables
+
+extension BeerDetailViewModel {
     
     var region: MKCoordinateRegion {
         let center = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
