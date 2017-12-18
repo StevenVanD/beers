@@ -22,6 +22,9 @@ class Brewery {
         self.lat = 0
         self.lon = 0
         self.id = id
+    }
+    
+    func addressToCoordinates(completion: @escaping (_ result: Brewery?) -> Void) {
         let geoCoder = CLGeocoder()
         geoCoder.geocodeAddressString(self.address) { placemarks, _ in
             let placemark = placemarks?.first
@@ -33,6 +36,7 @@ class Brewery {
             }
             self.lat = lat
             self.lon = lon
+            completion(self)
         }
     }
 }

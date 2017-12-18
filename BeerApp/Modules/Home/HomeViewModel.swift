@@ -102,11 +102,10 @@ extension HomeViewModel {
             return
         }
         locationManagers(manager: locationManager)
-        print(currentLocation)
-
+        
         for brew in breweries {
+            
             let currentBrewDistance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
-            print(CLLocation(latitude: brew.lat, longitude: brew.lon))
             guard let closestBrewDistance = self.smallestDistance else {
                 self.smallestDistance = currentBrewDistance
                 self.closestBrewery = brew
@@ -134,7 +133,7 @@ extension HomeViewModel {
                 let brewName = brewery["name"] {
                 
                 var breweryExists = false
-
+                
                 guard let imageURL = URL(string: imageString), let breweries = self.breweries else {
                     return
                 }
@@ -143,7 +142,14 @@ extension HomeViewModel {
                     breweryExists = true
                 }
                 if breweryExists == false {
-                    self.breweries?.append(Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id))
+                    
+                    let newBrewery = Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id)
+                    newBrewery.addressToCoordinates {(brewery) in
+                        if let brewery = brewery {
+                            self.breweries?.append(brewery)
+                        }
+                    }
+                    
                 }
                 
                 if let rating = beer["rating"] as? Int {
@@ -154,7 +160,7 @@ extension HomeViewModel {
                         self.beers?.append(Beer(name: name, photoURL: imageURL, breweryId: id, rating: -1))
                     }
                 }
-
+                
             } else {
                 print("Problem parsing trackDictionary\n")
             }

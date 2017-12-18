@@ -41,11 +41,12 @@ class HomeViewController: UITableViewController {
     }
     
     func reloadUI() {
+        self.viewModel.setClosestBrewery()
+
         DispatchQueue.main.async { [unowned self] in
             self.brewNameLabel.text = self.viewModel.closestBrewName
             self.brewAddressLabel.text = self.viewModel.closestBrewAddress
             self.tableView.reloadData()
-            self.viewModel.setClosestBrewery()
 
         }
     }
