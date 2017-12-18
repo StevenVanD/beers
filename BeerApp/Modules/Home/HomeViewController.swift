@@ -45,6 +45,8 @@ class HomeViewController: UITableViewController {
             self.brewNameLabel.text = self.viewModel.closestBrewName
             self.brewAddressLabel.text = self.viewModel.closestBrewAddress
             self.tableView.reloadData()
+            self.viewModel.setClosestBrewery()
+
         }
     }
     
@@ -58,7 +60,9 @@ class HomeViewController: UITableViewController {
                 DispatchQueue.main.async {
                     self.viewModel.upDateBeerList(beerList: beers, for: self.segment.selectedSegmentIndex)
                 }
+                self.viewModel.setClosestBrewery()
                 self.reloadUI()
+
             }
         }
     }

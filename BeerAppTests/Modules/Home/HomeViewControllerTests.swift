@@ -1,15 +1,14 @@
 //
-//  BeerAppTests.swift
+//  HomeViewControllerTests.swift
 //  BeerAppTests
 //
-//  Created by student on 25/08/2017.
+//  Created by Steven Van Durm on 18/12/17.
 //  Copyright © 2017 iCapps. All rights reserved.
 //
 
 import XCTest
-@testable import BeerApp
 
-class BeerAppTests: XCTestCase {
+class HomeViewControllerTests: XCTestCase {
     
     override func setUp() {
         super.setUp()

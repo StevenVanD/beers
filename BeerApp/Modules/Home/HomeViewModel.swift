@@ -17,9 +17,8 @@ public final class HomeViewModel {
     
     private weak var appDelegate = UIApplication.shared.delegate as? AppDelegate // swiftlint:disable:this force_cast
     
-    public var locatiemanager = CLLocationManager()
+    public var locationManager = CLLocationManager()
     public var currentLocation = CLLocation()
-    public var closestLocation: CLLocation?
     public var smallestDistance: CLLocationDistance?
     private var homeViewController: HomeViewController?
     
@@ -30,6 +29,7 @@ public final class HomeViewModel {
             }
         }
     }
+    
     var breweries: [Brewery]? {
         didSet {
             DispatchQueue.main.async {
@@ -39,9 +39,15 @@ public final class HomeViewModel {
     }
     
     init() {
-        locatiemanager.delegate = self as? CLLocationManagerDelegate
-        locatiemanager.requestAlwaysAuthorization()
-        locatiemanager.startUpdatingLocation()
+        self.locationManager.requestAlwaysAuthorization()
+        
+        self.locationManager.requestWhenInUseAuthorization()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self as? CLLocationManagerDelegate
+            locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
+            locationManager.startUpdatingLocation()
+        }
     }
     
 }
@@ -59,7 +65,7 @@ extension HomeViewModel {
     
     var breweryClosestAddress: String {
         guard let closestBrewery = closestBrewery else {
-            return "No name available"
+            return "No address available"
         }
         return closestBrewery.address
     }
@@ -87,26 +93,30 @@ extension HomeViewModel {
 // MARK: Functions
 
 extension HomeViewModel {
-    
+    func locationManagers(manager: CLLocationManager) {
+        let locValue: CLLocationCoordinate2D = manager.location!.coordinate
+        currentLocation = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
+    }
     func setClosestBrewery() {
-        guard let breweries = breweries else {
+        guard let breweries = self.breweries else {
             return
         }
+        locationManagers(manager: locationManager)
+        print(currentLocation)
+
         for brew in breweries {
-            let distance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
-            guard let afstand = self.smallestDistance else {
-                self.closestLocation = self.currentLocation
-                self.smallestDistance = distance
+            let currentBrewDistance = self.currentLocation.distance(from: CLLocation(latitude: brew.lat, longitude: brew.lon))
+            print(CLLocation(latitude: brew.lat, longitude: brew.lon))
+            guard let closestBrewDistance = self.smallestDistance else {
+                self.smallestDistance = currentBrewDistance
                 self.closestBrewery = brew
                 return
             }
-            if  distance < afstand {
-                self.closestLocation = self.currentLocation
-                self.smallestDistance = distance
+            if  currentBrewDistance < closestBrewDistance {
+                self.smallestDistance = currentBrewDistance
                 self.closestBrewery = brew
             }
         }
-
     }
     
     func upDateBeerList(beerList: [Any], for index: Int) {
@@ -150,6 +160,5 @@ extension HomeViewModel {
             }
             
         }
-        setClosestBrewery()
     }
 }
