@@ -37,19 +37,8 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
-                        <segmentedControl key="tableHeaderView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="top" segmentControlStyle="plain" selectedSegmentIndex="0" id="jmq-bu-Tgr">
-                            <rect key="frame" x="0.0" y="0.0" width="414" height="30"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <segments>
-                                <segment title="all beers"/>
-                                <segment title="rated beers"/>
-                            </segments>
-                            <connections>
-                                <action selector="switchSelection:" destination="LGc-1h-Lew" eventType="valueChanged" id="hMY-BL-IjN"/>
-                            </connections>
-                        </segmentedControl>
                         <view key="tableFooterView" contentMode="scaleToFill" id="xmu-Yv-Vxy">
-                            <rect key="frame" x="0.0" y="108" width="414" height="73"/>
+                            <rect key="frame" x="0.0" y="78" width="414" height="73"/>
                             <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                             <subviews>
                                 <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Closest Brewery:" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ggZ-P9-Adh">
@@ -94,7 +83,7 @@
                         </view>
                         <prototypes>
                             <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" selectionStyle="default" indentationWidth="10" reuseIdentifier="myCell" textLabel="dKE-Hj-4gF" detailTextLabel="iPe-8N-eNE" rowHeight="50" style="IBUITableViewCellStyleSubtitle" id="YQ7-HE-YQ2" customClass="BeerTableCell" customModule="BeerApp" customModuleProvider="target">
-                                <rect key="frame" x="0.0" y="58" width="414" height="50"/>
+                                <rect key="frame" x="0.0" y="28" width="414" height="50"/>
                                 <autoresizingMask key="autoresizingMask"/>
                                 <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" tableViewCell="YQ7-HE-YQ2" id="4AT-TU-xQu">
                                     <rect key="frame" x="0.0" y="0.0" width="414" height="49.666666666666664"/>
@@ -142,7 +131,7 @@
                             <outlet property="delegate" destination="LGc-1h-Lew" id="nLz-eb-PMg"/>
                         </connections>
                     </tableView>
-                    <tabBarItem key="tabBarItem" title="Item" id="fXf-Jn-8At"/>
+                    <tabBarItem key="tabBarItem" title="All Beers" id="fXf-Jn-8At"/>
                     <navigationItem key="navigationItem" title="Title" id="cl3-F9-Z9g">
                         <barButtonItem key="rightBarButtonItem" systemItem="add" id="yR1-Pm-HkV">
                             <connections>
@@ -153,14 +142,13 @@
                     <connections>
                         <outlet property="brewAddressLabel" destination="i6U-sl-9mn" id="6BR-ov-tiu"/>
                         <outlet property="brewNameLabel" destination="n7h-5F-mDQ" id="Xqz-EV-QBE"/>
-                        <outlet property="segment" destination="jmq-bu-Tgr" id="chh-LK-m3s"/>
                     </connections>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Ron-7a-5IK" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="775.36231884057975" y="776.9021739130435"/>
         </scene>
-        <!--Item-->
+        <!--Rated Beers-->
         <scene sceneID="qa8-x8-Hob">
             <objects>
                 <viewController id="hob-ev-3k0" customClass="HomeCollectionViewController" customModule="BeerApp" customModuleProvider="target" sceneMemberID="viewController">
@@ -182,31 +170,13 @@
                                     <inset key="sectionInset" minX="0.0" minY="0.0" maxX="0.0" maxY="0.0"/>
                                 </collectionViewFlowLayout>
                                 <cells>
-                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionViewCell" id="rSN-Af-CtE">
+                                    <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" reuseIdentifier="CollectionViewCell" id="rSN-Af-CtE" customClass="BeerCollectionViewCell" customModule="BeerApp" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" flexibleMaxX="YES" flexibleMinY="YES" flexibleMaxY="YES"/>
                                         <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO">
                                             <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="ktD-DW-Zjt">
-                                                    <rect key="frame" x="79" y="90" width="42" height="21"/>
-                                                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                                <imageView userInteractionEnabled="NO" tag="100" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="0WX-ga-f0s">
-                                                    <rect key="frame" x="0.0" y="0.0" width="200" height="200"/>
-                                                </imageView>
-                                            </subviews>
                                         </view>
-                                        <constraints>
-                                            <constraint firstItem="0WX-ga-f0s" firstAttribute="centerY" secondItem="rSN-Af-CtE" secondAttribute="centerY" id="4Hu-v8-yzH"/>
-                                            <constraint firstItem="0WX-ga-f0s" firstAttribute="height" secondItem="rSN-Af-CtE" secondAttribute="height" id="Wdx-tJ-KA7"/>
-                                            <constraint firstItem="0WX-ga-f0s" firstAttribute="centerX" secondItem="rSN-Af-CtE" secondAttribute="centerX" id="jwC-GQ-fD8"/>
-                                            <constraint firstItem="0WX-ga-f0s" firstAttribute="width" secondItem="rSN-Af-CtE" secondAttribute="width" id="mgJ-f6-ZRg"/>
-                                        </constraints>
                                     </collectionViewCell>
                                 </cells>
                                 <connections>
@@ -214,26 +184,16 @@
                                     <outlet property="delegate" destination="hob-ev-3k0" id="4kF-Zo-ge5"/>
                                 </connections>
                             </collectionView>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="Jj0-JB-RHu">
-                                <rect key="frame" x="0.0" y="663" width="414" height="73"/>
-                                <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="73" id="48R-tm-Kez"/>
-                                </constraints>
-                            </view>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstItem="WUC-PN-Xx5" firstAttribute="bottom" secondItem="Jj0-JB-RHu" secondAttribute="bottom" id="266-k0-sgM"/>
                             <constraint firstItem="WUC-PN-Xx5" firstAttribute="top" secondItem="XmA-0W-QXJ" secondAttribute="bottom" id="2sF-bS-l91"/>
-                            <constraint firstAttribute="trailing" secondItem="Jj0-JB-RHu" secondAttribute="trailing" id="8Dh-iD-FbY"/>
-                            <constraint firstItem="Jj0-JB-RHu" firstAttribute="leading" secondItem="d8N-rS-tjs" secondAttribute="leading" id="HT4-pF-ctZ"/>
-                            <constraint firstAttribute="bottom" secondItem="Jj0-JB-RHu" secondAttribute="bottom" id="YBZ-0x-KAG"/>
+                            <constraint firstAttribute="bottom" secondItem="WUC-PN-Xx5" secondAttribute="bottom" id="46h-Ez-8M6"/>
                             <constraint firstAttribute="trailing" secondItem="WUC-PN-Xx5" secondAttribute="trailing" id="ksT-Mn-Hzv"/>
                             <constraint firstItem="WUC-PN-Xx5" firstAttribute="leading" secondItem="d8N-rS-tjs" secondAttribute="leading" id="uyY-l6-zhE"/>
                         </constraints>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="cfV-Hw-hrr"/>
+                    <tabBarItem key="tabBarItem" title="Rated Beers" id="cfV-Hw-hrr"/>
                     <connections>
                         <outlet property="collectionView" destination="WUC-PN-Xx5" id="guP-UA-cYZ"/>
                     </connections>

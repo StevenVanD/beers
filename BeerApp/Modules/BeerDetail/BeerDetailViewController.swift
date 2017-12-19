@@ -31,7 +31,6 @@ class BeerDetailViewController: UIViewController {
                 self.reloadUI()
             }
         }
-        
         viewModel.beerUpdateHandler = { [unowned self] in
             DispatchQueue.main.async {
                 self.reloadUI()

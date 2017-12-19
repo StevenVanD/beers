@@ -9,10 +9,14 @@
 import UIKit
 
 class BeerCollectionViewCell: UICollectionViewCell {
+    @IBOutlet weak var imageView: UIImageView!
 
     override func awakeFromNib() {
         super.awakeFromNib()
         // Initialization code
     }
-
+    func updateCell(for beer: Beer) {
+        let beerPhotoURL = beer.photoURL
+        imageView.sd_setImage(with: beerPhotoURL, placeholderImage: UIImage(named: "beer.png"))
+    }
 }

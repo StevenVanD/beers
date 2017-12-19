@@ -23,6 +23,8 @@ class HomeCollectionViewController: UIViewController {
         let width = (view.frame.width - (amountOfRows) * layout.minimumInteritemSpacing) / amountOfRows
         layout.itemSize = CGSize(width: width, height: width)
         
+        self.collectionView.register(UINib(nibName: "BeerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
+
         reloadData()
         viewModel.breweriesUpdateHandler = { [unowned self] in
             DispatchQueue.main.async { [unowned self] in
@@ -67,20 +69,12 @@ extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionVi
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)
-        guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
-            return cell
+        let cell: BeerCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! BeerCollectionViewCell // swiftlint:disable:this force_cast
+        guard let beers = viewModel.beers else {
+            return (cell)
         }
         let selectedBeer = beers[indexPath.row]
-        let selectedBeerPhotoURL = selectedBeer.photoURL
-        
-        if let image = cell.viewWithTag(100) as? UIImageView {
-            func downloadImage(url: URL) {
-                image.sd_setImage(with: url, placeholderImage: UIImage(named: "beer.png"))
-            }
-            downloadImage(url: selectedBeerPhotoURL)
-        }
-        return cell
+        cell.updateCell(for: selectedBeer)
+        return (cell)
     }
-    
 }
