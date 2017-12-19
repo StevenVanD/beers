@@ -12,13 +12,15 @@ class HomeCollectionViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
     var collectionData = ["1 yay", "2 yay", "3 yay", "4 yay", "5 yay", "6 yay"]
-    
+    public var viewModel: HomeViewModel = HomeViewModel()
+
     override func viewDidLoad() {
         super.viewDidLoad()
-        let width = view.frame.size.width / 2
-        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout // swiftlint:disable:this force_cast
-        layout.itemSize = CGSize(width: width, height: width)
         
+        let amountOfRows = 2 as CGFloat
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout // swiftlint:disable:this force_cast
+        let width = (view.frame.width - (amountOfRows) * layout.minimumInteritemSpacing) / amountOfRows
+        layout.itemSize = CGSize(width: width, height: width)
     }
     
     override func didReceiveMemoryWarning() {
