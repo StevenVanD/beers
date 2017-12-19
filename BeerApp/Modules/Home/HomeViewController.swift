@@ -12,7 +12,6 @@ import CoreLocation
 
 class HomeViewController: UITableViewController {
     public var viewModel: HomeViewModel = HomeViewModel()
-    
     public var service: Service = Service()
     
     @IBOutlet weak var brewNameLabel: UILabel!
@@ -76,7 +75,7 @@ extension HomeViewController {
         }
         return beers.count
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
             return

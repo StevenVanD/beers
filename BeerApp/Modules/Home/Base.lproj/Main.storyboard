@@ -122,7 +122,7 @@
                                 </tableViewCellContentView>
                                 <connections>
                                     <outlet property="ratingLabel" destination="bHg-B2-myB" id="Ztw-GP-ggV"/>
-                                    <segue destination="Ib4-Vj-UJb" kind="show" id="Adf-Gw-wNQ"/>
+                                    <segue destination="Ib4-Vj-UJb" kind="showDetail" identifier="BeerDetail" id="wUK-iK-A42"/>
                                 </connections>
                             </tableViewCell>
                         </prototypes>
@@ -200,7 +200,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="AKF-Xj-YRL" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="773.91304347826087" y="1531.7934782608697"/>
+            <point key="canvasLocation" x="96" y="1561"/>
         </scene>
         <!--DetailStoryboard-->
         <scene sceneID="JvI-KC-7aB">
@@ -208,7 +208,7 @@
                 <viewControllerPlaceholder storyboardName="DetailStoryboard" id="Ib4-Vj-UJb" sceneMemberID="viewController"/>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Elz-fA-01c" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1442" y="777"/>
+            <point key="canvasLocation" x="-1399" y="1189"/>
         </scene>
         <!--Home Split View Controller-->
         <scene sceneID="Nih-SB-wdh">
@@ -216,7 +216,7 @@
                 <splitViewController id="Cxd-ll-X0f" customClass="HomeSplitViewController" customModule="BeerApp" customModuleProvider="target" sceneMemberID="viewController">
                     <connections>
                         <segue destination="XUg-4K-nqq" kind="relationship" relationship="masterViewController" id="3Bi-kA-Ebr"/>
-                        <segue destination="ADF-cL-pbq" kind="relationship" relationship="detailViewController" id="vuh-mI-XM7"/>
+                        <segue destination="Ib4-Vj-UJb" kind="relationship" relationship="detailViewController" id="WYv-dL-fdn"/>
                     </connections>
                 </splitViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="pdo-xW-7Ea" userLabel="First Responder" sceneMemberID="firstResponder"/>
@@ -243,13 +243,8 @@
             </objects>
             <point key="canvasLocation" x="96" y="777"/>
         </scene>
-        <!--DetailStoryboard-->
-        <scene sceneID="Zvo-sJ-5EH">
-            <objects>
-                <viewControllerPlaceholder storyboardName="DetailStoryboard" id="ADF-cL-pbq" sceneMemberID="viewController"/>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="d7i-zT-m3I" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-1433" y="1243"/>
-        </scene>
     </scenes>
+    <inferredMetricsTieBreakers>
+        <segue reference="wUK-iK-A42"/>
+    </inferredMetricsTieBreakers>
 </document>
