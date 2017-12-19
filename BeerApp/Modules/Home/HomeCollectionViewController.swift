@@ -11,9 +11,10 @@ import UIKit
 class HomeCollectionViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    var collectionData = ["1 yay", "2 yay", "3 yay", "4 yay", "5 yay", "6 yay"]
+    
     public var viewModel: HomeViewModel = HomeViewModel()
-
+    public var service: Service = Service()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -21,24 +22,59 @@ class HomeCollectionViewController: UIViewController {
         let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout // swiftlint:disable:this force_cast
         let width = (view.frame.width - (amountOfRows) * layout.minimumInteritemSpacing) / amountOfRows
         layout.itemSize = CGSize(width: width, height: width)
+        
+        self.collectionView.register(UINib(nibName: "BeerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
+
+        reloadData()
+        viewModel.breweriesUpdateHandler = { [unowned self] in
+            DispatchQueue.main.async { [unowned self] in
+                self.collectionView.reloadData()
+            }
+        }
+        viewModel.beersUpdateHandler = { [unowned self] in
+            DispatchQueue.main.async { [unowned self] in
+                self.collectionView.reloadData()
+            }
+        }
     }
     
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
+
+    func reloadData() {
+        service.getBeers { [unowned self] (error, beers) in
+            if let error = error {
+                print("error \(error.localizedDescription)")
+            }
+            
+            if let beers = beers {
+                DispatchQueue.main.async {
+                    self.viewModel.upDateBeerList(beerList: beers, for: 1)
+                }
+                DispatchQueue.main.async { [unowned self] in
+                    self.collectionView.reloadData()
+                }
+            }
+        }
+    }
 }
 
 extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return collectionData.count
+        guard let beers = viewModel.beers else {
+            return 0
+        }
+        return beers.count
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath)
-        if let label = cell.viewWithTag(100) as? UILabel {
-            label.text = collectionData[indexPath.row]
+        let cell: BeerCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! BeerCollectionViewCell // swiftlint:disable:this force_cast
+        guard let beers = viewModel.beers else {
+            return (cell)
         }
-        return cell
+        let selectedBeer = beers[indexPath.row]
+        cell.updateCell(for: selectedBeer)
+        return (cell)
     }
-    
 }

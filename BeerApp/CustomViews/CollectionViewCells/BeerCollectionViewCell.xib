@@ -10,7 +10,7 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <objects>
-        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner"/>
+        <placeholder placeholderIdentifier="IBFilesOwner" id="-1" userLabel="File's Owner" customClass="BeerDetailViewController" customModule="BeerApp" customModuleProvider="target"/>
         <placeholder placeholderIdentifier="IBFirstResponder" id="-2" customClass="UIResponder"/>
         <collectionViewCell opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" id="gTV-IL-0wX" customClass="BeerCollectionViewCell" customModule="BeerApp" customModuleProvider="target">
             <rect key="frame" x="0.0" y="0.0" width="206" height="191"/>
@@ -18,10 +18,27 @@
             <view key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center">
                 <rect key="frame" x="0.0" y="0.0" width="206" height="191"/>
                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                <subviews>
+                    <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="beer" translatesAutoresizingMaskIntoConstraints="NO" id="nJ5-R4-Nz8">
+                        <rect key="frame" x="0.0" y="0.0" width="206" height="191"/>
+                    </imageView>
+                </subviews>
             </view>
+            <constraints>
+                <constraint firstItem="nJ5-R4-Nz8" firstAttribute="height" secondItem="gTV-IL-0wX" secondAttribute="height" id="Gey-yY-VIR"/>
+                <constraint firstItem="nJ5-R4-Nz8" firstAttribute="centerY" secondItem="ZTg-uK-7eu" secondAttribute="centerY" id="JDo-5o-7ah"/>
+                <constraint firstItem="nJ5-R4-Nz8" firstAttribute="centerX" secondItem="ZTg-uK-7eu" secondAttribute="centerX" id="M2j-kG-f6i"/>
+                <constraint firstItem="nJ5-R4-Nz8" firstAttribute="width" secondItem="gTV-IL-0wX" secondAttribute="width" id="sY2-iP-EJ2"/>
+            </constraints>
             <viewLayoutGuide key="safeArea" id="ZTg-uK-7eu"/>
             <size key="customSize" width="206" height="191"/>
+            <connections>
+                <outlet property="imageView" destination="nJ5-R4-Nz8" id="wLH-Xw-8jM"/>
+            </connections>
             <point key="canvasLocation" x="112" y="112.5"/>
         </collectionViewCell>
     </objects>
+    <resources>
+        <image name="beer" width="300" height="300"/>
+    </resources>
 </document>
