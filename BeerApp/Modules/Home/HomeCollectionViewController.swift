@@ -11,7 +11,6 @@ import UIKit
 class HomeCollectionViewController: UIViewController {
     
     @IBOutlet weak var collectionView: UICollectionView!
-    var collectionData = ["1 yay", "2 yay", "3 yay", "4 yay", "5 yay", "6 yay"]
     
     public var viewModel: HomeViewModel = HomeViewModel()
     public var service: Service = Service()
@@ -26,13 +25,13 @@ class HomeCollectionViewController: UIViewController {
         
         reloadData()
         viewModel.breweriesUpdateHandler = { [unowned self] in
-            DispatchQueue.main.async {
-                self.reloadUI()
+            DispatchQueue.main.async { [unowned self] in
+                self.collectionView.reloadData()
             }
         }
         viewModel.beersUpdateHandler = { [unowned self] in
-            DispatchQueue.main.async {
-                self.reloadUI()
+            DispatchQueue.main.async { [unowned self] in
+                self.collectionView.reloadData()
             }
         }
     }
@@ -40,17 +39,7 @@ class HomeCollectionViewController: UIViewController {
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
-    func reloadUI() {
-        self.viewModel.setClosestBrewery()
-        //stopt hier vroegtijdig mee
-        DispatchQueue.main.async { [unowned self] in
-            //self.brewNameLabel.text = self.viewModel.closestBrewName
-            //self.brewAddressLabel.text = self.viewModel.closestBrewAddress
-            self.collectionView.reloadData()
-            
-        }
-    }
-    
+
     func reloadData() {
         service.getBeers { [unowned self] (error, beers) in
             if let error = error {
@@ -61,7 +50,9 @@ class HomeCollectionViewController: UIViewController {
                 DispatchQueue.main.async {
                     self.viewModel.upDateBeerList(beerList: beers, for: 1)
                 }
-                self.reloadUI()
+                DispatchQueue.main.async { [unowned self] in
+                    self.collectionView.reloadData()
+                }
             }
         }
     }
@@ -69,7 +60,7 @@ class HomeCollectionViewController: UIViewController {
 
 extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
+        guard let beers = viewModel.beers else {
             return 0
         }
         return beers.count

@@ -58,7 +58,7 @@ class HomeViewController: UITableViewController {
             
             if let beers = beers {
                 DispatchQueue.main.async {
-                    self.viewModel.upDateBeerList(beerList: beers, for: self.segment.selectedSegmentIndex)
+                    self.viewModel.upDateBeerList(beerList: beers, for: 0)
                 }
                 self.reloadUI()
             }
@@ -126,9 +126,4 @@ extension HomeViewController {
     @IBAction func updateButton(_ sender: Any) {
         reloadData()
     }
-    
-    @IBAction func switchSelection(_ sender: UISegmentedControl) {
-       reloadData()
-    }
-
 }
