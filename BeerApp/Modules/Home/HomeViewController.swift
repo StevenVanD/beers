@@ -23,7 +23,6 @@ class HomeViewController: UITableViewController {
         super.viewDidLoad()
   
         reloadData()
-    
         viewModel.breweriesUpdateHandler = { [unowned self] in
             DispatchQueue.main.async {
                 self.reloadUI()
@@ -42,12 +41,12 @@ class HomeViewController: UITableViewController {
     
     func reloadUI() {
         self.viewModel.setClosestBrewery()
-
+        //stopt hier vroegtijdig mee
         DispatchQueue.main.async { [unowned self] in
             self.brewNameLabel.text = self.viewModel.closestBrewName
             self.brewAddressLabel.text = self.viewModel.closestBrewAddress
             self.tableView.reloadData()
-
+            
         }
     }
     
@@ -61,9 +60,7 @@ class HomeViewController: UITableViewController {
                 DispatchQueue.main.async {
                     self.viewModel.upDateBeerList(beerList: beers, for: self.segment.selectedSegmentIndex)
                 }
-                self.viewModel.setClosestBrewery()
                 self.reloadUI()
-
             }
         }
     }
@@ -77,7 +74,6 @@ extension HomeViewController {
         guard let beers = viewModel.beers else {
             return 0
         }
-        
         return beers.count
     }
     

@@ -23,6 +23,7 @@
 		3F6757971F5359F2004CA76C /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 3F6757961F5359F2004CA76C /* CoreLocation.framework */; };
 		3F71BCAB1F50ED120002E77F /* BeerTableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 3F71BCAA1F50ED120002E77F /* BeerTableCell.swift */; };
 		48E9AAD0183AF7524C26EFE3 /* Pods_BeerAppTests.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = F802A17AD7C3FBDDBB6255B8 /* Pods_BeerAppTests.framework */; };
+		803C083E1FE90246008B4D17 /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C083D1FE90246008B4D17 /* HomeCollectionViewController.swift */; };
 		804B7FC41FE7C81A0077382F /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B7FC31FE7C81A0077382F /* HomeViewModelTests.swift */; };
 		804B7FC61FE7CB700077382F /* HomeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B7FC51FE7CB700077382F /* HomeViewControllerTests.swift */; };
 		805570BB1FE3D8CA000FF514 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805570BA1FE3D8CA000FF514 /* Category.swift */; };
@@ -74,6 +75,7 @@
 		3F6757941F53181E004CA76C /* MyAnnotation.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = MyAnnotation.swift; sourceTree = "<group>"; };
 		3F6757961F5359F2004CA76C /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		3F71BCAA1F50ED120002E77F /* BeerTableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BeerTableCell.swift; sourceTree = "<group>"; };
+		803C083D1FE90246008B4D17 /* HomeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewController.swift; sourceTree = "<group>"; };
 		804B7FC31FE7C81A0077382F /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		804B7FC51FE7CB700077382F /* HomeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerTests.swift; sourceTree = "<group>"; };
 		805570BA1FE3D8CA000FF514 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -144,6 +146,7 @@
 		3F417E7E1F4FAD7200B59526 /* BeerApp */ = {
 			isa = PBXGroup;
 			children = (
+				3F6757941F53181E004CA76C /* MyAnnotation.swift */,
 				805570B51FE3D736000FF514 /* CustomViews */,
 				80DF639E1FDAC81F00ADFC29 /* Models */,
 				805570B71FE3D748000FF514 /* Modules */,
@@ -297,7 +300,6 @@
 			children = (
 				3F417EB21F4FB12C00B59526 /* Beer.swift */,
 				3F417EB61F4FB31700B59526 /* Brewery.swift */,
-				3F6757941F53181E004CA76C /* MyAnnotation.swift */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -308,6 +310,7 @@
 				3F417EB01F4FAE5C00B59526 /* HomeViewController.swift */,
 				80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */,
 				3F417E831F4FAD7200B59526 /* Main.storyboard */,
+				803C083D1FE90246008B4D17 /* HomeCollectionViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -642,6 +645,7 @@
 				3F417EB11F4FAE5C00B59526 /* HomeViewController.swift in Sources */,
 				80D0383B1FE13FB0000503F0 /* Service.swift in Sources */,
 				3F417EB31F4FB12C00B59526 /* Beer.swift in Sources */,
+				803C083E1FE90246008B4D17 /* HomeCollectionViewController.swift in Sources */,
 				3F71BCAB1F50ED120002E77F /* BeerTableCell.swift in Sources */,
 				3F417E801F4FAD7200B59526 /* AppDelegate.swift in Sources */,
 				3F417EB71F4FB31700B59526 /* Brewery.swift in Sources */,

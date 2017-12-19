@@ -141,15 +141,15 @@ extension HomeViewModel {
                 for brewery in breweries where brewery.id == id {
                     breweryExists = true
                 }
+                
                 if breweryExists == false {
-                    
                     let newBrewery = Brewery(name: "\(brewName)", address: "\(street) \(city) \(country)", id: id)
-                    newBrewery.addressToCoordinates {(brewery) in
+                    newBrewery.addressToCoordinates { (brewery) in
+                        
                         if let brewery = brewery {
                             self.breweries?.append(brewery)
                         }
                     }
-                    
                 }
                 
                 if let rating = beer["rating"] as? Int {
