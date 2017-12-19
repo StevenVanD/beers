@@ -29,6 +29,7 @@
 		804B7FC41FE7C81A0077382F /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B7FC31FE7C81A0077382F /* HomeViewModelTests.swift */; };
 		804B7FC61FE7CB700077382F /* HomeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B7FC51FE7CB700077382F /* HomeViewControllerTests.swift */; };
 		805570BB1FE3D8CA000FF514 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805570BA1FE3D8CA000FF514 /* Category.swift */; };
+		809B31E71FE94E7F009B7C4A /* HomeSplitViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 809B31E61FE94E7F009B7C4A /* HomeSplitViewController.swift */; };
 		80D0383B1FE13FB0000503F0 /* Service.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80D0383A1FE13FB0000503F0 /* Service.swift */; };
 		80DF63A11FDACCA900ADFC29 /* DetailStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */; };
 		80DF63A31FDACF0700ADFC29 /* HomeViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = 80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */; };
@@ -83,6 +84,7 @@
 		804B7FC31FE7C81A0077382F /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		804B7FC51FE7CB700077382F /* HomeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerTests.swift; sourceTree = "<group>"; };
 		805570BA1FE3D8CA000FF514 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
+		809B31E61FE94E7F009B7C4A /* HomeSplitViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeSplitViewController.swift; sourceTree = "<group>"; };
 		80D0383A1FE13FB0000503F0 /* Service.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Service.swift; sourceTree = "<group>"; };
 		80DF63A01FDACCA900ADFC29 /* DetailStoryboard.storyboard */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; path = DetailStoryboard.storyboard; sourceTree = "<group>"; };
 		80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModel.swift; sourceTree = "<group>"; };
@@ -325,6 +327,7 @@
 				80DF63A21FDACF0700ADFC29 /* HomeViewModel.swift */,
 				3F417E831F4FAD7200B59526 /* Main.storyboard */,
 				803C083D1FE90246008B4D17 /* HomeCollectionViewController.swift */,
+				809B31E61FE94E7F009B7C4A /* HomeSplitViewController.swift */,
 			);
 			path = Home;
 			sourceTree = "<group>";
@@ -656,6 +659,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				3F417E821F4FAD7200B59526 /* BeerDetailViewController.swift in Sources */,
+				809B31E71FE94E7F009B7C4A /* HomeSplitViewController.swift in Sources */,
 				80DF63A31FDACF0700ADFC29 /* HomeViewModel.swift in Sources */,
 				803C08461FE90C79008B4D17 /* BeerCollectionViewCell.swift in Sources */,
 				3F417EB11F4FAE5C00B59526 /* HomeViewController.swift in Sources */,

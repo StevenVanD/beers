@@ -87,7 +87,6 @@ extension HomeViewController {
                 
                 let selectedBeer = beers[indexPath.row]
                 let selectedBeerId = selectedBeer.breweryId
-                
                 let beerViewModel = BeerDetailViewModel()
                 beerViewModel.beer = selectedBeer
                 for brewery in breweries {
