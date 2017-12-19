@@ -25,9 +25,8 @@ class BeerDetailViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        if viewModel == nil {
-            viewModel = BeerDetailViewModel()
-        }
+        if viewModel != nil {
+        
         viewModel.breweryUpdateHandler = { [unowned self] in
             DispatchQueue.main.async {
                 self.reloadUI()
@@ -40,6 +39,7 @@ class BeerDetailViewController: UIViewController {
         }
         updateMap()
         reloadUI()
+        }
     }
     
     override func didReceiveMemoryWarning() {

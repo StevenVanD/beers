@@ -10,18 +10,23 @@ import UIKit
 import CoreData
 
 @UIApplicationMain
-class AppDelegate: UIResponder, UIApplicationDelegate {
+class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDelegate {
 
     var window: UIWindow?
-    
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
         // Override point for customization after application launch.
         let splitViewController = window!.rootViewController as! UISplitViewController // swiftlint:disable:this force_cast
-
-        splitViewController.delegate = self as? UISplitViewControllerDelegate
+        splitViewController.delegate = self
         return true
     }
-
+    func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
+        guard let topAsDetailController = secondaryViewController as? BeerDetailViewController else { return false }
+        if topAsDetailController.viewModel == nil {
+            // Return true to indicate that we have handled the collapse by doing nothing; the secondary controller will be discarded.
+            return true
+        }
+        return false
+    }
     // MARK: - Core Data stack
 
     lazy var persistentContainer: NSPersistentContainer = {
@@ -50,4 +55,5 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         })
         return container
     }()
+
 }
