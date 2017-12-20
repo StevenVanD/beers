@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="UU5-FW-0Qa">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13771" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="sWs-lS-vR1">
     <device id="retina5_5" orientation="portrait">
         <adaptation id="fullscreen"/>
     </device>
@@ -234,18 +234,17 @@
             <point key="canvasLocation" x="-604" y="784"/>
         </scene>
         <!--Split View Controller-->
-        <scene sceneID="Vry-4b-7Hb">
+        <scene sceneID="pax-0o-0LE">
             <objects>
-                <splitViewController id="UU5-FW-0Qa" sceneMemberID="viewController">
-                    <toolbarItems/>
+                <splitViewController id="sWs-lS-vR1" sceneMemberID="viewController">
                     <connections>
-                        <segue destination="ZIw-Gc-1dc" kind="relationship" relationship="masterViewController" id="RtT-ty-a0V"/>
-                        <segue destination="mGw-Qi-IB6" kind="relationship" relationship="detailViewController" id="cJm-v4-ele"/>
+                        <segue destination="ZIw-Gc-1dc" kind="relationship" relationship="masterViewController" id="bbs-v7-ZrS"/>
+                        <segue destination="mGw-Qi-IB6" kind="relationship" relationship="detailViewController" id="7yT-eA-EnS"/>
                     </connections>
                 </splitViewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="Z3A-lP-PqS" sceneMemberID="firstResponder"/>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="fsN-oA-vvU" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-1626" y="1109"/>
+            <point key="canvasLocation" x="-1194" y="1208"/>
         </scene>
         <!--Navigation Controller-->
         <scene sceneID="L3I-lW-69L">
@@ -261,10 +260,10 @@
                     </connections>
                 </navigationController>
             </objects>
-            <point key="canvasLocation" x="96" y="2221"/>
+            <point key="canvasLocation" x="96" y="2380"/>
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="hhS-4m-FKO"/>
+        <segue reference="7yT-eA-EnS"/>
     </inferredMetricsTieBreakers>
 </document>

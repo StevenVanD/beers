@@ -14,6 +14,7 @@ class BeerDetailViewController: UIViewController {
     var appDel: AppDelegate = (UIApplication.shared.delegate as! AppDelegate) // swiftlint:disable:this force_cast
     public var viewModel: BeerDetailViewModel!
 
+    @IBOutlet weak var beerImage: UIImageView!
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var breweryLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
@@ -52,8 +53,11 @@ class BeerDetailViewController: UIViewController {
         ratingLabel.text = viewModel.beerRating
         longLabel.text = viewModel.breweryLongString
         latLabel.text = viewModel.breweryLatString
+        downloadImage(url: viewModel.beerImage)
     }
-    
+    func downloadImage(url: URL) {
+        beerImage?.sd_setImage(with: url, placeholderImage: UIImage(named: "beer.png"))
+    }
     func updateMap() {
         map.addAnnotation(viewModel.annotation)
         map.setRegion(viewModel.region, animated: true)

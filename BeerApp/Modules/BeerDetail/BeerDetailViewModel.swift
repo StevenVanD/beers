@@ -89,12 +89,21 @@ extension BeerDetailViewModel {
     var breweryLatString: String {
         return "\(breweryLat.format(value: ".2"))"
     }
+    
+    var beerImage: URL {
+        guard let beer = beer else {
+            return URL(fileURLWithPath: "")
+        }
+        return beer.photoURL
+    }
 }
 
 // MARK: Map & Annotation variables
 
 extension BeerDetailViewModel {
-    
+    func downloadImage(url: URL, imageView: UIImageView) {
+        imageView.sd_setImage(with: url, placeholderImage: UIImage(named: "beer.png"))
+    }
     var region: MKCoordinateRegion {
         let center = CLLocationCoordinate2D(latitude: breweryLat, longitude: breweryLong)
         let region = MKCoordinateRegion(center: center, span: MKCoordinateSpan(latitudeDelta: 0.01, longitudeDelta: 0.01))

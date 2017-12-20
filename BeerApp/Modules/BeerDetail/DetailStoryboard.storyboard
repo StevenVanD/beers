@@ -115,6 +115,13 @@
                             <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="I23-1T-bLs">
                                 <rect key="frame" x="16" y="351" width="343" height="296"/>
                             </mapView>
+                            <imageView userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="bDp-Jz-Za5">
+                                <rect key="frame" x="0.0" y="20" width="240" height="128"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="128" id="iMa-gO-n59"/>
+                                    <constraint firstAttribute="width" constant="240" id="vTr-Vp-aS3"/>
+                                </constraints>
+                            </imageView>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                         <constraints>
@@ -125,6 +132,7 @@
                             <constraint firstItem="9xK-pC-qOG" firstAttribute="leading" secondItem="1Bn-nM-fad" secondAttribute="leadingMargin" id="4br-sz-NQe"/>
                             <constraint firstAttribute="trailingMargin" secondItem="itO-aQ-z4w" secondAttribute="trailing" constant="28" id="5KN-Ec-De4"/>
                             <constraint firstItem="xTH-ed-EwB" firstAttribute="leading" secondItem="1Bn-nM-fad" secondAttribute="leadingMargin" id="5Lu-Uo-1q2"/>
+                            <constraint firstItem="bDp-Jz-Za5" firstAttribute="top" secondItem="ekv-rL-pw1" secondAttribute="bottom" id="5fR-qh-6xb"/>
                             <constraint firstItem="I23-1T-bLs" firstAttribute="trailing" secondItem="1Bn-nM-fad" secondAttribute="trailingMargin" id="6DR-H4-Qhh"/>
                             <constraint firstAttribute="trailingMargin" secondItem="G9j-Dt-36d" secondAttribute="trailing" constant="50" id="6fX-8d-A0W"/>
                             <constraint firstItem="Gxq-M9-eja" firstAttribute="leading" secondItem="1Bn-nM-fad" secondAttribute="leadingMargin" id="7R5-Zq-RmJ"/>
@@ -161,6 +169,7 @@
                             <constraint firstItem="SZu-P5-CE3" firstAttribute="top" secondItem="ekv-rL-pw1" secondAttribute="bottom" constant="8" id="b4u-zO-OLR"/>
                             <constraint firstAttribute="trailingMargin" secondItem="Csi-qz-khz" secondAttribute="trailing" constant="21" id="f66-qq-INQ"/>
                             <constraint firstItem="m0x-oD-cIg" firstAttribute="leading" secondItem="aTs-HM-6KN" secondAttribute="trailing" constant="13.67" id="gsj-la-OQu"/>
+                            <constraint firstItem="bDp-Jz-Za5" firstAttribute="leading" secondItem="tvI-c9-aka" secondAttribute="leading" id="ir4-mq-xi0"/>
                             <constraint firstItem="I23-1T-bLs" firstAttribute="leading" secondItem="1Bn-nM-fad" secondAttribute="leadingMargin" id="jWE-Hy-YxO"/>
                             <constraint firstItem="G9j-Dt-36d" firstAttribute="leading" secondItem="SZu-P5-CE3" secondAttribute="trailing" constant="63.666666666666657" id="jer-rQ-bWN"/>
                             <constraint firstItem="aTs-HM-6KN" firstAttribute="trailing" secondItem="Gxq-M9-eja" secondAttribute="trailing" id="jtA-Ic-dEZ"/>
@@ -183,6 +192,7 @@
                     <navigationItem key="navigationItem" id="3LT-XO-Cxg"/>
                     <connections>
                         <outlet property="addressLabel" destination="JLB-V2-eY5" id="5ra-oN-1HG"/>
+                        <outlet property="beerImage" destination="bDp-Jz-Za5" id="tDI-VZ-dza"/>
                         <outlet property="breweryLabel" destination="VHt-jK-oLS" id="1eK-vx-7kv"/>
                         <outlet property="latLabel" destination="itO-aQ-z4w" id="Mlm-tO-Jfm"/>
                         <outlet property="longLabel" destination="jl2-l0-e8F" id="eca-ny-sOl"/>
