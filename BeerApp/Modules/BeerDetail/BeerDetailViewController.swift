@@ -18,11 +18,11 @@ class BeerDetailViewController: UIViewController {
     @IBOutlet weak var nameLabel: UILabel!
     @IBOutlet weak var breweryLabel: UILabel!
     @IBOutlet weak var addressLabel: UILabel!
-    @IBOutlet weak var ratingLabel: UILabel!
     @IBOutlet weak var longLabel: UILabel!
     @IBOutlet weak var latLabel: UILabel!
     @IBOutlet weak var map: MKMapView!
-    
+    @IBOutlet weak var ratingTextField: UITextField!
+
     override func viewDidLoad() {
         super.viewDidLoad()
         if viewModel != nil {
@@ -50,20 +50,52 @@ class BeerDetailViewController: UIViewController {
         nameLabel.text = viewModel.beerName
         breweryLabel.text = viewModel.breweryName
         addressLabel.text = viewModel.breweryAddress
-        ratingLabel.text = viewModel.beerRating
+        ratingTextField.text = viewModel.beerRating
         longLabel.text = viewModel.breweryLongString
         latLabel.text = viewModel.breweryLatString
         downloadImage(url: viewModel.beerImage)
     }
+    
     func downloadImage(url: URL) {
         beerImage?.sd_setImage(with: url, placeholderImage: UIImage(named: "beer.png"))
     }
+    
     func updateMap() {
         map.addAnnotation(viewModel.annotation)
         map.setRegion(viewModel.region, animated: true)
     }
+    @IBAction func plusButton(_ sender: Any) {
+        if let ratingNumber = Int(ratingTextField.text!) {
+            if ratingNumber < 5 {
+            ratingTextField.text = "\(ratingNumber + 1)"
+            }
+        } else {
+            ratingTextField.text = "0"
+        }
+    }
+    @IBAction func minButton(_ sender: Any) {
+        if let ratingNumber = Int(ratingTextField.text!) {
+            if ratingNumber > 0 {
+                ratingTextField.text = "\(ratingNumber - 1)"
+
+            }
+        } else {
+            ratingTextField.text = "0"
+        }
+    }
     
-    @IBAction func changeSlider(_ sender: UISlider) {
-        ratingLabel.text = "\(Int(sender.value))"
+    @IBAction func setRatingLabel(_ sender: Any) {
+        if let ratingNumber = Int(ratingTextField.text!) {
+            if ratingNumber < 0 {
+                ratingTextField.text = "0"
+                
+            }
+            if ratingNumber > 5 {
+                ratingTextField.text = "5"
+                
+            }
+        } else {
+            ratingTextField.text = "0"
+        }
     }
 }

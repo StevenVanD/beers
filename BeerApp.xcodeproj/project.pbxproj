@@ -26,6 +26,7 @@
 		803C083E1FE90246008B4D17 /* HomeCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C083D1FE90246008B4D17 /* HomeCollectionViewController.swift */; };
 		803C08461FE90C79008B4D17 /* BeerCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803C08441FE90C79008B4D17 /* BeerCollectionViewCell.swift */; };
 		803C08471FE90C79008B4D17 /* BeerCollectionViewCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 803C08451FE90C79008B4D17 /* BeerCollectionViewCell.xib */; };
+		803D07581FEAB5EF00F992DE /* RatingComponent.swift in Sources */ = {isa = PBXBuildFile; fileRef = 803D07571FEAB5EF00F992DE /* RatingComponent.swift */; };
 		804B7FC41FE7C81A0077382F /* HomeViewModelTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B7FC31FE7C81A0077382F /* HomeViewModelTests.swift */; };
 		804B7FC61FE7CB700077382F /* HomeViewControllerTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 804B7FC51FE7CB700077382F /* HomeViewControllerTests.swift */; };
 		805570BB1FE3D8CA000FF514 /* Category.swift in Sources */ = {isa = PBXBuildFile; fileRef = 805570BA1FE3D8CA000FF514 /* Category.swift */; };
@@ -80,6 +81,7 @@
 		803C083D1FE90246008B4D17 /* HomeCollectionViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeCollectionViewController.swift; sourceTree = "<group>"; };
 		803C08441FE90C79008B4D17 /* BeerCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BeerCollectionViewCell.swift; sourceTree = "<group>"; };
 		803C08451FE90C79008B4D17 /* BeerCollectionViewCell.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; path = BeerCollectionViewCell.xib; sourceTree = "<group>"; };
+		803D07571FEAB5EF00F992DE /* RatingComponent.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = RatingComponent.swift; sourceTree = "<group>"; };
 		804B7FC31FE7C81A0077382F /* HomeViewModelTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewModelTests.swift; sourceTree = "<group>"; };
 		804B7FC51FE7CB700077382F /* HomeViewControllerTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = HomeViewControllerTests.swift; sourceTree = "<group>"; };
 		805570BA1FE3D8CA000FF514 /* Category.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Category.swift; sourceTree = "<group>"; };
@@ -267,6 +269,7 @@
 				3F6757941F53181E004CA76C /* MyAnnotation.swift */,
 				803C08431FE90C55008B4D17 /* CollectionViewCells */,
 				805570B61FE3D73F000FF514 /* TableViewCells */,
+				803D07571FEAB5EF00F992DE /* RatingComponent.swift */,
 			);
 			path = CustomViews;
 			sourceTree = "<group>";
@@ -657,6 +660,7 @@
 			files = (
 				3F417E821F4FAD7200B59526 /* BeerDetailViewController.swift in Sources */,
 				80DF63A31FDACF0700ADFC29 /* HomeViewModel.swift in Sources */,
+				803D07581FEAB5EF00F992DE /* RatingComponent.swift in Sources */,
 				803C08461FE90C79008B4D17 /* BeerCollectionViewCell.swift in Sources */,
 				3F417EB11F4FAE5C00B59526 /* HomeViewController.swift in Sources */,
 				80D0383B1FE13FB0000503F0 /* Service.swift in Sources */,
