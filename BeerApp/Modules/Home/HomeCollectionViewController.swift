@@ -67,19 +67,21 @@ extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionVi
         guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
             return
         }
-        if let beerDetailViewController = segue.destination as? BeerDetailViewController {
-            if  let index = sender as? IndexPath {
-                let selectedBeer = beers[index.row]
-                let selectedBeerId = selectedBeer.breweryId
-                let beerViewModel = BeerDetailViewModel()
-                beerViewModel.beer = selectedBeer
-                for brewery in breweries {
-                    let breweryId = selectedBeerId
-                    if brewery.id == breweryId {
-                        beerViewModel.brewery = brewery
+        if let beerDetailViewController = (segue.destination as? UINavigationController)?.topViewController as? BeerDetailViewController {
+            if segue.identifier == "showDetail" {
+                if  let index = sender as? IndexPath {
+                    let selectedBeer = beers[index.row]
+                    let selectedBeerId = selectedBeer.breweryId
+                    let beerViewModel = BeerDetailViewModel()
+                    beerViewModel.beer = selectedBeer
+                    for brewery in breweries {
+                        let breweryId = selectedBeerId
+                        if brewery.id == breweryId {
+                            beerViewModel.brewery = brewery
+                        }
                     }
+                    beerDetailViewController.viewModel = beerViewModel
                 }
-                beerDetailViewController.viewModel = beerViewModel
             }
         }
     }
@@ -93,7 +95,7 @@ extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionVi
     
     func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         if !isEditing {
-            performSegue(withIdentifier: "BeerDetail", sender: indexPath)
+            performSegue(withIdentifier: "showDetail", sender: indexPath)
         } else {
             navigationController?.isToolbarHidden = false
         }

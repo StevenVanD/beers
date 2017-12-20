@@ -180,6 +180,7 @@
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="tvI-c9-aka"/>
                     </view>
+                    <navigationItem key="navigationItem" id="3LT-XO-Cxg"/>
                     <connections>
                         <outlet property="addressLabel" destination="JLB-V2-eY5" id="5ra-oN-1HG"/>
                         <outlet property="breweryLabel" destination="VHt-jK-oLS" id="1eK-vx-7kv"/>
@@ -192,7 +193,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Dp7-eb-gLj" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="780" y="139"/>
+            <point key="canvasLocation" x="1529" y="138"/>
         </scene>
     </scenes>
 </document>
