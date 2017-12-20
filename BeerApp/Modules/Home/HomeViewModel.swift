@@ -40,9 +40,6 @@ public final class HomeViewModel {
     
     init() {
         self.locationManager.requestAlwaysAuthorization()
-        
-        self.locationManager.requestWhenInUseAuthorization()
-        
         if CLLocationManager.locationServicesEnabled() {
             locationManager.delegate = self as? CLLocationManagerDelegate
             locationManager.desiredAccuracy = kCLLocationAccuracyNearestTenMeters
@@ -70,9 +67,10 @@ extension HomeViewModel {
         return closestBrewery.address
     }
     
-    func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
         let location = locations[0]
         self.currentLocation = location
+        print(currentLocation)
     }
     
     var closestBrewName: String {
@@ -93,10 +91,15 @@ extension HomeViewModel {
 // MARK: Functions
 
 extension HomeViewModel {
+    
     func locationManagers(manager: CLLocationManager) {
-        let locValue: CLLocationCoordinate2D = manager.location!.coordinate
+        guard let managerLocation = manager.location else {
+            return 
+        }
+        let locValue: CLLocationCoordinate2D = managerLocation.coordinate
         currentLocation = CLLocation(latitude: locValue.latitude, longitude: locValue.longitude)
     }
+
     func setClosestBrewery() {
         guard let breweries = self.breweries else {
             return
@@ -164,7 +167,7 @@ extension HomeViewModel {
             } else {
                 print("Problem parsing trackDictionary\n")
             }
-            
         }
     }
+    
 }

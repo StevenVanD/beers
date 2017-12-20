@@ -58,14 +58,45 @@ class HomeCollectionViewController: UIViewController {
             }
         }
     }
+    
 }
 
 extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionViewDataSource {
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
+            return
+        }
+        if let beerDetailViewController = segue.destination as? BeerDetailViewController {
+            if  let index = sender as? IndexPath {
+                let selectedBeer = beers[index.row]
+                let selectedBeerId = selectedBeer.breweryId
+                let beerViewModel = BeerDetailViewModel()
+                beerViewModel.beer = selectedBeer
+                for brewery in breweries {
+                    let breweryId = selectedBeerId
+                    if brewery.id == breweryId {
+                        beerViewModel.brewery = brewery
+                    }
+                }
+                beerDetailViewController.viewModel = beerViewModel
+            }
+        }
+    }
+    
     func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         guard let beers = viewModel.beers else {
             return 0
         }
         return beers.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        if !isEditing {
+            performSegue(withIdentifier: "BeerDetail", sender: indexPath)
+        } else {
+            navigationController?.isToolbarHidden = false
+        }
     }
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
@@ -77,4 +108,5 @@ extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionVi
         cell.updateCell(for: selectedBeer)
         return (cell)
     }
+    
 }

@@ -17,6 +17,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UISplitViewControllerDele
         // Override point for customization after application launch.
         let splitViewController = window!.rootViewController as! UISplitViewController // swiftlint:disable:this force_cast
         splitViewController.delegate = self
+        splitViewController.preferredDisplayMode = .allVisible
         return true
     }
     func splitViewController(_ splitViewController: UISplitViewController, collapseSecondary secondaryViewController: UIViewController, onto primaryViewController: UIViewController) -> Bool {
