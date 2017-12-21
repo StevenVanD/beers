@@ -37,7 +37,37 @@ class HomeCollectionViewController: UIViewController {
             }
         }
     }
-    
+    //used when rotating the screen
+    override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
+        super.viewWillTransition(to: size, with: coordinator)
+        coordinator.animate(alongsideTransition: nil, completion: { _ in
+            self.resetViewLayout()
+        })
+    }
+    override func viewDidAppear(_ animated: Bool) {
+        resetViewLayout()
+    }
+    func resetViewLayout() {
+        let amountOfRows = 2 as CGFloat
+        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout // swiftlint:disable:this force_cast
+        let width = (view.frame.width - (amountOfRows) * layout.minimumInteritemSpacing) / amountOfRows
+        layout.itemSize = CGSize(width: width, height: width)
+        
+        self.collectionView.register(UINib(nibName: "BeerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
+        
+        reloadData()
+        viewModel.breweriesUpdateHandler = { [unowned self] in
+            DispatchQueue.main.async { [unowned self] in
+                self.collectionView.reloadData()
+            }
+        }
+        viewModel.beersUpdateHandler = { [unowned self] in
+            DispatchQueue.main.async { [unowned self] in
+                self.collectionView.reloadData()
+            }
+        }
+        
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
