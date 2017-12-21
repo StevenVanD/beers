@@ -37,6 +37,7 @@ class HomeCollectionViewController: UIViewController {
             }
         }
     }
+    
     //used when rotating the screen
     override func viewWillTransition(to size: CGSize, with coordinator: UIViewControllerTransitionCoordinator) {
         super.viewWillTransition(to: size, with: coordinator)

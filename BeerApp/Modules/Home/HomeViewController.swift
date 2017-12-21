@@ -10,13 +10,14 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class HomeViewController: UITableViewController {
+class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     public var viewModel: HomeViewModel = HomeViewModel()
     public var service: Service = Service()
     
+    public var locationManager: CLLocationManager!
+
     @IBOutlet weak var brewNameLabel: UILabel!
     @IBOutlet weak var brewAddressLabel: UILabel!
-    @IBOutlet weak var segment: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -32,20 +33,37 @@ class HomeViewController: UITableViewController {
                 self.reloadUI()
             }
         }
+        locationManager = CLLocationManager()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+        }
     }
-
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        reloadUI()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+     let location = locations[0]
+     viewModel.currentLocation = location
+        reloadCLosestBrewery()
+    }
+    func reloadCLosestBrewery() {
+        self.viewModel.setClosestBrewery()        
+        self.brewNameLabel.text = self.viewModel.closestBrewName
+        self.brewAddressLabel.text = self.viewModel.closestBrewAddress
+    }
     func reloadUI() {
-        self.viewModel.setClosestBrewery()
-        //stopt hier vroegtijdig mee
         DispatchQueue.main.async { [unowned self] in
-            self.brewNameLabel.text = self.viewModel.closestBrewName
-            self.brewAddressLabel.text = self.viewModel.closestBrewAddress
             self.tableView.reloadData()
-            
+            self.reloadCLosestBrewery()
         }
     }
     
@@ -123,14 +141,5 @@ extension HomeViewController {
         }
         
         return cell
-    }
-}
-
-// MARK: ButtonActions
-
-extension HomeViewController {
-    
-    @IBAction func updateButton(_ sender: Any) {
-        reloadData()
     }
 }
