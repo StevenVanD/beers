@@ -25,8 +25,9 @@ class BeerDetailViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        if viewModel != nil {
-        
+        guard let viewModel = viewModel else {
+            return
+        }
         viewModel.breweryUpdateHandler = { [unowned self] in
             DispatchQueue.main.async {
                 self.reloadUI()
@@ -39,7 +40,7 @@ class BeerDetailViewController: UIViewController {
         }
         updateMap()
         reloadUI()
-        }
+        
     }
     
     override func didReceiveMemoryWarning() {
@@ -53,7 +54,7 @@ class BeerDetailViewController: UIViewController {
         ratingTextField.text = viewModel.beerRating
         longLabel.text = viewModel.breweryLongString
         latLabel.text = viewModel.breweryLatString
-        downloadImage(url: viewModel.beerImage)
+        downloadImage(url: viewModel.beerPhotoURL)
     }
     
     func downloadImage(url: URL) {

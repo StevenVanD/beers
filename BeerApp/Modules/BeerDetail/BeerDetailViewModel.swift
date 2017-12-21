@@ -90,9 +90,9 @@ extension BeerDetailViewModel {
         return "\(breweryLat.format(value: ".2"))"
     }
     
-    var beerImage: URL {
+    var beerPhotoURL: URL {
         guard let beer = beer else {
-            return URL(fileURLWithPath: "")
+            return URL(fileURLWithPath: "https://www.google.be/url?sa=i&rct=j&q=&esrc=s&source=images&cd=&cad=rja&uact=8&ved=0ahUKEwitkdetvZvYAhXNZlAKHTVjAxQQjRwIBw&url=https%3A%2F%2Fwww.istockphoto.com%2Fphotos%2Fbeer-glass&psig=AOvVaw2avQhricobwQdT5AB8ZqYd&ust=1513958580077176")
         }
         return beer.photoURL
     }
