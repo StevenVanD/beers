@@ -155,10 +155,10 @@
                                                             <stackView opaque="NO" contentMode="scaleToFill" distribution="fillEqually" translatesAutoresizingMaskIntoConstraints="NO" id="DpB-ne-KQ9">
                                                                 <rect key="frame" x="0.0" y="300" width="183" height="60"/>
                                                                 <subviews>
-                                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="noRating" textAlignment="natural" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="04Z-F7-S6o">
+                                                                    <textField opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" borderStyle="roundedRect" placeholder="noRating" textAlignment="center" minimumFontSize="17" translatesAutoresizingMaskIntoConstraints="NO" id="04Z-F7-S6o">
                                                                         <rect key="frame" x="0.0" y="0.0" width="91.666666666666671" height="60"/>
                                                                         <nil key="textColor"/>
-                                                                        <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                                                         <textInputTraits key="textInputTraits"/>
                                                                         <connections>
                                                                             <action selector="setRatingLabel:" destination="Usk-S2-zhy" eventType="primaryActionTriggered" id="dDN-j5-YzO"/>
@@ -169,6 +169,7 @@
                                                                         <subviews>
                                                                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TdP-af-loq">
                                                                                 <rect key="frame" x="0.0" y="0.0" width="91.333333333333329" height="30"/>
+                                                                                <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                                                                 <state key="normal" title="+"/>
                                                                                 <connections>
                                                                                     <action selector="plusButton:" destination="Usk-S2-zhy" eventType="touchUpInside" id="VZR-6r-3xY"/>
