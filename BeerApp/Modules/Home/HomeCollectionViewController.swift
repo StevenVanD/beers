@@ -26,12 +26,12 @@ class HomeCollectionViewController: UIViewController {
         self.collectionView.register(UINib(nibName: "BeerCollectionViewCell", bundle: nil), forCellWithReuseIdentifier: "CollectionViewCell")
 
         reloadData()
-        viewModel.breweriesUpdateHandler = { [unowned self] in
+        viewModel.breweriesUpdateHandler = {
             DispatchQueue.main.async { [unowned self] in
                 self.collectionView.reloadData()
             }
         }
-        viewModel.beersUpdateHandler = { [unowned self] in
+        viewModel.beersUpdateHandler = {
             DispatchQueue.main.async { [unowned self] in
                 self.collectionView.reloadData()
             }
@@ -85,8 +85,6 @@ class HomeCollectionViewController: UIViewController {
             if let beers = beers {
                 DispatchQueue.main.async {
                     self.viewModel.upDateBeerList(beerList: beers, for: 1)
-                }
-                DispatchQueue.main.async { [unowned self] in
                     self.collectionView.reloadData()
                 }
             }
@@ -141,11 +139,11 @@ extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionVi
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell: BeerCollectionViewCell = collectionView.dequeueReusableCell(withReuseIdentifier: "CollectionViewCell", for: indexPath) as! BeerCollectionViewCell // swiftlint:disable:this force_cast
         guard let beers = viewModel.beers else {
-            return (cell)
+            return cell
         }
         let selectedBeer = beers[indexPath.row]
         cell.updateCell(for: selectedBeer)
-        return (cell)
+        return cell
     }
     
 }
