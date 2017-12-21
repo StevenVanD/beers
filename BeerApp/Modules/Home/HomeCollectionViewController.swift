@@ -49,7 +49,10 @@ class HomeCollectionViewController: UIViewController {
     }
     func resetViewLayout() {
         let amountOfRows = 2 as CGFloat
-        let layout = collectionView.collectionViewLayout as! UICollectionViewFlowLayout // swiftlint:disable:this force_cast
+        guard let view = collectionView else {
+            return
+        }
+        let layout = view.collectionViewLayout as! UICollectionViewFlowLayout // swiftlint:disable:this force_cast {
         let width = (view.frame.width - (amountOfRows) * layout.minimumInteritemSpacing) / amountOfRows
         layout.itemSize = CGSize(width: width, height: width)
         
@@ -97,21 +100,24 @@ extension HomeCollectionViewController: UICollectionViewDelegate, UICollectionVi
         guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
             return
         }
-        if let beerDetailViewController = (segue.destination as? UINavigationController)?.topViewController as? BeerDetailViewController {
-            if segue.identifier == "showDetail" {
-                if  let index = sender as? IndexPath {
-                    let selectedBeer = beers[index.row]
-                    let selectedBeerId = selectedBeer.breweryId
-                    let beerViewModel = BeerDetailViewModel()
-                    beerViewModel.beer = selectedBeer
-                    for brewery in breweries {
-                        let breweryId = selectedBeerId
-                        if brewery.id == breweryId {
-                            beerViewModel.brewery = brewery
-                        }
+        guard let beerDetailViewController = (segue.destination as? UINavigationController)?.topViewController as? BeerDetailViewController else {
+            return
+        }
+        if segue.identifier == "showDetail" {
+            if  let index = sender as? IndexPath {
+                let selectedBeer = beers[index.row]
+                let selectedBeerId = selectedBeer.breweryId
+                let beerViewModel = BeerDetailViewModel()
+                beerViewModel.beer = selectedBeer
+                for brewery in breweries {
+                    let breweryId = selectedBeerId
+                    if brewery.id == breweryId {
+                        beerViewModel.brewery = brewery
                     }
-                    beerDetailViewController.viewModel = beerViewModel
                 }
+                beerDetailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+                beerDetailViewController.navigationItem.leftItemsSupplementBackButton = true
+                beerDetailViewController.viewModel = beerViewModel
             }
         }
     }

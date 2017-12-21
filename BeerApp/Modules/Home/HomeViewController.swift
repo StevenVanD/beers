@@ -81,25 +81,30 @@ extension HomeViewController {
             return
         }
         
-        if let beerDetailViewController = (segue.destination as? UINavigationController)?.topViewController as? BeerDetailViewController {
-            if segue.identifier == "showDetail" {
-                if let indexPath = tableView.indexPathForSelectedRow {
-                   /* guard let beerDetailViewController = (segue.destination as? UINavigationController)?.topViewController as? BeerDetailViewController else {
-                        return
-                    }*/
-                    let selectedBeer = beers[indexPath.row]
-                    let selectedBeerId = selectedBeer.breweryId
-                    let beerViewModel = BeerDetailViewModel()
-                    beerViewModel.beer = selectedBeer
-                    for brewery in breweries {
-                        let breweryId = selectedBeerId
-                        if brewery.id == breweryId {
-                            beerViewModel.brewery = brewery
-                        }
-                    }
-                    beerDetailViewController.viewModel = beerViewModel
+        if segue.identifier == "showDetail" {
+            
+            guard let indexPath = tableView.indexPathForSelectedRow else {
+                return
+            }
+            guard let beerDetailViewController = (segue.destination as? UINavigationController)?.topViewController as? BeerDetailViewController else {
+                return
+            }
+            
+            let selectedBeer = beers[indexPath.row]
+            let selectedBeerId = selectedBeer.breweryId
+            let beerViewModel = BeerDetailViewModel()
+            beerViewModel.beer = selectedBeer
+            
+            for brewery in breweries {
+                let breweryId = selectedBeerId
+                if brewery.id == breweryId {
+                    beerViewModel.brewery = brewery
                 }
             }
+            
+            beerDetailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+            beerDetailViewController.navigationItem.leftItemsSupplementBackButton = true
+            beerDetailViewController.viewModel = beerViewModel
         }
     }
     

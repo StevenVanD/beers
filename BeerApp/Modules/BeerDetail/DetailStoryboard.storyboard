@@ -189,14 +189,8 @@
                                                     </stackView>
                                                 </subviews>
                                             </stackView>
-                                            <slider opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" value="2.5" minValue="0.0" maxValue="5" translatesAutoresizingMaskIntoConstraints="NO" id="Csi-qz-khz">
-                                                <rect key="frame" x="22" y="360" width="370" height="41"/>
-                                                <constraints>
-                                                    <constraint firstAttribute="height" constant="40" id="FT7-eO-TXf"/>
-                                                </constraints>
-                                            </slider>
                                             <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="JqU-Bw-lKd" userLabel="Map View">
-                                                <rect key="frame" x="24" y="400" width="366" height="366"/>
+                                                <rect key="frame" x="24" y="384" width="366" height="366"/>
                                                 <subviews>
                                                     <mapView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" mapType="standard" translatesAutoresizingMaskIntoConstraints="NO" id="I23-1T-bLs">
                                                         <rect key="frame" x="0.0" y="0.0" width="366" height="366"/>
@@ -208,6 +202,7 @@
                                                 <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                                 <constraints>
                                                     <constraint firstItem="I23-1T-bLs" firstAttribute="leading" secondItem="JqU-Bw-lKd" secondAttribute="leading" id="DTr-CC-vJu"/>
+                                                    <constraint firstItem="I23-1T-bLs" firstAttribute="top" secondItem="JqU-Bw-lKd" secondAttribute="top" id="L1L-oF-5HW"/>
                                                     <constraint firstAttribute="height" relation="greaterThanOrEqual" constant="100" id="a4T-nk-iz6"/>
                                                     <constraint firstAttribute="bottom" secondItem="I23-1T-bLs" secondAttribute="bottom" id="j7y-MH-aGz"/>
                                                     <constraint firstItem="I23-1T-bLs" firstAttribute="top" secondItem="JqU-Bw-lKd" secondAttribute="top" id="s8Q-ey-pM4"/>
@@ -220,12 +215,9 @@
                                             <constraint firstAttribute="height" constant="700" id="3wg-8r-2tu"/>
                                             <constraint firstItem="DoF-fX-1IU" firstAttribute="top" secondItem="8y6-kr-1Ax" secondAttribute="top" id="DsG-LK-LUE"/>
                                             <constraint firstAttribute="trailing" secondItem="JqU-Bw-lKd" secondAttribute="trailing" constant="24" id="Emh-nz-bYG"/>
-                                            <constraint firstItem="Csi-qz-khz" firstAttribute="top" secondItem="DoF-fX-1IU" secondAttribute="bottom" id="EyB-qS-08Y"/>
                                             <constraint firstAttribute="trailing" secondItem="DoF-fX-1IU" secondAttribute="trailing" constant="24" id="GSm-Uy-Keb"/>
+                                            <constraint firstItem="JqU-Bw-lKd" firstAttribute="top" secondItem="DoF-fX-1IU" secondAttribute="bottom" constant="24" id="Geu-Vb-Kss"/>
                                             <constraint firstItem="JqU-Bw-lKd" firstAttribute="leading" secondItem="8y6-kr-1Ax" secondAttribute="leading" constant="24" id="SVC-4R-fcM"/>
-                                            <constraint firstItem="JqU-Bw-lKd" firstAttribute="top" secondItem="Csi-qz-khz" secondAttribute="bottom" id="UoW-69-AE7"/>
-                                            <constraint firstAttribute="trailing" secondItem="Csi-qz-khz" secondAttribute="trailing" constant="24" id="lWT-WB-nZ2"/>
-                                            <constraint firstItem="Csi-qz-khz" firstAttribute="leading" secondItem="8y6-kr-1Ax" secondAttribute="leading" constant="24" id="lix-S2-afa"/>
                                             <constraint firstItem="DoF-fX-1IU" firstAttribute="leading" secondItem="8y6-kr-1Ax" secondAttribute="leading" constant="24" id="mKc-Oj-mHC"/>
                                         </constraints>
                                     </view>
