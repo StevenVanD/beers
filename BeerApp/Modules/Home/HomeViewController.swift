@@ -10,14 +10,14 @@ import UIKit
 import MapKit
 import CoreLocation
 
-class HomeViewController: UITableViewController {
+class HomeViewController: UITableViewController, CLLocationManagerDelegate {
     public var viewModel: HomeViewModel = HomeViewModel()
-    
     public var service: Service = Service()
     
+    public var locationManager: CLLocationManager!
+
     @IBOutlet weak var brewNameLabel: UILabel!
     @IBOutlet weak var brewAddressLabel: UILabel!
-    @IBOutlet weak var segment: UISegmentedControl!
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -33,20 +33,37 @@ class HomeViewController: UITableViewController {
                 self.reloadUI()
             }
         }
+        locationManager = CLLocationManager()
+        
+        if CLLocationManager.locationServicesEnabled() {
+            locationManager.delegate = self
+            locationManager.desiredAccuracy = kCLLocationAccuracyBest
+            locationManager.requestWhenInUseAuthorization()
+            locationManager.startUpdatingLocation()
+        }
     }
-
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        reloadUI()
+    }
     override func didReceiveMemoryWarning() {
         super.didReceiveMemoryWarning()
     }
     
+    public func locationManager(_ manager: CLLocationManager, didUpdateLocations locations: [CLLocation]) {
+     let location = locations[0]
+     viewModel.currentLocation = location
+        reloadCLosestBrewery()
+    }
+    func reloadCLosestBrewery() {
+        self.viewModel.setClosestBrewery()        
+        self.brewNameLabel.text = self.viewModel.closestBrewName
+        self.brewAddressLabel.text = self.viewModel.closestBrewAddress
+    }
     func reloadUI() {
-        self.viewModel.setClosestBrewery()
-        //stopt hier vroegtijdig mee
         DispatchQueue.main.async { [unowned self] in
-            self.brewNameLabel.text = self.viewModel.closestBrewName
-            self.brewAddressLabel.text = self.viewModel.closestBrewAddress
             self.tableView.reloadData()
-            
+            self.reloadCLosestBrewery()
         }
     }
     
@@ -76,28 +93,36 @@ extension HomeViewController {
         }
         return beers.count
     }
-    
+
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         guard let beers = viewModel.beers, let breweries = viewModel.breweries else {
             return
         }
         
-        if let beerDetailViewController = segue.destination as? BeerDetailViewController {
-            if let indexPath = tableView.indexPathForSelectedRow {
-                
-                let selectedBeer = beers[indexPath.row]
-                let selectedBeerId = selectedBeer.breweryId
-                
-                let beerViewModel = BeerDetailViewModel()
-                beerViewModel.beer = selectedBeer
-                for brewery in breweries {
-                    let breweryId = selectedBeerId
-                    if brewery.id == breweryId {
-                        beerViewModel.brewery = brewery
-                    }
-                }
-                beerDetailViewController.viewModel = beerViewModel
+        if segue.identifier == "showDetail" {
+            
+            guard let indexPath = tableView.indexPathForSelectedRow else {
+                return
             }
+            guard let beerDetailViewController = (segue.destination as? UINavigationController)?.topViewController as? BeerDetailViewController else {
+                return
+            }
+            
+            let selectedBeer = beers[indexPath.row]
+            let selectedBeerId = selectedBeer.breweryId
+            let beerViewModel = BeerDetailViewModel()
+            beerViewModel.beer = selectedBeer
+            
+            for brewery in breweries {
+                let breweryId = selectedBeerId
+                if brewery.id == breweryId {
+                    beerViewModel.brewery = brewery
+                }
+            }
+            
+            beerDetailViewController.navigationItem.leftBarButtonItem = splitViewController?.displayModeButtonItem
+            beerDetailViewController.navigationItem.leftItemsSupplementBackButton = true
+            beerDetailViewController.viewModel = beerViewModel
         }
     }
     
@@ -116,14 +141,5 @@ extension HomeViewController {
         }
         
         return cell
-    }
-}
-
-// MARK: ButtonActions
-
-extension HomeViewController {
-    
-    @IBAction func updateButton(_ sender: Any) {
-        reloadData()
     }
 }
